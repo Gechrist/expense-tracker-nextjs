@@ -9,7 +9,7 @@
 
     "Charts": {
       "name": "Charts",
-      "desc": "See charts accurately depicting your spending."
+      "desc": "See charts accurately depicting your bills and spending."
     },
     "Expenses": {
       "name": "Expenses",
@@ -25,7 +25,7 @@
     "billsTableHeaderDate": "Due Date",
     "expensesTableHeaderCategory": "Category",
     "expensesTableHeaderDate": "Date",
-    "expensesSoFarPill": "This month's expenses: {amount,number, currency}"
+    "expensesSoFarPill": "Monthly expenses: {amount,number, currency}"
   },
   "UserBillsExpenses": {
     "newBill": "New Bill",
@@ -48,7 +48,7 @@
       "foodstuff": "Foodstuffs",
       "leisure": "Leisure",
       "misc": "Miscellaneous",
-      "medical":"Medical",
+      "medical": "Medical",
       "taxes": "Taxes",
       "telecoms": "Telecommunications",
       "transportation": "Transportation",
@@ -59,5 +59,15 @@
     "bills": "Bills",
     "expenses": "Expenses",
     "returnToHome": "Return to Home"
+  },
+  "UserCharts": {
+    "returnToHome": "Return to Home",
+    "chartsPlaceholder": "Select a range of dates",
+    "bills": "Bills",
+    "expenses": "Expenses",
+    "title": "CHARTS",
+    "export": "Export PDF",
+    "year": "Year",
+    "amount": "Amount"
   }
 }

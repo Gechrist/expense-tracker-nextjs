@@ -5,91 +5,201 @@ import {
   Inject,
   DisplayOption,
   PivotChart,
+  PDFExport,
 } from '@syncfusion/ej2-react-pivotview';
+import { L10n, loadCldr, setCulture } from '@syncfusion/ej2/base';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
+import { DateRangePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { ChartSettings } from '@syncfusion/ej2-pivotview/src/pivotview/model/chartsettings';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
+import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
+import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
+import currencies from '../../node_modules/cldr-data/main/el/currencies.json';
+import numberingSystems from '../../node_modules/cldr-data/supplemental/numberingSystems.json';
+import weekData from '../../node_modules/cldr-data/supplemental/weekData.json';
 import useDarkMode from 'use-dark-mode';
+import el from './elLocalization.json';
 import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import '@/styles/SyncFusion.css';
-import {
-  DatePicker,
-  DateRangePickerComponent,
-} from '@syncfusion/ej2-react-calendars';
 
 function UserCharts(this: React.ReactNode) {
+  const locale = useLocale();
+  const t = useTranslations('UserCharts');
+
+  if (locale.includes('el')) {
+    loadCldr(
+      caGregorian,
+      currencies,
+      numbers,
+      timeZoneNames,
+      numberingSystems,
+      weekData
+    );
+    L10n.load(el);
+    setCulture('el');
+  }
+
+  // check for dark mode
+  const darkMode = useDarkMode(false);
+
+  // table & charts settings
+
   let displayOption: DisplayOption = {
-    view: 'Chart',
+    view: 'Both',
+    primary: 'Table',
   } as DisplayOption;
 
   let chartSettings: ChartSettings = {
     chartSeries: { type: 'Bar' },
+    primaryXAxis: { title: t('year') },
+    primaryYAxis: { title: t('amount') },
+    zoomSettings: {
+      enableMouseWheelZooming: true,
+      enablePinchZooming: true,
+    },
+    palettes: [
+      '#7C00FE',
+      '#F9E400',
+      '#FFAF00',
+      '#F5004F',
+      '#36BA98',
+      '#CEDF9F',
+      '#AAB396',
+      '#0A6847',
+      '#C6A969',
+      '#6CBEC7',
+      '#DCA47C',
+    ],
   } as ChartSettings;
 
-  // check for dark mode
-  const darkMode = useDarkMode(false);
-  // i18n hooks
-  const t = useTranslations('UserBillsExpenses');
-
-  const billsPlaceholder = [
+  let testData: IDataSet[] = [
     {
-      id: 'sd',
-      issuer: 'dei',
-      amount: 100,
-      date: new Date('1995-12-17T03:24:00'),
-      quarter: 'Q2',
-      year: '2000',
+      Type: 'expense',
+      Amount: 383,
+      Category: 'misc',
+      Day: 'Monday',
+      Year: '2015',
+      Month: 'January',
     },
     {
-      id: 'sd',
-      issuer: 'dei',
-      amount: 110,
-      date: new Date('2002-12-17T03:24:00'),
-      paidBill: true,
-      calendarAlert: true,
-      calendarDate: new Date('1995-12-17T03:24:00'),
-      comments: 'sdsdsdsds',
-      quarter: 'Q1',
-      year: '2000',
+      Type: 'Bill',
+      Amount: 183,
+      Category: 'dei',
+      Day: 'Monday',
+      Year: '2017',
+      Month: 'May',
     },
     {
-      id: 'sd',
-      issuer: 'dei',
-      amount: 100,
-      date: new Date('1995-12-17T03:24:00'),
-      quarter: 'Q1',
-      year: '2003',
+      Type: 'Bill',
+      Amount: 83,
+      Category: 'nero',
+      Day: 'Monday',
+      Year: '2015',
+      Month: 'January',
     },
-  ];
-
-  const expensesPlaceholder = [
     {
-      id: 'sds',
-      category: 'misc',
-      amount: '100',
-      date: new Date('2022-12-17T03:24:00'),
-      comments: 'asdasdasd',
+      Type: 'Bill',
+      Amount: 231,
+      Category: 'zenith',
+      Day: 'Tuesday',
+      Year: '2016',
+      Month: 'January',
+    },
+    {
+      Type: 'Bill',
+      Amount: 45,
+      Category: 'dei',
+      Day: 'Monday',
+      Year: '2016',
+      Month: 'November',
+    },
+    {
+      Type: 'expense',
+      Amount: 2233,
+      Category: 'foodstuff',
+      Day: 'Tuesday',
+      Year: '2015',
+      Month: 'January',
+    },
+    {
+      Type: 'expense',
+      Amount: 232,
+      Category: 'misc',
+      Day: 'Sunday',
+      Year: '2015',
+      Month: 'January',
+    },
+    {
+      Type: 'expense',
+      Amount: 177,
+      Category: 'leisure',
+      Day: 'Saturday',
+      Year: '2015',
+      Month: 'March',
+    },
+    {
+      Type: 'expense',
+      Amount: 972,
+      Category: 'leisure',
+      Day: 'Tuesday',
+      Year: '2015',
+      Month: 'March',
+    },
+    {
+      Type: 'expense',
+      Amount: 897,
+      Category: 'foodstuff',
+      Day: 'Monday',
+      Year: '2015',
+      Month: 'Apr',
+    },
+    {
+      Type: 'expense',
+      Amount: 92,
+      Category: 'loans',
+      Day: 'Wednesday',
+      Year: '2015',
+      Month: 'Apr',
+    },
+    {
+      Type: 'expense',
+      Amount: 123,
+      Category: 'taxes',
+      Day: 'Friday',
+      Year: '2016',
+      Month: 'Apr',
+    },
+    {
+      Type: 'expense',
+      Amount: 383,
+      Category: 'transport',
+      Day: 'Monday',
+      Year: '2016',
+      Month: 'December',
     },
   ];
 
   let dataSourceSettings: IDataOptions = {
-    columns: [{ name: 'Year', caption: 'Production Year' }],
-    dataSource: billsPlaceholder as unknown as IDataSet[],
+    columns: [{ name: 'Type', caption: 'Type' }, { name: 'Category' }],
+    dataSource: testData,
     expandAll: false,
     filters: [],
-    formatSettings: [{ name: 'Amount', format: 'C0' }],
-    rows: [{ name: 'Quarter' }],
-    values: [{ name: 'Amount', caption: 'Sold Amount' }],
+    formatSettings: [{ name: 'Amount', format: 'C0', currency: 'EUR' }],
+    rows: [
+      { name: 'Year', caption: 'Year' },
+      { name: 'Month', caption: 'Month' },
+      { name: 'Day', caption: 'Ημέρα' },
+    ],
+    values: [{ name: 'Amount' }],
+    showRowSubTotals: false,
   };
 
-  let fields: object = { text: 'text', value: 'value' };
-
-  let chartSources = [
-    { value: 'bills', text: 'Bills' },
-    { value: 'expenses', text: 'Expenses' },
-  ];
+  let gridSettings = {
+    allowTextWrap: true,
+  };
 
   let chartTypes = [
     { value: 'Pie', text: 'Pie' },
@@ -118,9 +228,20 @@ function UserCharts(this: React.ReactNode) {
     { value: 'Radar', text: 'Radar' },
   ];
 
+  let fields: object = { text: 'text', value: 'value' };
+
   let pivotObj: PivotViewComponent | undefined;
-  function ddlOnChange(args: any) {
+
+  let pdfExportProperties = {
+    fileName: 'ExpenseTrackerExport.pdf',
+  };
+
+  function changeChartType(args: any): void {
     pivotObj!.chartSettings.chartSeries!.type = args.value;
+  }
+
+  function exportOnClick(): void {
+    pivotObj!.pdfExport(pdfExportProperties, false, undefined, false, true);
   }
 
   return (
@@ -142,49 +263,47 @@ function UserCharts(this: React.ReactNode) {
             {t('returnToHome')}
           </p>
         </Link>
-        <div className="dropdown-control flex flex-col gap-4">
-          <h2>Chart:</h2>
-          <div className="flex flex-row gap-2">
-            <DropDownListComponent
-              floatLabelType={'Auto'}
-              fields={fields}
-              change={ddlOnChange.bind(this)}
-              id="charttypes"
-              index={0}
-              enabled={true}
-              dataSource={chartTypes}
-            />
-            <DropDownListComponent
-              floatLabelType={'Auto'}
-              fields={fields}
-              change={ddlOnChange.bind(this)}
-              id="charttypes"
-              index={0}
-              enabled={true}
-              dataSource={chartSources}
-            />
-            <DateRangePickerComponent
-              id="daterangepicker"
-              placeholder="Select a range"
-            />
-          </div>
-        </div>
+        <h2>{t('title')}</h2>
       </div>
-      <div className="container w-full flex justify-center">
-        <div>
-          <PivotViewComponent
-            height={350}
-            ref={(d: PivotViewComponent) =>
-              (pivotObj = d) as unknown as undefined
-            }
-            id="PivotView"
-            chartSettings={chartSettings}
-            displayOption={displayOption}
-            dataSourceSettings={dataSourceSettings}
-          >
-            <Inject services={[PivotChart]} />
-          </PivotViewComponent>
+      <div className="container w-full flex flex-col justify-center gap-2">
+        <div className="flex flex-row gap-2 grow flex-wrap md:flex-nowrap">
+          <DropDownListComponent
+            floatLabelType={'Auto'}
+            fields={fields}
+            change={changeChartType.bind(this)}
+            id="chartTypes"
+            index={0}
+            enabled={true}
+            dataSource={chartTypes}
+            width="100%"
+          />
+          <DateRangePickerComponent
+            // id="daterangepicker"
+            placeholder={t('chartsPlaceholder')}
+            start="Year"
+            format="MM/yyyy"
+            depth="Year"
+          />
         </div>
+        <PivotViewComponent
+          ref={(d: PivotViewComponent) => {
+            pivotObj = d;
+          }}
+          width="auto"
+          id="PivotView"
+          gridSettings={gridSettings}
+          chartSettings={chartSettings}
+          displayOption={displayOption}
+          dataSourceSettings={dataSourceSettings}
+          allowPdfExport={true}
+        >
+          <Inject services={[PivotChart, PDFExport]} />
+        </PivotViewComponent>
+      </div>
+      <div className="flex justify-center">
+        <button className="w-auto" onClick={exportOnClick.bind(this)}>
+          {t('export')}
+        </button>
       </div>
     </section>
   );

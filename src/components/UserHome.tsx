@@ -27,6 +27,7 @@ import '@/styles/SyncFusion.css';
 
 const UserHome = () => {
   const t = useTranslations('UserHome');
+  const te = useTranslations('UserBillsExpenses.Expenses');
   const locale = useLocale();
 
   if (locale.includes('el')) {
@@ -44,22 +45,67 @@ const UserHome = () => {
       amount: 100,
       date: new Date('1995-12-17T03:24:00'),
     },
+    {
+      id: 'sd',
+      issuer: 'dei',
+      amount: 1002,
+      date: new Date('1995-12-17T03:24:00'),
+    },
     { id: 'sd', issuer: 'dei', amount: 100, date: '23-10-2023' },
     { id: 'sd', issuer: 'dei', amount: 100, date: '23-10-2023' },
   ];
 
-  const accData = [
-    { x: 'Μεταφορικά', y: 3, text: 'Μεταφορικά: 3.23' },
-    { x: 'Τρόφιμα', y: 3.5, text: 'Τρόφιμα: 500' },
-    { x: 'Mar', y: 7, text: 'Δέκο: 7829' },
-    { x: 'Φόροι', y: 13.5, text: 'Φοροι: 13231' },
-    { x: 'Τηλεπικοινωνίες', y: 19, text: 'Τηλεπικοινωνίες: 19232' },
-    { x: 'Jun', y: 23.5, text: 'Jun: 23.5' },
-    { x: 'Jul', y: 26, text: 'Jul: 26' },
-    { x: 'Aug', y: 25, text: 'Aug: 25' },
-    { x: 'Sep', y: 21, text: 'Sep: 21' },
-    { x: 'Oct', y: 15, text: 'Oct: 15' },
+  const expensesPlaceholder = [
+    {
+      id: 'sds',
+      category: 'misc',
+      amount: '100',
+      date: new Date('2022-12-17T03:24:00'),
+      comments: 'asdasdasd',
+    },
   ];
+
+  const accData = [
+    { x: 'transportation', y: 3 },
+    { x: 'foodstuff', y: 3.5 },
+    { x: 'utilities', y: 7 },
+    { x: 'taxes', y: 13.5 },
+    { x: 'loans', y: 19 },
+    { x: 'leisure', y: 19 },
+    { x: 'misc', y: 19 },
+    { x: 'medical', y: 3 },
+    { x: 'electronics', y: 19 },
+    { x: 'telecoms', y: 19 },
+  ];
+
+  accData.map(
+    (
+      entry: { x: string; y: number; text?: string; fill?: string },
+      index: number
+    ) => {
+      entry.text = `${te(entry.x)}: ${entry.y}`;
+      entry.fill =
+        index === 0
+          ? '#7C00FE'
+          : index === 1
+          ? '#F9E400'
+          : index === 2
+          ? '#FFAF00'
+          : index === 3
+          ? '#F5004F'
+          : index === 4
+          ? '#36BA98'
+          : index === 5
+          ? '#CEDF9F'
+          : index === 6
+          ? '#AAB396'
+          : index === 7
+          ? '#0A6847'
+          : index === 8
+          ? '#C6A969'
+          : '#6CBEC7';
+    }
+  );
 
   const billsCols: { field: string; header: string }[] = [
     { field: 'issuer', header: t('billsTableHeaderIssuer') },
@@ -103,6 +149,7 @@ const UserHome = () => {
               allowAdding={false}
               allowDeleting={false}
               allowEditing={false}
+              limitResults={true}
             />
           </div>
         </div>
@@ -110,7 +157,7 @@ const UserHome = () => {
           <h2 className="dark:text-white">{t('expensesText')}</h2>
           <div className="w-full">
             <GridComponentFactory
-              data={billsPlaceholder}
+              data={expensesPlaceholder}
               cols={expensesCols}
               allowSorting={false}
               allowPaging={false}
@@ -121,31 +168,39 @@ const UserHome = () => {
               allowAdding={false}
               allowDeleting={false}
               allowEditing={false}
+              limitResults={true}
             />
           </div>
         </div>
-        <div className="w-auto flex justify-center lg:flex-grow">
-          <span className="e-badge e-badge-primary e-badge-pill size_3">
-            {t(
-              'expensesSoFarPill',
-              { amount: 20000 },
-              {
-                number: {
-                  currency: {
-                    style: 'currency',
-                    currency: `${locale.includes('el') ? 'EUR' : 'USD'}`,
-                  },
-                },
-              }
-            )}
-          </span>
-        </div>
         <div className="w-full h-[200px] md:h-[500px] min-[2000px]:h-[900px] m-auto lg:w-1/2">
-          <AccumulationChartComponent id="charts">
+          <AccumulationChartComponent
+            id="charts"
+            centerLabel={{
+              text: t(
+                'expensesSoFarPill',
+                { amount: 20000 },
+                {
+                  number: {
+                    currency: {
+                      style: 'currency',
+                      currency: `${locale.includes('el') ? 'EUR' : 'USD'}`,
+                    },
+                  },
+                }
+              ),
+              textStyle: {
+                fontWeight: '900',
+                size: '100%',
+                color: darkMode.value ? 'white' : 'black',
+                fontFamily: 'Comfortaa',
+              },
+            }}
+          >
             <Inject services={[AccumulationDataLabel]} />
             <AccumulationSeriesCollectionDirective>
               <AccumulationSeriesDirective
                 dataSource={accData}
+                pointColorMapping="fill"
                 xName="x"
                 yName="y"
                 innerRadius="40%"

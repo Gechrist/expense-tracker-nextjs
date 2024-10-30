@@ -18,6 +18,7 @@ import {
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import { useTranslations } from 'next-intl';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { DataManager, Query } from '@syncfusion/ej2/data';
 import { expenseFields, minDate, sortOrder } from '@/styles/utils/utils';
 import Image from 'next/image';
 import React from 'react';
@@ -35,6 +36,7 @@ const GridComponentFactory = ({
   allowAdding,
   allowDeleting,
   categoryAsDropdown,
+  limitResults,
 }: {
   data: Object;
   cols: { field: string; header: string }[];
@@ -48,6 +50,7 @@ const GridComponentFactory = ({
   allowEditing: boolean | undefined;
   allowAdding: boolean | undefined;
   categoryAsDropdown?: boolean;
+  limitResults?: Boolean;
 }) => {
   const editOptions: EditSettingsModel = {
     allowEditing: allowEditing,
@@ -72,6 +75,8 @@ const GridComponentFactory = ({
       }
     }
   };
+
+  const gridData = new DataManager(data).executeLocal(new Query().take(3));
 
   // google calendar alert
   const dateTime: { type: string; skeleton: string } = {
@@ -189,12 +194,15 @@ const GridComponentFactory = ({
       </div>
     );
   };
+  const gridExpenseCategoryTemplate = (props: any) => {
+    return `${te(props.category)}`;
+  };
 
   return (
     <div>
       <GridComponent
         dataBound={dataBound}
-        dataSource={data}
+        dataSource={limitResults ? gridData : data}
         allowTextWrap={true}
         allowSorting={allowSorting}
         allowPaging={allowPaging}
@@ -239,6 +247,8 @@ const GridComponentFactory = ({
                   ? checkBoxCalendarAlertTemplate
                   : col.field === 'category' && categoryAsDropdown
                   ? expensesDropDownTemplate
+                  :col.field === 'category' && !categoryAsDropdown
+                  ? gridExpenseCategoryTemplate
                   : col.field === 'calendarDate'
                   ? dateTimeTemplate
                   : false

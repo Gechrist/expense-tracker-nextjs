@@ -1,5 +1,6 @@
-/* font-family accumulation chart*/
-text[id^='charts_datalabel'] {
+/* font-family and colors pivot && accumulation chart*/
+text[id^='charts_datalabel'],
+text[id^='PivotView_chart'] {
   font-family: var(--comfortaa-font) !important;
 }
 
@@ -10,13 +11,19 @@ text[id^='charts_datalabel'] {
   padding: 10px !important;
 }
 
+.e-badge.size {
+  font-size: 100%;
+  padding: 10px 0 !important;
+}
+
 @media (min-width: 2000px) {
   padding: 20px !important;
 }
 
 /* dark theme */
 @media (prefers-color-scheme: dark) {
-  text[id^='charts_datalabel'] {
+  text[id^='charts_datalabel'],
+  text[id^='PivotView_chart'] {
     fill: #d3d3d3 !important;
   }
 
@@ -27,6 +34,9 @@ text[id^='charts_datalabel'] {
     background-color: rgb(2, 138, 199) !important;
   }
 
+  .e-date-range-container,
+  .e-footer,
+  .e-daterangepicker.e-popup .e-range-header,
   .e-dropdownbase .e-list-item,
   .e-dropdownbase .e-list-item.e-item-focus,
   .e-calendar,
@@ -35,12 +45,21 @@ text[id^='charts_datalabel'] {
     color: white !important;
   }
 
+  .e-daterangepicker.e-popup .e-calendar .e-header .e-title,
+  .e-bigger .e-daterangepicker .e-footer .e-btn,
+  .e-bigger .e-daterangepicker .e-footer .e-btn.e-apply,
+  .e-daterangepicker.e-popup .e-range-header .e-change-icon,
   .e-calendar .e-header .e-title,
   .e-bigger.e-small .e-calendar .e-header .e-title,
   .e-calendar .e-content span.e-day,
   .e-calendar .e-content span.e-day,
   .e-bigger.e-small .e-calendar .e-content span.e-day,
-  .e-bigger.e-small .e-calendar .e-content span.e-day {
+  .e-bigger.e-small .e-calendar .e-content span.e-day,
+  .e-daterangepicker.e-popup .e-range-header .e-day-span,
+  .e-daterangepicker.e-popup .e-range-header .e-start-label,
+  .e-daterangepicker.e-popup .e-range-header .e-end-label,
+  .e-bigger.e-small .e-daterangepicker.e-popup .e-range-header .e-start-label,
+  .e-bigger.e-small .e-daterangepicker.e-popup .e-range-header .e-end-label {
     color: white;
   }
 
@@ -53,6 +72,10 @@ text[id^='charts_datalabel'] {
     color: white;
   }
 
+  .e-daterangepicker.e-popup .e-calendar .e-header .e-title:hover {
+    color: rgb(2, 132, 199);
+  }
+
   .e-list-item {
     background-color: rgb(28, 27, 31) !important;
     color: white !important;
@@ -61,6 +84,7 @@ text[id^='charts_datalabel'] {
   .e-list-item.e-item-focus,
   .e-list-item.e-active,
   .e-list-item.e-active.e-hover,
+  .e-daterangepicker.e-popup .e-calendar .e-content .e-range-hover,
   .e-list-item.e-hover {
     background-color: rgb(2, 138, 199) !important;
   }
