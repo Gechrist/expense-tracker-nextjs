@@ -9,18 +9,32 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.3"
+    "@syncfusion/ej2": "^26.1.35",
+    "@syncfusion/ej2-react-base": "^26.1.35",
+    "@syncfusion/ej2-react-buttons": "^26.1.35",
+    "@syncfusion/ej2-react-calendars": "^26.1.35",
+    "@syncfusion/ej2-react-charts": "^26.1.35",
+    "@syncfusion/ej2-react-dropdowns": "^26.1.35",
+    "@syncfusion/ej2-react-grids": "^26.1.35",
+    "@syncfusion/ej2-react-inputs": "^26.1.35",
+    "@syncfusion/ej2-react-notifications": "^26.1.35",
+    "@syncfusion/ej2-react-pivotview": "^26.1.35",
+    "cldr-data": "^36.0.2",
+    "next": "^14.2.8",
+    "next-auth": "^4.24.7",
+    "next-intl": "^3.14.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "^14.2.8",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "typescript": "^5"
   }
 }

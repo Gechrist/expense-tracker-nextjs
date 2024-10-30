@@ -1,0 +1,63 @@
+{
+  "SignInButton": { "text": "Είσοδος" },
+  "SignOutButton": { "text": "Αποσύνδεση" },
+  "Home": {
+    "Bills": {
+      "name": "Λογαριασμοί",
+      "desc": "Καταχωρίστε λογαριασμούς και ορίστε αντίστοιχη ειδοποίηση στο Google Calendar."
+    },
+
+    "Charts": {
+      "name": "Διαγράμματα",
+      "desc": "Δείτε διαγράμματα που απεικονίζουν με σαφήνεια τις δαπάνες σας."
+    },
+    "Expenses": {
+      "name": "Δαπάνες",
+      "desc": "Καταγράψτε κάθε είδους δαπάνες εύκολα και γρήγορα ανά πάσα στιγμή."
+    }
+  },
+  "UserHome": {
+    "title": "Συνοπτικά",
+    "billsText": "Τελευταίοι Λογαριασμοί",
+    "expensesText": "Τελευταίες Δαπάνες",
+    "billsTableHeaderIssuer": "Εκδότης",
+    "tableHeaderAmount": "Ποσό",
+    "billsTableHeaderDate": "Ημ/νία Λήξης",
+    "expensesTableHeaderCategory": "Κατηγορία",
+    "expensesTableHeaderDate": "Ημ/νία Πληρωμής",
+    "expensesSoFarPill": "Δαπάνες αυτόν τον μήνα: {amount,number,currency}"
+  },
+  "UserBillsExpenses": {
+    "newBill": "Νέος λογαριασμός",
+    "newExpense": "Νέα δαπάνη",
+    "expenseTypePlaceholder": "Κατηγορία δαπάνης",
+    "inputBillIssuer": "Εκδότης:",
+    "inputAmount": "Ποσό:",
+    "inputPaymentDate": "Ημ/νία Πληρωμής:",
+    "inputDueDate": "Ημ/νία Λήξης:",
+    "setCalendarAlert": "Ορισμός ειδοποίησης στο Google Calendar;",
+    "setAlertButton": "Ορισμός ειδοποίησης",
+    "setTimeAndDateForAlert": "Ημέρα και ώρα ειδοποίησης στο Google Calendar",
+    "calendarDate": "Ειδοπ. Google Calendar",
+    "saveBill": "Αποθήκευση λογαριασμού",
+    "billPaidHeader": "Εξοφλήθηκε",
+    "saveExpense": "Αποθήκευση δαπάνης",
+    "comments": "Σχόλια",
+    "Expenses": {
+      "loans": "Δάνεια",
+      "leisure": "Αναψυχή/Διασκέδαση",
+      "misc": "Διάφορα",
+      "rent": "Ενοίκια/Μισθώσεις",
+      "medical": "Ιατρικά",
+      "electronics": "Ηλεκτρονικά είδη/Ηλεκτρικές Συσκευές",
+      "utilities": "Κοινής Ωφέλειας",
+      "transportation": "Μεταφορικά",
+      "telecoms": "Τηλεπικοινωνίες",
+      "foodstuff": "Τρόφιμα",
+      "taxes": "Φόροι"
+    },
+    "bills": "Λογαριασμοί",
+    "expenses": "Δαπάνες",
+    "returnToHome": "Επιστροφή στην αρχική"
+  }
+}

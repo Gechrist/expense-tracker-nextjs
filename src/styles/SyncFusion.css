@@ -1,0 +1,67 @@
+/* font-family accumulation chart*/
+text[id^='charts_datalabel'] {
+  font-family: var(--comfortaa-font) !important;
+}
+
+/* badge */
+.e-badge {
+  color: #fff !important;
+  line-height: 0 !important;
+  padding: 10px !important;
+}
+
+@media (min-width: 2000px) {
+  padding: 20px !important;
+}
+
+/* dark theme */
+@media (prefers-color-scheme: dark) {
+  text[id^='charts_datalabel'] {
+    fill: #d3d3d3 !important;
+  }
+
+  .e-dropdownbase .e-list-item.e-item-focus,
+  .e-dropdownbase .e-list-item.e-active,
+  .e-dropdownbase .e-list-item.e-active.e-hover,
+  .e-dropdownbase .e-list-item.e-hover {
+    background-color: rgb(2, 138, 199) !important;
+  }
+
+  .e-dropdownbase .e-list-item,
+  .e-dropdownbase .e-list-item.e-item-focus,
+  .e-calendar,
+  .e-datetimepicker.e-popup {
+    background: rgb(28, 27, 31) !important;
+    color: white !important;
+  }
+
+  .e-calendar .e-header .e-title,
+  .e-bigger.e-small .e-calendar .e-header .e-title,
+  .e-calendar .e-content span.e-day,
+  .e-calendar .e-content span.e-day,
+  .e-bigger.e-small .e-calendar .e-content span.e-day,
+  .e-bigger.e-small .e-calendar .e-content span.e-day {
+    color: white;
+  }
+
+  .e-calendar .e-content td:hover span.e-day,
+  .e-calendar .e-content td:focus span.e-day,
+  .e-bigger.e-small .e-calendar .e-content td:hover span.e-day,
+  .e-bigger.e-small .e-calendar .e-content td:focus span.e-day {
+    background-color: rgb(2, 132, 199);
+    border: 2px solid;
+    color: white;
+  }
+
+  .e-list-item {
+    background-color: rgb(28, 27, 31) !important;
+    color: white !important;
+  }
+
+  .e-list-item.e-item-focus,
+  .e-list-item.e-active,
+  .e-list-item.e-active.e-hover,
+  .e-list-item.e-hover {
+    background-color: rgb(2, 138, 199) !important;
+  }
+}

@@ -1,33 +1,71 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '@/styles/material3.css';
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-rgb: 242, 246, 253;
+  --button-background: 246, 242, 242;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-rgb: 38, 38, 38;
+    --button-background: 17, 24, 39;
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  margin: 0;
+  padding: 0;
+  height: 100dvh;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+body,
+select {
+  color: rgb(var(--foreground-rgb));
+  background-color: rgb(var(--background-rgb));
+}
+
+select,
+button {
+  border-radius: 0.2rem;
+  border-width: 1px;
+  border-color: #303f53;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
+}
+
+button {
+  line-height: normal;
+  text-align: center;
+}
+
+button:hover,
+select:hover {
+  color: rgb(var(--foreground-rgb));
+  background-color: rgb(var(--button-background));
+}
+
+button:active {
+  background-color: rgb(var(--background-rgb));
+}
+
+/* fix for firefox not inheriting font-family from select */
+option {
+  font-family: system-ui;
+}
+
+@layer base {
+  h1 {
+    @apply text-black font-extrabold uppercase text-center dark:text-white;
+  }
+  h2 {
+    @apply uppercase text-center text-black dark:text-white;
+  }
+  button {
+    @apply bg-sky-600 text-white p-2 min-[2000px]:p-4;
   }
 }
