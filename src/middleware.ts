@@ -1,7 +1,7 @@
 import { withAuth } from 'next-auth/middleware';
 import { NextRequest } from 'next/server';
-import createIntlMiddleware from 'next-intl/middleware';
 import { locales, localePrefix } from './localeConfig';
+import createIntlMiddleware from 'next-intl/middleware';
 
 const publicPages = ['/'];
 

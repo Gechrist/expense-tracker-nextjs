@@ -1,7 +1,11 @@
-/* font-family and colors pivot && accumulation chart*/
-text[id^='charts_datalabel'],
-text[id^='PivotView_chart'] {
-  font-family: var(--comfortaa-font) !important;
+/*white checkbox, page number */
+
+.e-pager .e-currentitem {
+  color: white !important;
+}
+
+.e-checkbox-wrapper .e-frame {
+  color: white !important;
 }
 
 /* badge */
@@ -34,12 +38,24 @@ text[id^='PivotView_chart'] {
     background-color: rgb(2, 138, 199) !important;
   }
 
+  .e-dropdownbase {
+    & [aria-expanded='true'] {
+      background: rgb(28, 27, 31) !important;
+      color: white !important;
+    }
+  }
+
+  .e-excel-menu,
+  .e-xlflmenu,
+  .e-dlg-content,
   .e-date-range-container,
   .e-footer,
   .e-daterangepicker.e-popup .e-range-header,
   .e-dropdownbase .e-list-item,
   .e-dropdownbase .e-list-item.e-item-focus,
   .e-calendar,
+  .e-menu-parent .e-ul,
+  .e-contextmenu-wrapper ul.e-contextmenu,
   .e-datetimepicker.e-popup {
     background: rgb(28, 27, 31) !important;
     color: white !important;
@@ -54,13 +70,17 @@ text[id^='PivotView_chart'] {
   .e-calendar .e-content span.e-day,
   .e-calendar .e-content span.e-day,
   .e-bigger.e-small .e-calendar .e-content span.e-day,
+  span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input,
+  span.e-label,
+  .e-xlfl-optr,
+  .e-dlg-header,
   .e-bigger.e-small .e-calendar .e-content span.e-day,
   .e-daterangepicker.e-popup .e-range-header .e-day-span,
   .e-daterangepicker.e-popup .e-range-header .e-start-label,
   .e-daterangepicker.e-popup .e-range-header .e-end-label,
   .e-bigger.e-small .e-daterangepicker.e-popup .e-range-header .e-start-label,
   .e-bigger.e-small .e-daterangepicker.e-popup .e-range-header .e-end-label {
-    color: white;
+    color: white !important;
   }
 
   .e-calendar .e-content td:hover span.e-day,
@@ -72,13 +92,44 @@ text[id^='PivotView_chart'] {
     color: white;
   }
 
-  .e-daterangepicker.e-popup .e-calendar .e-header .e-title:hover {
-    color: rgb(2, 132, 199);
+  .e-checkbox-wrapper .e-frame {
+    border-color: rgb(2, 132, 199) !important;
+  }
+
+  .e-contextmenu-wrapper ul.e-contextmenu {
+    border-color: rgb(28, 27, 31) !important;
+  }
+  .e-contextmenu-wrapper ul,
+  .e-contextmenu-container ul {
+    background: rgb(28, 27, 31) !important;
+    border-color: rgb(28, 27, 31) !important;
+  }
+
+  .e-contextmenu-wrapper ul .e-menu-item .e-caret::before,
+  .e-contextmenu-wrapper ul .e-menu-item.e-selected,
+  .e-contextmenu-wrapper ul.e-ul {
+    color: white !important;
+  }
+
+  .e-contextmenu-wrapper ul .e-menu-item.e-disabled {
+    color: #897d7d !important;
+  }
+
+  .e-radio + label:hover::before,
+  .e-checkbox-wrapper:hover .e-frame {
+    border-color: white !important;
+    color: white !important;
   }
 
   .e-list-item {
     background-color: rgb(28, 27, 31) !important;
     color: white !important;
+  }
+
+  .e-contextmenu-wrapper ul .e-menu-item.e-focused,
+  .e-contextmenu-container ul .e-menu-item.e-focused {
+    color: white !important;
+    background-color: rgb(2, 132, 199) !important;
   }
 
   .e-list-item.e-item-focus,

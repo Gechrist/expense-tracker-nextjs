@@ -11,6 +11,7 @@ import Link from 'next/link';
 const NavBar = () => {
   const { data: session, status } = useSession<boolean>();
   const pathName = usePathname();
+
   return (
     <nav
       className="w-full px-2 min-[2000px]:px-12 md:pt-2 lg:pt-8 h-[60px] min-[2000px]:h-[140px] flex flex-row justify-between

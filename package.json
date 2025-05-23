@@ -9,16 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@syncfusion/ej2": "^26.1.35",
-    "@syncfusion/ej2-react-base": "^26.1.35",
-    "@syncfusion/ej2-react-buttons": "^26.1.35",
-    "@syncfusion/ej2-react-calendars": "^26.1.35",
-    "@syncfusion/ej2-react-charts": "^26.1.35",
-    "@syncfusion/ej2-react-dropdowns": "^26.1.35",
-    "@syncfusion/ej2-react-grids": "^26.1.35",
-    "@syncfusion/ej2-react-inputs": "^26.1.35",
-    "@syncfusion/ej2-react-notifications": "^26.1.35",
-    "@syncfusion/ej2-react-pivotview": "^26.1.35",
+    "@syncfusion/ej2": "^29.1.33",
+    "@syncfusion/ej2-popups": "^29.2.4",
+    "@syncfusion/ej2-react-base": "^29.1.33",
+    "@syncfusion/ej2-react-buttons": "^29.1.33",
+    "@syncfusion/ej2-react-calendars": "^29.1.33",
+    "@syncfusion/ej2-react-charts": "^29.1.33",
+    "@syncfusion/ej2-react-dropdowns": "^29.1.33",
+    "@syncfusion/ej2-react-grids": "^29.1.33",
+    "@syncfusion/ej2-react-inputs": "^29.1.33",
+    "@syncfusion/ej2-react-notifications": "^29.1.33",
+    "@syncfusion/ej2-react-pivotview": "^29.1.33",
     "cldr-data": "^36.0.2",
     "next": "^14.2.8",
     "next-auth": "^4.24.7",
@@ -28,12 +29,15 @@
     "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {
+    "@prisma/client": "^6.8.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "^14.2.8",
+    "i": "^0.3.7",
     "postcss": "^8",
+    "prisma": "^6.8.2",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

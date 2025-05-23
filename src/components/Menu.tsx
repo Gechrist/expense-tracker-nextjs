@@ -12,7 +12,7 @@ const Menu = () => {
       {features.map((feature) => (
         <div
           key={`${feature}.name`}
-          className="w-auto h-full cursor-pointer hover:border-b-2 dark:active:bg-white active:bg-black border-black dark:border-white"
+          className="w-full rounded h-full cursor-pointer dark:active:bg-white active:bg-black"
         >
           <Link
             href={`/user/${feature.toLowerCase()}`}
@@ -31,7 +31,9 @@ const Menu = () => {
               width={80}
               height={80}
             />
-            <p className="hidden md:flex font-bold">{t(`${feature}.name`)}</p>
+            <p className="hidden md:flex font-bold hover:border-b-2  border-black dark:border-white">
+              {t(`${feature}.name`)}
+            </p>
           </Link>
         </div>
       ))}

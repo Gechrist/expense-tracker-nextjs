@@ -4,17 +4,25 @@
   "Home": {
     "Bills": {
       "name": "Λογαριασμοί",
-      "desc": "Καταχωρίστε λογαριασμούς και ορίστε αντίστοιχη ειδοποίηση στο Google Calendar."
+      "desc": "Καταχωρίστε λογαριασμούς και ορίστε υπενθύμιση πληρωμής στο Google Calendar."
     },
 
     "Charts": {
       "name": "Διαγράμματα",
-      "desc": "Δείτε διαγράμματα που απεικονίζουν με σαφήνεια τους λογαριασμούς και τις δαπάνες."
+      "desc": "Δείτε διαγράμματα που απεικονίζουν με σαφήνεια λογαριασμούς και δαπάνες."
     },
     "Expenses": {
       "name": "Δαπάνες",
       "desc": "Καταγράψτε κάθε είδους δαπάνες εύκολα και γρήγορα ανά πάσα στιγμή."
     }
+  },
+  "Error": {
+    "message": "ΠΑΡΟΥΣΙΑΣΤΗΚΕ ΕΝΑ ΣΦΑΛΜΑ",
+    "tryAgain": "Δοκιμάστε ξανά"
+  },
+  "NotFound": {
+    "notFound": "404 | H σελίδα δε βρέθηκε",
+    "returnToHome": "Επιστροφή στην αρχική"
   },
   "UserHome": {
     "title": "Συνοπτικά",
@@ -25,31 +33,54 @@
     "billsTableHeaderDate": "Ημ/νία Λήξης",
     "expensesTableHeaderCategory": "Κατηγορία",
     "expensesTableHeaderDate": "Ημ/νία Πληρωμής",
-    "expensesSoFarPill": "Δαπάνες μήνα: {amount,number,currency}"
+    "expensesSoFarPill": "Δαπάνες\u00A0μήνα: {amount,number,currency}"
   },
   "UserBillsExpenses": {
     "newBill": "Νέος λογαριασμός",
     "newExpense": "Νέα δαπάνη",
     "expenseTypePlaceholder": "Κατηγορία δαπάνης",
-    "inputBillIssuer": "Εκδότης:",
-    "inputAmount": "Ποσό:",
-    "inputPaymentDate": "Ημ/νία Πληρωμής:",
-    "inputDueDate": "Ημ/νία Λήξης:",
-    "setCalendarAlert": "Ορισμός ειδοποίησης στο Google Calendar;",
-    "setAlertButton": "Ορισμός ειδοποίησης",
-    "setTimeAndDateForAlert": "Ημέρα και ώρα ειδοποίησης στο Google Calendar",
-    "calendarDate": "Ειδοπ. Google Calendar",
+    "billIssuer": "Εκδότης",
+    "billAmount": "Ποσό",
+    "billPaymentDate": "Ημ/νία Εξόφλησης",
+    "billDueDate": "Ημ/νία Λήξης",
+    "errorRequiredMessage": "Αυτό το πεδίο είναι υποχρεωτικό",
+    "errorDateMessage": "Εισαγάγετε μια έγκυρη ημερομηνία και ώρα",
+    "setTimeAndDateForAlertPlaceholder": "Ειδοποίηση Google Calendar",
+    "googleCalendarDate": "Ειδοπ. Google Calendar",
     "saveBill": "Αποθήκευση λογαριασμού",
-    "billPaidHeader": "Εξοφλήθηκε",
     "saveExpense": "Αποθήκευση δαπάνης",
     "comments": "Σχόλια",
+    "equal": "Ίσo με",
+    "notEqual": "Μη ίσo με",
+    "null": "Κενό",
+    "notNull": "Μη κενό",
+    "startsWith": "Ξεκινάει με",
+    "endsWith": "Τελειώνει με",
+    "contains": "Περιέχει",
+    "greaterThan": "Μεγαλύτερο από",
+    "greaterThanOrEqual": "Μεγαλύτερο ή ίσο με",
+    "lessThan": "Λιγότερο από",
+    "lessThanOrEqual": "Λιγότερο ή ίσο με",
+    "laterThan": "Μεταγενέστερη από",
+    "laterThanOrEqual": "Μεταγενέστερη ή ίδια με",
+    "earlierThan": "Προγενέστερη από",
+    "earlierThanOrEqual": "Προγενέστερη ή ίδια με",
+    "toastSuccess": "Επιτυχία",
+    "toastError": "Σφάλμα",
+    "errorRetrieving": "Παρουσιάστηκε ένα σφάλμα",
+    "successCreate": "Η εγγραφή αποθηκεύτηκε επιτυχώς",
+    "successEdit": "Η εγγραφή επεξεργάστηκε επιτυχώς",
+    "successDelete": "Η εγγραφή διαγράφηκε επιτυχώς",
+    "failedCreate": "Παρουσιάστηκε ένα σφάλμα κατά την αποθήκευση της εγγραφής. Δοκιμάστε ξανά",
+    "failedEdit": "Παρουσιάστηκε ένα σφάλμα κατά την επεξεργασία της εγγραφής. Δοκιμάστε ξανά",
+    "failedDelete": "Παρουσιάστηκε ένα σφάλμα κατά τη διαγραφή της εγγραφής. Δοκιμάστε ξανά",
     "Expenses": {
       "loans": "Δάνεια",
       "leisure": "Αναψυχή/Διασκέδαση",
       "misc": "Διάφορα",
       "rent": "Ενοίκια/Μισθώσεις",
       "medical": "Ιατρικά",
-      "electronics": "Ηλεκτρονικά είδη/Ηλεκτρικές Συσκευές",
+      "electronics": "Ηλεκτρ. είδη/Ηλεκτρ. συσκευές",
       "utilities": "Κοινής Ωφέλειας",
       "transportation": "Μεταφορικά",
       "telecoms": "Τηλεπικοινωνίες",
@@ -67,7 +98,43 @@
     "expenses": "Δαπάνες",
     "title": "ΔΙΑΓΡΑΜΜΑΤΑ",
     "export": "Εξαγωγή PDF",
+    "month": "Μήνας",
+    "week": "Εβδομάδα",
+    "day": "Ημέρα",
+    "type": "Κατηγορία",
+    "billIssuerOrExpenseType": "Εκδότης λογαριασμού/Τύπος δαπάνης",
     "year": "Έτος",
-    "amount": "Ποσό"
+    "amount": "Ποσό",
+    "billsAndExpenses": "Λογαριασμοί/Δαπάνες",
+    "january": "Ιανουάριος",
+    "february": "Φεβουάριος",
+    "march": "Μάρτιος",
+    "april": "Απρίλιος",
+    "may": "Μάιος",
+    "june": "Ιούνιος",
+    "july": "Ιούλιος",
+    "august": "Αύγουστος",
+    "september": "Σεπτέμβριος",
+    "october": "Οκτώβριος",
+    "november": "Νοέμβριος",
+    "december": "Δεκέμβριος",
+    "monday": "Δευτέρα",
+    "tuesday": "Τρίτη",
+    "wednesday": "Τετάρτη",
+    "thursday": "Πέμπτη",
+    "friday": "Παρασκευή",
+    "saturday": "Σάββατο",
+    "sunday": "Κυριακή",
+    "pie": "Πίτα",
+    "doughnut": "Δακτύλιος",
+    "funnel": "Χωνί",
+    "line": "Γραμμές",
+    "column": "Στήλες",
+    "area": "Περιοχή",
+    "bar": "Ράβδοι",
+    "pareto": "Παρέτο",
+    "scatter": "Διασπορά",
+    "bubble": "Φυσαλίδα",
+    "polar": "Πολικό"
   }
 }

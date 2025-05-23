@@ -5,20 +5,31 @@ import {
   FormValidator,
   FormValidatorModel,
   TextAreaComponent,
+  TextBoxComponent,
 } from '@syncfusion/ej2-react-inputs';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import {
   DatePickerComponent,
   DateTimePickerComponent,
 } from '@syncfusion/ej2-react-calendars';
-import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import {
   L10n,
   loadCldr,
   setCulture,
   setCurrencyCode,
 } from '@syncfusion/ej2/base';
-import { expenseFields, minDate, sortOrder } from '@/styles/utils/utils';
+import {
+  SkeletonComponent,
+  ToastComponent,
+} from '@syncfusion/ej2-react-notifications';
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner,
+} from '@syncfusion/ej2-popups';
+import { expenseFields, getRecords, minDate, sortOrder } from '@/utils/utils';
+import { useEffect, useReducer, useRef, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
 import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
@@ -26,18 +37,21 @@ import currencies from '../../node_modules/cldr-data/main/el/currencies.json';
 import numberingSystems from '../../node_modules/cldr-data/supplemental/numberingSystems.json';
 import weekData from '../../node_modules/cldr-data/supplemental/weekData.json';
 import useDarkMode from 'use-dark-mode';
-import el from './elLocalization.json';
+import el from '../../messages/elLocalization.json';
 import React from 'react';
 import GridComponentFactory from './GridComponentFactory';
 import Link from 'next/link';
 import Image from 'next/image';
 import '@/styles/SyncFusion.css';
 
-const UserBills = ({ pathName }: { pathName: string }) => {
+let formObject: FormValidator;
+
+const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
   const t = useTranslations('UserBillsExpenses');
   const te = useTranslations('UserBillsExpenses.Expenses');
   const th = useTranslations('UserHome');
   const locale = useLocale();
+  const { data: session } = useSession<boolean>();
 
   if (locale.includes('el')) {
     loadCldr(
@@ -65,6 +79,192 @@ const UserBills = ({ pathName }: { pathName: string }) => {
   // check for dark mode
   const darkMode = useDarkMode(false);
 
+  //useRef to pass to child grid component
+  const childRef = useRef(null);
+
+  //spinner
+  const formRef = useRef<HTMLFormElement>(null);
+  //toast
+  const toastInstance = useRef<ToastComponent>(null);
+  let toasts = [
+    {
+      title: t('toastSuccess'),
+      content: t('successCreate'),
+      cssClass: 'e-toast-success',
+    },
+    {
+      title: t('toastError'),
+      content: t('failedCreate'),
+      cssClass: 'e-toast-warning',
+    },
+  ];
+
+  // state and dispatch for form inputs
+  const [state, dispatch] = useReducer(
+    (state: any, action: any) => {
+      switch (action.type) {
+        case 'update':
+          return { ...state, [action.field]: action.value };
+        default:
+          return state;
+      }
+    },
+    {
+      billIssuerOrExpenseType: '',
+      amount: 0,
+      dueDate: '',
+      paymentDate: '',
+      googleCalendarDate: '',
+      comments: '',
+    }
+  );
+
+  //update form values function
+  const update = (field: any) => (event: any) => {
+    dispatch({ type: 'update', field, value: event.value });
+  };
+
+  // form validation
+  let formValidatorRules: FormValidatorModel;
+  formValidatorRules = {
+    rules: {
+      ...(pathName.includes('bills') && {
+        dueDate: {
+          required: [true, t('errorRequiredMessage')],
+          regex: [
+            locale?.includes('el')
+              ? new RegExp(
+                  '^([1-9]|1[0-9]|2[0-9]|3[0-1])\\/([1-9]|1[0-2])\\/(19|20)\\d{2}(\\s([0-9]|1[0-2]):[0-5]\\d\\s[πμ].μ.)?$'
+                )
+              : new RegExp(
+                  '^([1-9]|1[0-2])\\/([1-9]|1[0-9]|2[0-9]|3[0-1])\\/(19|20)\\d{2}(\\s([0-9]|1[0-2]):[0-5]\\d\\s[AP]M)?$'
+                ),
+            t('errorDateMessage'),
+          ],
+        },
+      }),
+      ...(pathName.includes('bills') && {
+        googleCalendarDate: {
+          regex: [
+            locale?.includes('el')
+              ? new RegExp(
+                  '^([1-9]|1[0-9]|2[0-9]|3[0-1])\\/([1-9]|1[0-2])\\/(19|20)\\d{2}(\\s([0-9]|1[0-2]):[0-5]\\d\\s[πμ].μ.)?$'
+                )
+              : new RegExp(
+                  '^([1-9]|1[0-2])\\/([1-9]|1[0-9]|2[0-9]|3[0-1])\\/(19|20)\\d{2}(\\s([0-9]|1[0-2]):[0-5]\\d\\s[AP]M)?$'
+                ),
+            t('errorDateMessage'),
+          ],
+        },
+      }),
+      billIssuerOrExpenseType: { required: [true, t('errorRequiredMessage')] },
+      amount: { required: [true, t('errorRequiredMessage')] },
+      comments: { required: false },
+      paymentDate: {
+        required: [pathName!.includes('expenses'), t('errorRequiredMessage')],
+        regex: [
+          locale?.includes('el')
+            ? new RegExp(
+                '^$|([1-9]|1[0-9]|2[0-9]|3[0-1])\\/([1-9]|1[0-2])\\/(19|20)\\d{2}(\\s([0-9]|1[0-2]):[0-5]\\d\\s[πμ].μ.)?$'
+              )
+            : new RegExp(
+                '^$|([1-9]|1[0-2])\\/([1-9]|1[0-9]|2[0-9]|3[0-1])\\/(19|20)\\d{2}(\\s([0-9]|1[0-2]):[0-5]\\d\\s[AP]M)?$'
+              ),
+          t('errorDateMessage'),
+        ],
+      },
+    },
+  };
+
+  const abortController = new AbortController();
+  useEffect(() => {
+    createSpinner({ target: formRef.current as HTMLFormElement });
+    getData();
+
+    return () => abortController.abort();
+  }, []);
+
+  useEffect(() => {
+    formObject = new FormValidator('#form', formValidatorRules);
+  }, [formValidatorRules]);
+
+  const [records, setRecords] = useState({});
+  const getData = async (skip?: string, sort?: string, filter?: string) => {
+    let data = await getRecords(
+      session?.user?.email as string,
+      pathName.includes('bills') && locale.includes('en')
+        ? 'Bills'
+        : !pathName.includes('bills') && locale.includes('en')
+        ? 'Expenses'
+        : pathName.includes('bills') && locale.includes('el')
+        ? 'Λογαριασμοί'
+        : 'Δαπάνες',
+      'false',
+      'true',
+      'false',
+      'false',
+      'false',
+      skip ? skip : 'false',
+      sort ? sort : 'false',
+      filter ? filter : 'false'
+    );
+    if (data && typeof data !== 'string') {
+      setRecords((prevState: any) => {
+        return { ...prevState, ...data };
+      });
+    } else if (typeof data === 'string') {
+      toastInstance?.current?.show({
+        title: t('toastError'),
+        content: t('errorRetrieving'),
+        cssClass: 'e-toast-warning',
+      });
+    }
+  };
+
+  const saveRecord = async (e: React.FormEvent) => {
+    e.preventDefault();
+    showSpinner(formRef.current as HTMLFormElement);
+    if (!formObject.validate()) {
+      return;
+    }
+    let formData: FormData = new FormData(e.target as HTMLFormElement);
+    formData.append('createdBy', `${session!.user!.email}`);
+    formData.append(
+      'type',
+      `${
+        pathName.includes('bills') && locale.includes('en')
+          ? 'Bills'
+          : !pathName.includes('bills') && locale.includes('en')
+          ? 'Expenses'
+          : pathName.includes('bills') && locale.includes('el')
+          ? 'Λογαριασμοί'
+          : 'Δαπάνες'
+      }`
+    );
+    try {
+      const response = await fetch('/api/saveRecord', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(7000),
+        body: JSON.stringify(Object.fromEntries(formData.entries())),
+      });
+      const json = await response.json();
+      hideSpinner(formRef.current as HTMLFormElement);
+      if (json.error || typeof json == 'string') {
+        toastInstance.current?.show(toasts[1]);
+      } else {
+        toastInstance.current?.show(toasts[0]);
+      }
+      getData();
+    } catch (err: any) {
+      hideSpinner(formRef.current as HTMLFormElement);
+      console.error('Error:', err.message);
+      toastInstance.current?.show(toasts[1]);
+    }
+  };
+
   // value and item template for dropdownlist
 
   const selectedDropdownIconTemplate = (props: any) => {
@@ -72,27 +272,31 @@ const UserBills = ({ pathName }: { pathName: string }) => {
       <div className="flex flex-row gap-3 items-center ml-2">
         <Image
           src={
-            props.Id === 'misc'
+            props.Id === 'Miscellaneous' || props.Id === 'Διάφορα'
               ? '/miscellaneous-icon.svg'
-              : props.Id === 'taxes'
+              : props.Id === 'Taxes' || props.Id === 'Φόροι'
               ? '/tax-icon.svg'
-              : props.Id === 'transportation'
+              : props.Id === 'Transportation' || props.Id === 'Μεταφορικά'
               ? '/transportation-icon.svg'
-              : props.Id === 'medical'
+              : props.Id === 'Medical' || props.Id === 'Ιατρικά'
               ? '/medical-icon.svg'
-              : props.Id === 'utilities'
+              : props.Id === 'Utilities' || props.Id === 'Κοινής Ωφέλειας'
               ? '/utilities-icon.svg'
-              : props.Id === 'leisure'
+              : props.Id === 'Leisure' || props.Id === 'Αναψυχή/Διασκέδαση'
               ? '/leisure-icon.svg'
-              : props.Id === 'foodstuff'
+              : props.Id === 'Foodstuffs' || props.Id === 'Τρόφιμα'
               ? '/foodstuff-icon.svg'
-              : props.Id === 'electronics'
+              : props.Id === 'Electronics/Appliances' ||
+                props.Id === 'Ηλεκτρ. είδη/Ηλεκτρ. συσκευές'
               ? '/electronics-icon.svg'
-              : props.Id === 'telecoms'
+              : props.Id === 'Telecommunications' ||
+                props.Id === 'Τηλεπικοινωνίες'
               ? '/telecoms-icon.svg'
-              : props.Id === 'rent'
+              : props.Id === 'Rent/Leasing' || props.Id === 'Ενοίκια/Μισθώσεις'
               ? '/rent-icon.svg'
-              : '/loans-icon.svg'
+              : props.Id === 'Loans' || props.Id === 'Δάνεια'
+              ? '/loans-icon.svg'
+              : '/no-category-icon.svg'
           }
           alt="expense type icon"
           width={22}
@@ -104,75 +308,44 @@ const UserBills = ({ pathName }: { pathName: string }) => {
   };
 
   const expenseTypes: { Type: string; Id: string }[] = [
-    { Type: te('taxes'), Id: 'taxes' },
+    { Type: te('taxes'), Id: te('taxes') },
     {
       Type: te('transportation'),
 
-      Id: 'transportation',
+      Id: te('transportation'),
     },
-    { Type: te('misc'), Id: 'misc' },
-    { Type: te('medical'), Id: 'medical' },
-    { Type: te('utilities'), Id: 'utilities' },
-    { Type: te('leisure'), Id: 'leisure' },
-    { Type: te('foodstuff'), Id: 'foodstuff' },
-    { Type: te('electronics'), Id: 'electronics' },
-    { Type: te('telecoms'), Id: 'telecoms' },
-    { Type: te('rent'), Id: 'rent' },
-    { Type: te('loans'), Id: 'loans' },
+    { Type: te('misc'), Id: te('misc') },
+    { Type: te('medical'), Id: te('medical') },
+    { Type: te('utilities'), Id: te('utilities') },
+    { Type: te('leisure'), Id: te('leisure') },
+    { Type: te('foodstuff'), Id: te('foodstuff') },
+    { Type: te('electronics'), Id: te('electronics') },
+    { Type: te('telecoms'), Id: te('telecoms') },
+    { Type: te('rent'), Id: te('rent') },
+    { Type: te('loans'), Id: te('loans') },
   ] as const;
 
   const billsCols: { field: string; header: string }[] = [
     { field: 'id', header: 'id' },
-    { field: 'issuer', header: th('billsTableHeaderIssuer') },
+    { field: 'type', header: 'type' },
+    { field: 'billIssuerOrExpenseType', header: th('billsTableHeaderIssuer') },
     { field: 'amount', header: th('tableHeaderAmount') },
-    { field: 'paidBill', header: t('billPaidHeader') },
     { field: 'comments', header: t('comments') },
-    { field: 'date', header: th('billsTableHeaderDate') },
-    { field: 'calendarAlert', header: 'Google Calendar' },
-    { field: 'calendarDate', header: t('calendarDate') },
-  ];
-
-  const billsPlaceholder = [
-    {
-      id: 'sd',
-      issuer: 'dei',
-      amount: 100,
-      date: new Date('1995-12-17T03:24:00'),
-    },
-    {
-      id: 'sd',
-      issuer: 'dei',
-      amount: 110,
-      date: new Date('2002-12-17T03:24:00'),
-      paidBill: true,
-      calendarAlert: true,
-      calendarDate: new Date('1995-12-17T03:24:00'),
-      comments: 'sdsdsdsds',
-    },
-    {
-      id: 'sd',
-      issuer: 'dei',
-      amount: 100,
-      date: new Date('1995-12-17T03:24:00'),
-    },
-  ];
-
-  const expensesPlaceholder = [
-    {
-      id: 'sds',
-      category: 'misc',
-      amount: '100',
-      date: new Date('2022-12-17T03:24:00'),
-      comments: 'asdasdasd',
-    },
+    { field: 'dueDate', header: t('billDueDate') },
+    { field: 'paymentDate', header: t('billPaymentDate') },
+    { field: 'googleCalendarDate', header: t('googleCalendarDate') },
   ];
 
   const expensesCols: { field: string; header: string }[] = [
     { field: 'id', header: 'id' },
-    { field: 'category', header: th('expensesTableHeaderCategory') },
+    { field: 'type', header: 'type' },
+    {
+      field: 'billIssuerOrExpenseType',
+      header: th('expensesTableHeaderCategory'),
+    },
     { field: 'amount', header: th('tableHeaderAmount') },
     { field: 'comments', header: t('comments') },
-    { field: 'date', header: th('expensesTableHeaderDate') },
+    { field: 'paymentDate', header: th('expensesTableHeaderDate') },
   ];
 
   return (
@@ -181,6 +354,10 @@ const UserBills = ({ pathName }: { pathName: string }) => {
         darkMode.value ? 'e-dark-mode' : ''
       }`}
     >
+      <ToastComponent
+        ref={toastInstance}
+        position={{ X: 'Center', Y: 'Top' }}
+      />
       <div className="w-full grid grid-cols-3 mx-auto my-0 items-center">
         <Link href="/user" className="flex flex-row gap-2">
           <Image
@@ -199,136 +376,236 @@ const UserBills = ({ pathName }: { pathName: string }) => {
         }`}</h1>
       </div>
       {pathName!.includes('bills') ? (
-        <div className="w-full flex justify-center items-center gap-4 flex-wrap">
-          <div className="w-full lg:w-1/4">
-            <input
-              className="e-input"
-              type="text"
-              placeholder={t('inputBillIssuer')}
-            />
-          </div>
-          <div className="w-full lg:w-1/4">
-            <NumericTextBoxComponent
-              value={0}
-              min={0}
-              format="c2"
-              validateDecimalOnType={true}
-              decimals={2}
-            />
-          </div>
-          <div className="w-full lg:w-1/4">
-            <DatePickerComponent
-              id="datepicker"
-              placeholder={t('inputDueDate')}
-              min={minDate}
-            />
-          </div>
-          <div className="w-full lg:w-1/4">
-            <CheckBoxComponent label={t('billPaidHeader')} />
-          </div>
-          <div className="w-full lg:w-1/4">
-            <CheckBoxComponent label={t('setCalendarAlert')} />
-          </div>
-          <div className="w-full lg:w-1/4">
-            <DateTimePickerComponent
-              id="datetimepicker"
-              placeholder={t('setTimeAndDateForAlert')}
-              min={minDate}
-              step={60}
-            />
-          </div>
-          <div className="w-full lg:w-1/4">
-            <TextAreaComponent
-              id="default"
-              placeholder={t('comments')}
-              maxLength={200}
-            ></TextAreaComponent>
-          </div>
+        <div>
+          <form
+            ref={formRef}
+            id="form"
+            className="flex flex-col justify-center gap-3"
+            method="POST"
+            onSubmit={(e) => saveRecord(e)}
+          >
+            <div className="w-full flex justify-center items-center gap-6 flex-wrap">
+              <div className="w-full lg:w-1/4">
+                <TextBoxComponent
+                  type="text"
+                  name="billIssuerOrExpenseType"
+                  value={state.billIssuerOrExpenseType}
+                  change={update('billIssuerOrExpenseType')}
+                  placeholder={t('billIssuer')}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForBillIssuerOrExpenseType"
+                />
+                <div id="errorForBillIssuerOrExpenseType" />
+              </div>
+              <div className="w-full lg:w-1/4">
+                <NumericTextBoxComponent
+                  min={0}
+                  format="c2"
+                  name="amount"
+                  value={state.amount}
+                  change={update('amount')}
+                  validateDecimalOnType={true}
+                  decimals={2}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForAmount"
+                />
+                <div id="errorForAmount" />
+              </div>
+              <div className="w-full lg:w-1/4">
+                <DatePickerComponent
+                  id="datepicker"
+                  name="dueDate"
+                  value={state.dueDate}
+                  change={update('dueDate')}
+                  placeholder={t('billDueDate')}
+                  min={minDate}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForDueDate"
+                />
+                <div id="errorForDueDate" />
+              </div>
+              <div className="w-full lg:w-1/4">
+                <DatePickerComponent
+                  id="datepicker"
+                  placeholder={t('billPaymentDate')}
+                  min={minDate}
+                  name="paymentDate"
+                  value={state.paymentDate}
+                  change={update('paymentDate')}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForPaymentDate"
+                />
+                <div id="errorForPaymentDate" />
+              </div>
+              <div className="w-full lg:w-1/4">
+                <DateTimePickerComponent
+                  id="datetimepicker"
+                  placeholder={t('setTimeAndDateForAlertPlaceholder')}
+                  name="googleCalendarDate"
+                  value={state.googleCalendarDate}
+                  change={update('googleCalendarDate')}
+                  min={minDate}
+                  step={60}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForGoogleCalenderDate"
+                />
+                <div id="errorForGoogleCalenderDate" />
+              </div>
+              <div className="w-full lg:w-1/4">
+                <TextAreaComponent
+                  id="default"
+                  placeholder={t('comments')}
+                  name="comments"
+                  value={state.comments}
+                  change={update('comments')}
+                  maxLength={200}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForComments"
+                ></TextAreaComponent>
+                <div id="errorForComments" />
+              </div>
+            </div>
+            <div className="w-full flex justify-center">
+              <button type="submit">{`${t('saveBill')}`}</button>
+            </div>
+          </form>
         </div>
       ) : (
-        <div className="w-full flex justify-center items-center gap-4 flex-wrap">
-          <div className="w-full lg:w-1/4">
-            <DropDownListComponent
-              id="ddlelement"
-              dataSource={expenseTypes}
-              sortOrder={sortOrder}
-              valueTemplate={selectedDropdownIconTemplate}
-              itemTemplate={selectedDropdownIconTemplate}
-              fields={expenseFields}
-              placeholder={t('expenseTypePlaceholder')}
-            />
-          </div>
+        <div>
+          <form
+            className="flex flex-col justify-center gap-3"
+            ref={formRef}
+            id="form"
+            method="POST"
+            onSubmit={(e) => saveRecord(e)}
+          >
+            <div className="w-full flex justify-center items-center gap-6 flex-wrap">
+              <div className="w-full lg:w-1/3 flex-grow">
+                <DropDownListComponent
+                  id="ddlelement"
+                  dataSource={expenseTypes}
+                  sortOrder={sortOrder}
+                  itemTemplate={selectedDropdownIconTemplate}
+                  valueTemplate={selectedDropdownIconTemplate}
+                  name="billIssuerOrExpenseType"
+                  value={state.billIssuerOrExpenseType}
+                  change={update('billIssuerOrExpenseType')}
+                  fields={expenseFields}
+                  placeholder={t('expenseTypePlaceholder')}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForBillIssuerOrExpenseType"
+                />
+                <div id="errorForBillIssuerOrExpenseType" />
+              </div>
 
-          <div className="w-full lg:w-1/4">
-            <NumericTextBoxComponent
-              value={0}
-              min={0}
-              format="c2"
-              validateDecimalOnType={true}
-              decimals={2}
-            />
-          </div>
-          <div className="w-full lg:w-1/4">
-            {' '}
-            <DatePickerComponent
-              id="datepicker"
-              placeholder={th('expensesTableHeaderDate')}
-              min={minDate}
-            />
-          </div>
+              <div className="w-full lg:w-1/3 flex-grow">
+                <NumericTextBoxComponent
+                  min={0}
+                  name="amount"
+                  value={state.amount}
+                  change={update('amount')}
+                  format="c2"
+                  validateDecimalOnType={true}
+                  decimals={2}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForAmount"
+                />
+                <div id="errorForAmount" />
+              </div>
+              <div className="w-full lg:w-1/3 flex-grow">
+                <DatePickerComponent
+                  id="datepicker"
+                  placeholder={th('expensesTableHeaderDate')}
+                  min={minDate}
+                  name="paymentDate"
+                  value={state.paymentDate}
+                  change={update('paymentDate')}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForPaymentDate"
+                />
+                <div id="errorForPaymentDate" />
+              </div>
 
-          <div className="w-full lg:w-1/4">
-            <TextAreaComponent
-              id="default"
-              placeholder={t('comments')}
-              maxLength={200}
-            ></TextAreaComponent>
-          </div>
+              <div className="w-full lg:w-1/3 flex-grow">
+                <TextAreaComponent
+                  id="default"
+                  placeholder={t('comments')}
+                  name="comments"
+                  value={state.comments}
+                  change={update('comments')}
+                  maxLength={200}
+                  floatLabelType="Auto"
+                  data-msg-containerid="errorForComments"
+                ></TextAreaComponent>
+                <div id="errorForComments" />
+              </div>
+            </div>
+            <div className="w-full flex justify-center">
+              <button type="submit">{`${t('saveExpense')}`}</button>
+            </div>
+          </form>
         </div>
       )}
-      <div>
-        <button>{`${
-          pathName!.includes('bills') ? t('saveBill') : t('saveExpense')
-        }`}</button>
-      </div>
       {pathName!.includes('bills') ? (
         <div className="w-full">
           <h2 className="mb-2">{t('bills')}</h2>
-          <GridComponentFactory
-            data={billsPlaceholder}
-            cols={billsCols}
-            allowSorting={true}
-            allowPaging={true}
-            allowResizing={true}
-            allowFiltering={true}
-            allowReordering={true}
-            allowGrouping={true}
-            allowAdding={false}
-            allowDeleting={true}
-            allowEditing={true}
-          />
+          {
+            //@ts-ignore
+            records.result ? (
+              <GridComponentFactory
+                ref={childRef}
+                data={records}
+                cols={billsCols}
+                allowSorting={true}
+                allowPaging={true}
+                allowResizing={true}
+                allowFiltering={true}
+                allowReordering={true}
+                allowGrouping={false}
+                allowAdding={false}
+                allowDeleting={true}
+                allowEditing={true}
+                useToolbar={true}
+                locale={locale}
+                updateRecords={getData}
+              />
+            ) : (
+              <SkeletonComponent height={100} width="100%" />
+            )
+          }
         </div>
       ) : (
         <div className="w-full">
           <h2 className="mb-2">{t('expenses')}</h2>
-          <GridComponentFactory
-            data={expensesPlaceholder}
-            cols={expensesCols}
-            allowSorting={true}
-            allowPaging={true}
-            allowResizing={true}
-            allowFiltering={true}
-            allowReordering={true}
-            allowGrouping={true}
-            allowAdding={false}
-            allowDeleting={true}
-            allowEditing={true}
-            categoryAsDropdown={true}
-          />
+          {
+            //@ts-ignore
+            records.result ? (
+              <GridComponentFactory
+                ref={childRef}
+                data={records}
+                cols={expensesCols}
+                allowSorting={true}
+                allowPaging={true}
+                allowResizing={true}
+                allowFiltering={true}
+                allowReordering={true}
+                allowGrouping={false}
+                allowAdding={false}
+                allowDeleting={true}
+                allowEditing={true}
+                billIssuerOrExpenseTypeAsDropdown={true}
+                useToolbar={true}
+                locale={locale}
+                updateRecords={getData}
+              />
+            ) : (
+              <SkeletonComponent height={100} width="100%" />
+            )
+          }
         </div>
       )}
     </section>
   );
 };
 
-export default UserBills;
+export default UserBillsExpenses;

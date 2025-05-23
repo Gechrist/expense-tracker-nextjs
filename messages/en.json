@@ -4,7 +4,7 @@
   "Home": {
     "Bills": {
       "name": "Bills",
-      "desc": "Input bills and set a corresponding alert in Google Calendar."
+      "desc": "Input bills and set a reminding event in Google Calendar."
     },
 
     "Charts": {
@@ -16,6 +16,14 @@
       "desc": "Record all kind of expenses, quickly and easily at any time."
     }
   },
+  "Error": {
+    "message": "Something went wrong",
+    "tryAgain": "Try again"
+  },
+  "NotFound": {
+    "notFound": "404 | The requested page was not found",
+    "returnToHome": "Return to Home"
+  },
   "UserHome": {
     "title": "Overview",
     "billsText": "Your Latest Bills",
@@ -24,25 +32,48 @@
     "tableHeaderAmount": "Amount",
     "billsTableHeaderDate": "Due Date",
     "expensesTableHeaderCategory": "Category",
-    "expensesTableHeaderDate": "Date",
-    "expensesSoFarPill": "Monthly expenses: {amount,number, currency}"
+    "expensesTableHeaderDate": "Expense Date",
+    "expensesSoFarPill": "Monthly\u00A0Expenses: {amount,number, currency}"
   },
   "UserBillsExpenses": {
     "newBill": "New Bill",
     "newExpense": "New Expense",
     "expenseTypePlaceholder": "Expense Category",
-    "inputBillIssuer": "Issuer:",
-    "inputAmount": "Amount:",
-    "inputDueDate": "Due Date:",
-    "inputPaymentDate": "Payment Date:",
-    "setCalendarAlert": "Set Google Calendar Alert?",
-    "calendarDate": "Google Calendar Alert",
-    "setAlertButton": "Set Alert",
-    "setTimeAndDateForAlert": "Time and Date for Google Calendar Alert",
-    "billPaidHeader": "Paid",
+    "billIssuer": "Issuer",
+    "billAmount": "Amount",
+    "billDueDate": "Due Date",
+    "billPaymentDate": "Payment Date",
+    "errorRequiredMessage": "This field is required.",
+    "errorDateMessage": "Enter a valid date and time",
+    "setTimeAndDateForAlertPlaceholder": "Google Calendar Alert",
+    "googleCalendarDate": "Google Calendar Alert",
     "saveBill": "Save Bill",
     "saveExpense": "Save Expense",
     "comments": "Comments",
+    "equal": "Equal",
+    "notEqual": "Not Equal",
+    "null": "Null",
+    "notNull": "Not null",
+    "startsWith": "Starts with",
+    "endsWith": "Ends with",
+    "contains": "Contains",
+    "greaterThan": "Greater than",
+    "greaterThanOrEqual": "Greater than, or equal",
+    "lessThan": "Less than",
+    "lessThanOrEqual": "Less than, or equal",
+    "laterThan": "Later than",
+    "laterThanOrEqual": "Later than, or equal",
+    "earlierThan": "Before than",
+    "earlierThanOrEqual": "Before than, or equal",
+    "toastSuccess": "Success",
+    "toastError": "Error",
+    "errorRetrieving": "Something went wrong",
+    "successCreate": "The record was created succesfully",
+    "successEdit": "The record was edited succesfully",
+    "successDelete": "The record was deleted succesfully",
+    "failedCreate": "There was an error saving this record. Please try again.",
+    "failedEdit": "There was an error editing this record. Please try again.",
+    "failedDelete": "There was an error deleting this record. Please try again.",
     "Expenses": {
       "electronics": "Electronics/Appliances",
       "foodstuff": "Foodstuffs",
@@ -67,7 +98,43 @@
     "expenses": "Expenses",
     "title": "CHARTS",
     "export": "Export PDF",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "type": "Category",
+    "billIssuerOrExpenseType": "BIll Issuer/Expense Type",
     "year": "Year",
-    "amount": "Amount"
+    "amount": "Bills/Expenses",
+    "billsAndExpenses": "Bills/Expenses",
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "pie": "Pie",
+    "doughnut": "Doughnut",
+    "funnel": "Funnel",
+    "line": "Line",
+    "column": "Column",
+    "area": "Area",
+    "bar": "Bar",
+    "pareto": "Pareto",
+    "scatter": "Scatter",
+    "bubble": "Bubble",
+    "polar": "Polar"
   }
 }

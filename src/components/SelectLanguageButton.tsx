@@ -13,7 +13,7 @@ import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.js
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
 import currencies from '../../node_modules/cldr-data/main/el/currencies.json';
 import numberingSystems from '../../node_modules/cldr-data/supplemental/numberingSystems.json';
-import el from './elLocalization.json';
+import el from '../../messages/elLocalization.json';
 
 const SelectLanguageButton = () => {
   const locale = useLocale();

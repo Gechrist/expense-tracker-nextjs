@@ -1,13 +1,17 @@
 'use client';
-import Error from 'next/error';
-import React from 'react';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
-const NotFound = () => (
-  <html lang="en">
-    <body>
-      <Error statusCode={404} />
-    </body>
-  </html>
-);
+const NotFound = () => {
+  const t = useTranslations('NotFound');
+  return (
+    <div className="w-full h-[80%] flex flex-col space-y-8 items-center justify-center">
+      <h2>{t('notFound')}</h2>
+      <button>
+        <Link href="/">{t('returnToHome')}</Link>
+      </button>
+    </div>
+  );
+};
 
-export default NotFound
+export default NotFound;

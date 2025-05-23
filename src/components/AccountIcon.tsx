@@ -2,10 +2,10 @@
 import { useTranslations } from 'next-intl';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import { Session } from 'next-auth';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { Session } from 'next-auth';
 
 const SignOutButton = dynamic(() => import('./SignOutButton'));
 

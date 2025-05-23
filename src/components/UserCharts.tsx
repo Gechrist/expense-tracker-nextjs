@@ -1,17 +1,27 @@
 import {
   IDataOptions,
-  IDataSet,
   PivotViewComponent,
   Inject,
   DisplayOption,
   PivotChart,
   PDFExport,
+  FieldList,
 } from '@syncfusion/ej2-react-pivotview';
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2/base';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
+import {
+  DropDownListComponent,
+  VirtualScroll,
+} from '@syncfusion/ej2-react-dropdowns';
 import { DateRangePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { ChartSettings } from '@syncfusion/ej2-pivotview/src/pivotview/model/chartsettings';
 import { useTranslations, useLocale } from 'next-intl';
+import { getRecords, sortOrder } from '@/utils/utils';
+import { useState, useEffect, useRef } from 'react';
+import {
+  SkeletonComponent,
+  ToastComponent,
+} from '@syncfusion/ej2-react-notifications';
+import { useSession } from 'next-auth/react';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
 import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
@@ -19,15 +29,18 @@ import currencies from '../../node_modules/cldr-data/main/el/currencies.json';
 import numberingSystems from '../../node_modules/cldr-data/supplemental/numberingSystems.json';
 import weekData from '../../node_modules/cldr-data/supplemental/weekData.json';
 import useDarkMode from 'use-dark-mode';
-import el from './elLocalization.json';
+import el from '../../messages/elLocalization.json';
 import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import '@/styles/SyncFusion.css';
 
-function UserCharts(this: React.ReactNode) {
+const UserCharts = (): React.ReactNode => {
   const locale = useLocale();
   const t = useTranslations('UserCharts');
+  const te = useTranslations('UserBillsExpenses');
+  const { data: session } = useSession<boolean>();
+  const [records, setRecords] = useState<any>({});
 
   if (locale.includes('el')) {
     loadCldr(
@@ -42,6 +55,9 @@ function UserCharts(this: React.ReactNode) {
     setCulture('el');
   }
 
+  //toast notification
+  const toastInstance = useRef<ToastComponent>(null);
+
   // check for dark mode
   const darkMode = useDarkMode(false);
 
@@ -53,12 +69,36 @@ function UserCharts(this: React.ReactNode) {
   } as DisplayOption;
 
   let chartSettings: ChartSettings = {
-    chartSeries: { type: 'Bar' },
-    primaryXAxis: { title: t('year') },
-    primaryYAxis: { title: t('amount') },
+    chartSeries: {
+      type: 'Bar',
+      dataLabel: { position: 'Inside', font: { fontFamily: 'comfortaa' } },
+    },
+    primaryXAxis: {
+      title: t('billsAndExpenses'),
+      titleStyle: {
+        fontWeight: 'Bold',
+        textOverflow: 'None',
+        fontFamily: 'comfortaa',
+      },
+      labelStyle: { fontWeight: 'Bold', fontFamily: 'comfortaa' },
+    },
+    primaryYAxis: {
+      title: t('amount'),
+      titleStyle: { fontWeight: 'Bold', fontFamily: 'comfortaa' },
+      labelStyle: { fontWeight: 'Bold', fontFamily: 'comfortaa' },
+    },
+    legendSettings: {
+      textStyle: { fontFamily: 'comfortaa' },
+    },
     zoomSettings: {
       enableMouseWheelZooming: true,
       enablePinchZooming: true,
+    },
+    tooltip: {
+      textStyle: { fontFamily: 'comfortaa' },
+    },
+    multiLevelLabelRender: function (args: any) {
+      args.textStyle.fontFamily = 'comfortaa';
     },
     palettes: [
       '#7C00FE',
@@ -75,156 +115,62 @@ function UserCharts(this: React.ReactNode) {
     ],
   } as ChartSettings;
 
-  let testData: IDataSet[] = [
-    {
-      Type: 'expense',
-      Amount: 383,
-      Category: 'misc',
-      Day: 'Monday',
-      Year: '2015',
-      Month: 'January',
-    },
-    {
-      Type: 'Bill',
-      Amount: 183,
-      Category: 'dei',
-      Day: 'Monday',
-      Year: '2017',
-      Month: 'May',
-    },
-    {
-      Type: 'Bill',
-      Amount: 83,
-      Category: 'nero',
-      Day: 'Monday',
-      Year: '2015',
-      Month: 'January',
-    },
-    {
-      Type: 'Bill',
-      Amount: 231,
-      Category: 'zenith',
-      Day: 'Tuesday',
-      Year: '2016',
-      Month: 'January',
-    },
-    {
-      Type: 'Bill',
-      Amount: 45,
-      Category: 'dei',
-      Day: 'Monday',
-      Year: '2016',
-      Month: 'November',
-    },
-    {
-      Type: 'expense',
-      Amount: 2233,
-      Category: 'foodstuff',
-      Day: 'Tuesday',
-      Year: '2015',
-      Month: 'January',
-    },
-    {
-      Type: 'expense',
-      Amount: 232,
-      Category: 'misc',
-      Day: 'Sunday',
-      Year: '2015',
-      Month: 'January',
-    },
-    {
-      Type: 'expense',
-      Amount: 177,
-      Category: 'leisure',
-      Day: 'Saturday',
-      Year: '2015',
-      Month: 'March',
-    },
-    {
-      Type: 'expense',
-      Amount: 972,
-      Category: 'leisure',
-      Day: 'Tuesday',
-      Year: '2015',
-      Month: 'March',
-    },
-    {
-      Type: 'expense',
-      Amount: 897,
-      Category: 'foodstuff',
-      Day: 'Monday',
-      Year: '2015',
-      Month: 'Apr',
-    },
-    {
-      Type: 'expense',
-      Amount: 92,
-      Category: 'loans',
-      Day: 'Wednesday',
-      Year: '2015',
-      Month: 'Apr',
-    },
-    {
-      Type: 'expense',
-      Amount: 123,
-      Category: 'taxes',
-      Day: 'Friday',
-      Year: '2016',
-      Month: 'Apr',
-    },
-    {
-      Type: 'expense',
-      Amount: 383,
-      Category: 'transport',
-      Day: 'Monday',
-      Year: '2016',
-      Month: 'December',
-    },
-  ];
-
   let dataSourceSettings: IDataOptions = {
-    columns: [{ name: 'Type', caption: 'Type' }, { name: 'Category' }],
-    dataSource: testData,
+    rows: [
+      { name: 'type', caption: t('type') },
+      {
+        name: 'billIssuerOrExpenseType',
+        caption: t('billIssuerOrExpenseType'),
+      },
+    ],
+    dataSource: records.result,
     expandAll: false,
     filters: [],
-    formatSettings: [{ name: 'Amount', format: 'C0', currency: 'EUR' }],
-    rows: [
-      { name: 'Year', caption: 'Year' },
-      { name: 'Month', caption: 'Month' },
-      { name: 'Day', caption: 'Ημέρα' },
+    formatSettings: [
+      {
+        name: 'amount',
+        format: 'C0',
+        currency: `${locale === 'el' ? 'EUR' : 'USD'}`,
+      },
     ],
-    values: [{ name: 'Amount' }],
+    columns: [
+      { name: 'year', caption: t('year') },
+      { name: 'month', caption: t('month') },
+      { name: 'day', caption: t('day') },
+    ],
+    values: [{ name: 'amount', caption: t('amount') }],
     showRowSubTotals: false,
   };
 
   let gridSettings = {
-    allowTextWrap: true,
+    allowTextWrap: false,
+    allowAutoResizing: true,
   };
 
   let chartTypes = [
-    { value: 'Pie', text: 'Pie' },
-    { value: 'Doughnut', text: 'Doughnut' },
-    { value: 'Funnel', text: 'Funnel' },
-    { value: 'Line', text: 'Line' },
-    { value: 'Column', text: 'Column' },
-    { value: 'Area', text: 'Area' },
-    { value: 'Bar', text: 'Bar' },
-    { value: 'StepArea', text: 'StepArea' },
-    { value: 'StackingLine', text: 'StackingLine' },
-    { value: 'StackingColumn', text: 'StackingColumn' },
-    { value: 'StackingArea', text: 'StackingArea' },
-    { value: 'StackingBar', text: 'StackingBar' },
-    { value: 'StepLine', text: 'StepLine' },
-    { value: 'Pareto', text: 'Pareto' },
-    { value: 'Scatter', text: 'Scatter' },
-    { value: 'Bubble', text: 'Bubble' },
+    { value: 'Pie', text: t('pie') },
+    { value: 'Doughnut', text: t('doughnut') },
+    { value: 'Funnel', text: t('funnel') },
+    { value: 'Line', text: t('line') },
+    { value: 'Column', text: t('column') },
+    { value: 'Area', text: t('area') },
+    { value: 'Bar', text: t('bar') },
+    { value: 'StepArea', text: 'Step Area' },
+    { value: 'StackingLine', text: 'Stacking Line' },
+    { value: 'StackingColumn', text: 'Stacking Column' },
+    { value: 'StackingArea', text: 'Stacking Area' },
+    { value: 'StackingBar', text: 'Stacking Bar' },
+    { value: 'StepLine', text: 'Step Line' },
+    { value: 'Pareto', text: t('pareto') },
+    { value: 'Scatter', text: t('scatter') },
+    { value: 'Bubble', text: t('bubble') },
     { value: 'Spline', text: 'Spline' },
-    { value: 'SplineArea', text: 'SplineArea' },
-    { value: 'StackingLine100', text: 'StackingLine100' },
-    { value: 'StackingColumn100', text: 'StackingColumn100' },
-    { value: 'StackingBar100', text: 'StackingBar100' },
-    { value: 'StackingArea100', text: 'StackingArea100' },
-    { value: 'Polar', text: 'Polar' },
+    { value: 'SplineArea', text: 'Spline Area' },
+    { value: 'StackingLine100', text: 'Stacking Line 100' },
+    { value: 'StackingColumn100', text: 'Stacking Column 100' },
+    { value: 'StackingBar100', text: 'Stacking Bar 100' },
+    { value: 'StackingArea100', text: 'Stacking Area 100' },
+    { value: 'Polar', text: t('polar') },
     { value: 'Radar', text: 'Radar' },
   ];
 
@@ -240,9 +186,68 @@ function UserCharts(this: React.ReactNode) {
     pivotObj!.chartSettings.chartSeries!.type = args.value;
   }
 
-  function exportOnClick(): void {
-    pivotObj!.pdfExport(pdfExportProperties, false, undefined, false, true);
+  async function setDateRange(args: any) {
+    const data = await getRecords(
+      session?.user?.email as string,
+      locale === 'en' ? 'Bills' : 'Λογαριασμοί',
+      'false',
+      'false',
+      'true',
+      args.value ? args.value[0] : 'false',
+      args.value ? args.value[1] : 'false',
+      'false',
+      'false',
+      'false'
+    );
+    if (data && typeof data !== 'string') {
+      setRecords((prevState: any) => {
+        return { ...prevState, ...data };
+      });
+    } else if (typeof data === 'string') {
+      toastInstance?.current?.show({
+        title: te('toastError'),
+        content: te('errorRetrieving'),
+        cssClass: 'e-toast-warning',
+      });
+    }
   }
+
+  function exportOnClick(): void {
+    pivotObj!.chartExport('PDF', pdfExportProperties);
+  }
+
+  const getData = async () => {
+    let data = await getRecords(
+      session?.user?.email as string,
+      locale === 'en' ? 'Bills' : 'Λογαριασμοί',
+      'false',
+      'false',
+      'true',
+      'false',
+      'false',
+      'false',
+      'false',
+      'false'
+    );
+    if (data && typeof data !== 'string') {
+      setRecords((prevState: any) => {
+        return { ...prevState, ...data };
+      });
+    } else if (typeof data === 'string') {
+      toastInstance?.current?.show({
+        title: te('toastError'),
+        content: te('errorRetrieving'),
+        cssClass: 'e-toast-warning',
+      });
+    }
+  };
+
+  const abortController = new AbortController();
+  useEffect(() => {
+    getData();
+
+    return () => abortController.abort();
+  }, []);
 
   return (
     <section
@@ -250,6 +255,10 @@ function UserCharts(this: React.ReactNode) {
         darkMode.value ? 'e-dark-mode' : ''
       }`}
     >
+      <ToastComponent
+        ref={toastInstance}
+        position={{ X: 'Center', Y: 'Top' }}
+      />
       <div className="w-full grid grid-cols-3 mx-auto my-0 items-center">
         <Link href="/user" className="flex flex-row gap-2">
           <Image
@@ -265,7 +274,7 @@ function UserCharts(this: React.ReactNode) {
         </Link>
         <h2>{t('title')}</h2>
       </div>
-      <div className="container w-full flex flex-col justify-center gap-2">
+      <div className="w-full flex flex-col justify-center gap-3">
         <div className="flex flex-row gap-2 grow flex-wrap md:flex-nowrap">
           <DropDownListComponent
             floatLabelType={'Auto'}
@@ -273,40 +282,56 @@ function UserCharts(this: React.ReactNode) {
             change={changeChartType.bind(this)}
             id="chartTypes"
             index={0}
+            value="Bar"
             enabled={true}
             dataSource={chartTypes}
+            sortOrder={sortOrder}
             width="100%"
           />
           <DateRangePickerComponent
-            // id="daterangepicker"
+            // @ts-ignore
             placeholder={t('chartsPlaceholder')}
-            start="Year"
-            format="MM/yyyy"
-            depth="Year"
+            change={setDateRange.bind(this)}
+            start="year"
+            format="yyyy-MM-dd"
+            depth="year"
           />
         </div>
-        <PivotViewComponent
-          ref={(d: PivotViewComponent) => {
-            pivotObj = d;
-          }}
-          width="auto"
-          id="PivotView"
-          gridSettings={gridSettings}
-          chartSettings={chartSettings}
-          displayOption={displayOption}
-          dataSourceSettings={dataSourceSettings}
-          allowPdfExport={true}
-        >
-          <Inject services={[PivotChart, PDFExport]} />
-        </PivotViewComponent>
+        {records.result ? (
+          <PivotViewComponent
+            ref={(d: PivotViewComponent) => {
+              pivotObj = d;
+            }}
+            width="auto"
+            height="auto"
+            id="PivotView"
+            gridSettings={gridSettings}
+            chartSettings={chartSettings}
+            displayOption={displayOption}
+            dataSourceSettings={dataSourceSettings}
+            allowPdfExport={true}
+            showFieldList={true}
+            enableVirtualization={true}
+          >
+            <Inject
+              services={[PivotChart, PDFExport, FieldList, VirtualScroll]}
+            />
+          </PivotViewComponent>
+        ) : (
+          <SkeletonComponent height={100} width="100%" />
+        )}
       </div>
       <div className="flex justify-center">
-        <button className="w-auto" onClick={exportOnClick.bind(this)}>
+        <button
+          className="w-auto"
+          disabled={!records.result}
+          onClick={exportOnClick.bind(this)}
+        >
           {t('export')}
         </button>
       </div>
     </section>
   );
-}
+};
 
 export default UserCharts;
