@@ -226,7 +226,7 @@ const GridComponentFactory = forwardRef(
     let filterFields: string[] = [];
     let sortField: string = '';
 
-    //filter operators
+    // filter operators
     const numberOperator = [
       { value: 'equal', text: t('equal') },
       { value: 'notEqual', text: t('notEqual') },

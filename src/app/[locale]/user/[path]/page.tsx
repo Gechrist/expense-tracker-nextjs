@@ -2,7 +2,6 @@
 import { registerLicense } from '@syncfusion/ej2-base';
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 
 const page = ({ params }: { params: { path: string } }) => {
   registerLicense(process.env.SYNCFUSION_LICENSE as string);

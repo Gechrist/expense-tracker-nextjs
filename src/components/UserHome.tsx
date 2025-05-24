@@ -24,6 +24,7 @@ import {
   ToastComponent,
 } from '@syncfusion/ej2-react-notifications';
 import { getRecords } from '@/utils/utils';
+import { Records } from './UserBillsExpenses';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
 import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
@@ -39,7 +40,21 @@ const UserHome = () => {
   const te = useTranslations('UserBillsExpenses');
   const locale = useLocale();
   const { data: session } = useSession<boolean>();
-  const [records, setRecords] = useState<any>({});
+  const [records, setRecords] = useState<
+    Records & {
+      monthExpenses: any;
+      recentBills: any;
+      recentExpenses: any;
+      monthExpenseAmount: any;
+    }
+  >(
+    {} as Records & {
+      monthExpenses: any;
+      recentBills: any;
+      recentExpenses: any;
+      monthExpenseAmount: any;
+    }
+  );
 
   if (locale.includes('el')) {
     L10n.load(el);

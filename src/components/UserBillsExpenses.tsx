@@ -46,6 +46,11 @@ import '@/styles/SyncFusion.css';
 
 let formObject: FormValidator;
 
+export type Records = {
+  result: any;
+  count: number;
+};
+
 const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
   const t = useTranslations('UserBillsExpenses');
   const te = useTranslations('UserBillsExpenses.Expenses');
@@ -69,8 +74,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
     L10n.load({
       'en-US': {
         grid: {
-          ConfirmDelete:
-            'Are you certain that you want to delete the record(s)?',
+          ConfirmDelete: 'Are you certain that you want to delete this record?',
         },
       },
     });
@@ -84,6 +88,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
 
   //spinner
   const formRef = useRef<HTMLFormElement>(null);
+
   //toast
   const toastInstance = useRef<ToastComponent>(null);
   let toasts = [
@@ -188,7 +193,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
     formObject = new FormValidator('#form', formValidatorRules);
   }, [formValidatorRules]);
 
-  const [records, setRecords] = useState({});
+  const [records, setRecords] = useState<Records>({} as Records);
   const getData = async (skip?: string, sort?: string, filter?: string) => {
     let data = await getRecords(
       session?.user?.email as string,
@@ -549,59 +554,53 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       {pathName!.includes('bills') ? (
         <div className="w-full">
           <h2 className="mb-2">{t('bills')}</h2>
-          {
-            //@ts-ignore
-            records.result ? (
-              <GridComponentFactory
-                ref={childRef}
-                data={records}
-                cols={billsCols}
-                allowSorting={true}
-                allowPaging={true}
-                allowResizing={true}
-                allowFiltering={true}
-                allowReordering={true}
-                allowGrouping={false}
-                allowAdding={false}
-                allowDeleting={true}
-                allowEditing={true}
-                useToolbar={true}
-                locale={locale}
-                updateRecords={getData}
-              />
-            ) : (
-              <SkeletonComponent height={100} width="100%" />
-            )
-          }
+          {records.result ? (
+            <GridComponentFactory
+              ref={childRef}
+              data={records}
+              cols={billsCols}
+              allowSorting={true}
+              allowPaging={true}
+              allowResizing={true}
+              allowFiltering={true}
+              allowReordering={true}
+              allowGrouping={false}
+              allowAdding={false}
+              allowDeleting={true}
+              allowEditing={true}
+              useToolbar={true}
+              locale={locale}
+              updateRecords={getData}
+            />
+          ) : (
+            <SkeletonComponent height={100} width="100%" />
+          )}
         </div>
       ) : (
         <div className="w-full">
           <h2 className="mb-2">{t('expenses')}</h2>
-          {
-            //@ts-ignore
-            records.result ? (
-              <GridComponentFactory
-                ref={childRef}
-                data={records}
-                cols={expensesCols}
-                allowSorting={true}
-                allowPaging={true}
-                allowResizing={true}
-                allowFiltering={true}
-                allowReordering={true}
-                allowGrouping={false}
-                allowAdding={false}
-                allowDeleting={true}
-                allowEditing={true}
-                billIssuerOrExpenseTypeAsDropdown={true}
-                useToolbar={true}
-                locale={locale}
-                updateRecords={getData}
-              />
-            ) : (
-              <SkeletonComponent height={100} width="100%" />
-            )
-          }
+          {records.result ? (
+            <GridComponentFactory
+              ref={childRef}
+              data={records}
+              cols={expensesCols}
+              allowSorting={true}
+              allowPaging={true}
+              allowResizing={true}
+              allowFiltering={true}
+              allowReordering={true}
+              allowGrouping={false}
+              allowAdding={false}
+              allowDeleting={true}
+              allowEditing={true}
+              billIssuerOrExpenseTypeAsDropdown={true}
+              useToolbar={true}
+              locale={locale}
+              updateRecords={getData}
+            />
+          ) : (
+            <SkeletonComponent height={100} width="100%" />
+          )}
         </div>
       )}
     </section>

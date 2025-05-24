@@ -77,7 +77,8 @@ export async function PUT(req: any) {
           dateTime: googleCalendarDate,
           timeZone: '',
         },
-        colorId: 7,
+        colorId: 11,
+        conferenceData: null,
         reminders: {
           useDefault: false,
           overrides: [
@@ -108,7 +109,7 @@ export async function PUT(req: any) {
       calendarEvent!.end.timeZone = timeZoneResult.timeZone;
       if (googleCalendarAction === 'createevent') {
         const eventResponse = await fetch(
-          'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+          'https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1',
           {
             method: 'POST',
             headers: {

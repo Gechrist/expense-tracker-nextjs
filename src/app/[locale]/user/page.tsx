@@ -2,7 +2,6 @@
 import { registerLicense } from '@syncfusion/ej2-base';
 import React from 'react';
 import dynamic from 'next/dynamic';
-import Error from '../user/error.jsx';
 
 const page = () => {
   registerLicense(process.env.SYNCFUSION_LICENSE as string);
