@@ -21,9 +21,9 @@ export async function PUT(req: any) {
   dueDate = dueDate ? new Date(dueDate) : null;
   paymentDate = paymentDate ? new Date(paymentDate) : null;
   googleCalendarDate = googleCalendarDate ? new Date(googleCalendarDate) : null;
-  const googleCalendarAction: string = new URLSearchParams(req.url).get(
-    'googleCalendarDateAction'
-  ) as string;
+  const googleCalendarAction: string = new URLSearchParams(req.url)
+    .get('googleCalendarDateAction')
+    ?.toString() as string;
   let secret: string;
   let token;
   let calendarEvent;

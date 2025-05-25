@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getToken } from 'next-auth/jwt';
-import { hrtime } from 'process';
 
 const prisma = new PrismaClient();
 
