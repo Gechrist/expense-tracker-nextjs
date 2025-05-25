@@ -4,10 +4,12 @@ import { NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function GET(req: any, res: any) {
-  const user: string = new URLSearchParams(req.url).get('user') as string;
-  const type: string | null = new URLSearchParams(req.url).get(
-    'type'
-  ) as string;
+  const user: string = new URLSearchParams(req.url)
+    .get('user')
+    ?.toString() as string;
+  const type: string | null = new URLSearchParams(req.url)
+    .get('type')
+    ?.toString() as string;
   const startingDate: Date | boolean =
     new URLSearchParams(req.url).get('startingdate') !== 'false'
       ? new Date(new URLSearchParams(req.url).get('startingdate') as string)
@@ -35,7 +37,7 @@ export async function GET(req: any, res: any) {
   let sort: string | boolean | string[] =
     new URLSearchParams(req.url).get('sort') == 'false'
       ? false
-      : (new URLSearchParams(req.url).get('sort') as string);
+      : (new URLSearchParams(req.url).get('sort')?.toString() as string);
 
   let currentDate = new Date();
   let month = currentDate.getMonth() + 1;
