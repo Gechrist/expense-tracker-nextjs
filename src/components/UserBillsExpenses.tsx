@@ -213,7 +213,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       sort ? sort : 'false',
       filter ? filter : 'false'
     );
-    if (data && typeof data !== 'string') {
+    if (data && typeof data !== 'string' && !data.error) {
       setRecords((prevState: any) => {
         return { ...prevState, ...data };
       });
