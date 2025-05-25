@@ -203,7 +203,7 @@ const UserCharts = (): React.ReactNode => {
       setRecords((prevState: any) => {
         return { ...prevState, ...data };
       });
-    } else if (typeof data === 'string') {
+    } else if (typeof data === 'string' || data.error) {
       toastInstance?.current?.show({
         title: te('toastError'),
         content: te('errorRetrieving'),

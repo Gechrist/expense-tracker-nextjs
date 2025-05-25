@@ -1,8 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
-const secret = process.env.NEXTAUTH_SECRET;
-
 const prisma = new PrismaClient();
 
 export async function GET(req: any, res: any) {

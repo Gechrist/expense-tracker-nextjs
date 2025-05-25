@@ -217,7 +217,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       setRecords((prevState: any) => {
         return { ...prevState, ...data };
       });
-    } else if (typeof data === 'string') {
+    } else if (typeof data === 'string' || data.error) {
       toastInstance?.current?.show({
         title: t('toastError'),
         content: t('errorRetrieving'),
@@ -247,7 +247,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       }`
     );
     try {
-      const response = await fetch('/api/saveRecord', {
+      const response = await fetch('/api/saveRecords', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
