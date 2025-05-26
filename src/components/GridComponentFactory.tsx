@@ -341,7 +341,7 @@ const GridComponentFactory = forwardRef(
 
     //CRUD functions
     const dataSourceChanged = async (state: any) => {
-      let googleCalendarDateAction: string = 'null';
+      let googleCalendarDateAction: string = '';
 
       if (
         state.data.googleCalendarDate &&
@@ -361,15 +361,13 @@ const GridComponentFactory = forwardRef(
       }
       try {
         const result = await fetch(
-          `/api/${
-            state.action ? state.action : 'delete'
-          }Records?googleCalendarDateAction=${googleCalendarDateAction}`,
+          `/api/${state.action ? state.action : 'delete'}Records`,
           {
             method: state.action ? 'PUT' : 'DELETE',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(state.data),
+            body: JSON.stringify({ ...state.data, googleCalendarDateAction }),
           }
         );
         if (result) {

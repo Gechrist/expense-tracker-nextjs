@@ -13,6 +13,7 @@ export async function PUT(req: any) {
     comments,
     paymentDate,
     googleCalendarDate,
+    googleCalendarDateAction,
     googleCalendarDateEventId,
     billIssuerOrExpenseType,
   } = await req.json();
@@ -21,9 +22,6 @@ export async function PUT(req: any) {
   dueDate = dueDate ? new Date(dueDate) : null;
   paymentDate = paymentDate ? new Date(paymentDate) : null;
   googleCalendarDate = googleCalendarDate ? new Date(googleCalendarDate) : null;
-  const googleCalendarAction: string = new URLSearchParams(req.url)
-    .get('googleCalendarDateAction')
-    ?.toString() as string;
   let secret: string;
   let token;
   let calendarEvent;
@@ -60,10 +58,10 @@ export async function PUT(req: any) {
           weekday: 'long',
         });
 
-  if (googleCalendarAction) {
+  if (googleCalendarDateAction) {
     secret = process.env.NEXTAUTH_SECRET as string;
     token = await getToken({ req, secret });
-    if (googleCalendarAction !== 'deleteevent') {
+    if (googleCalendarDateAction !== 'deleteevent') {
       calendarEvent = {
         summary:
           type == 'Bills'
@@ -92,8 +90,8 @@ export async function PUT(req: any) {
 
   try {
     if (
-      googleCalendarAction === 'createevent' ||
-      googleCalendarAction === 'editevent'
+      googleCalendarDateAction === 'createevent' ||
+      googleCalendarDateAction === 'editevent'
     ) {
       const timeZoneResponse = await fetch(
         'https://www.googleapis.com/calendar/v3/users/me/calendarList/primary',
@@ -107,7 +105,7 @@ export async function PUT(req: any) {
       const timeZoneResult = await timeZoneResponse.json();
       calendarEvent!.start.timeZone = timeZoneResult.timeZone;
       calendarEvent!.end.timeZone = timeZoneResult.timeZone;
-      if (googleCalendarAction === 'createevent') {
+      if (googleCalendarDateAction === 'createevent') {
         const eventResponse = await fetch(
           'https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1',
           {
@@ -127,7 +125,7 @@ export async function PUT(req: any) {
         }
       }
 
-      if (googleCalendarAction === 'editevent') {
+      if (googleCalendarDateAction === 'editevent') {
         const eventResponse = await fetch(
           `https://www.googleapis.com/calendar/v3/calendars/primary/events/${googleCalendarDateEventId}`,
           {
@@ -148,7 +146,7 @@ export async function PUT(req: any) {
       }
     }
 
-    if (googleCalendarAction === 'deleteevent') {
+    if (googleCalendarDateAction === 'deleteevent') {
       const eventResponse = await fetch(
         `https://www.googleapis.com/calendar/v3/calendars/primary/events/${googleCalendarDateEventId}`,
         {
