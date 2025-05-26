@@ -7,6 +7,11 @@ import {
   PDFExport,
   FieldList,
 } from '@syncfusion/ej2-react-pivotview';
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner,
+} from '@syncfusion/ej2-popups';
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2/base';
 import {
   DropDownListComponent,
@@ -41,6 +46,8 @@ const UserCharts = (): React.ReactNode => {
   const te = useTranslations('UserBillsExpenses');
   const { data: session } = useSession<boolean>();
   const [records, setRecords] = useState<any>({});
+  const sectionRef = useRef<HTMLElement>(null);
+  const pivotObj = useRef<PivotViewComponent>(null);
 
   if (locale.includes('el')) {
     loadCldr(
@@ -116,6 +123,7 @@ const UserCharts = (): React.ReactNode => {
   } as ChartSettings;
 
   let dataSourceSettings: IDataOptions = {
+    dataSource: records.result,
     rows: [
       { name: 'type', caption: t('type') },
       {
@@ -123,7 +131,6 @@ const UserCharts = (): React.ReactNode => {
         caption: t('billIssuerOrExpenseType'),
       },
     ],
-    dataSource: records.result,
     expandAll: false,
     filters: [],
     formatSettings: [
@@ -176,17 +183,16 @@ const UserCharts = (): React.ReactNode => {
 
   let fields: object = { text: 'text', value: 'value' };
 
-  let pivotObj: PivotViewComponent | undefined;
-
   let pdfExportProperties = {
     fileName: 'ExpenseTrackerExport.pdf',
   };
 
   function changeChartType(args: any): void {
-    pivotObj!.chartSettings.chartSeries!.type = args.value;
+    pivotObj!.current!.chartSettings.chartSeries!.type = args.value;
   }
 
   async function setDateRange(args: any) {
+    showSpinner(pivotObj.current as unknown as HTMLFormElement);
     const data = await getRecords(
       session?.user?.email as string,
       locale === 'en' ? 'Bills' : 'Λογαριασμοί',
@@ -199,11 +205,14 @@ const UserCharts = (): React.ReactNode => {
       'false',
       'false'
     );
-    if (data && typeof data !== 'string') {
+    if ((data && typeof data !== 'string') || !data.error) {
       setRecords((prevState: any) => {
         return { ...prevState, ...data };
       });
+      dataSourceSettings.dataSource = records.result;
+      hideSpinner(pivotObj.current as unknown as HTMLFormElement);
     } else if (typeof data === 'string' || data.error) {
+      hideSpinner(pivotObj.current as unknown as HTMLFormElement);
       toastInstance?.current?.show({
         title: te('toastError'),
         content: te('errorRetrieving'),
@@ -213,7 +222,7 @@ const UserCharts = (): React.ReactNode => {
   }
 
   function exportOnClick(): void {
-    pivotObj!.chartExport('PDF', pdfExportProperties);
+    pivotObj!.current!.chartExport('PDF', pdfExportProperties);
   }
 
   const getData = async () => {
@@ -233,7 +242,9 @@ const UserCharts = (): React.ReactNode => {
       setRecords((prevState: any) => {
         return { ...prevState, ...data };
       });
+      hideSpinner(sectionRef?.current as unknown as HTMLFormElement);
     } else if (typeof data === 'string' || data.error) {
+      hideSpinner(sectionRef?.current as unknown as HTMLFormElement);
       toastInstance?.current?.show({
         title: te('toastError'),
         content: te('errorRetrieving'),
@@ -244,6 +255,7 @@ const UserCharts = (): React.ReactNode => {
 
   const abortController = new AbortController();
   useEffect(() => {
+    createSpinner({ target: sectionRef.current as unknown as HTMLFormElement });
     getData();
 
     return () => abortController.abort();
@@ -251,6 +263,7 @@ const UserCharts = (): React.ReactNode => {
 
   return (
     <section
+      ref={sectionRef}
       className={`dark:bg-neutral-700 bg-white rounded w-11/12 px-2 pt-4 pb-6 flex justify-around gap-4 items-center flex-col ${
         darkMode.value ? 'e-dark-mode' : ''
       }`}
@@ -299,9 +312,7 @@ const UserCharts = (): React.ReactNode => {
         </div>
         {records.result ? (
           <PivotViewComponent
-            ref={(d: PivotViewComponent) => {
-              pivotObj = d;
-            }}
+            ref={pivotObj}
             width="auto"
             height="auto"
             id="PivotView"
@@ -324,7 +335,7 @@ const UserCharts = (): React.ReactNode => {
       <div className="flex justify-center">
         <button
           className="w-auto"
-          disabled={!records.result}
+          disabled={!records.result?.length}
           onClick={exportOnClick.bind(this)}
         >
           {t('export')}

@@ -363,7 +363,7 @@ const GridComponentFactory = forwardRef(
         const result = await fetch(
           `/api/${
             state.action ? state.action : 'delete'
-          }Records?&googleCalendarDateAction=${googleCalendarDateAction}`,
+          }Records?googleCalendarDateAction=${googleCalendarDateAction}`,
           {
             method: state.action ? 'PUT' : 'DELETE',
             headers: {

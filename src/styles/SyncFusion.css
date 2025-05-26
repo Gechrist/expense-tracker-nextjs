@@ -105,6 +105,7 @@
     border-color: rgb(28, 27, 31) !important;
   }
 
+  .e-pivotfieldlist-container .e-layout-footer .e-cancel-btn,
   .e-contextmenu-wrapper ul .e-menu-item .e-caret::before,
   .e-contextmenu-wrapper ul .e-menu-item.e-selected,
   .e-contextmenu-wrapper ul.e-ul {
