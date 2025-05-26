@@ -158,6 +158,8 @@ export async function PUT(req: any) {
       );
       if (eventResponse.status !== 204) {
         throw Error('Deleting the Google Calendar event failed');
+      } else {
+        googleCalendarDateEventId = null;
       }
     }
 
