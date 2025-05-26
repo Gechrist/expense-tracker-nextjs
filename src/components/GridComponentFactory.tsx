@@ -378,6 +378,7 @@ const GridComponentFactory = forwardRef(
             toastInstance.current?.show(toasts[state.action ? 0 : 1]);
           }
           gridInstance.dataSource = [updatedData];
+          updateRecords ? updateRecords() : null;
         }
       } catch (err: any) {
         console.error('Error:', err.message);
