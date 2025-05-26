@@ -137,10 +137,8 @@ export async function PUT(req: any) {
           }
         );
         const eventResult = await eventResponse.json();
-        if (eventResult.status === 'confirmed') {
-          googleCalendarDateEventId = eventResult.id;
-        } else {
-          console.log('eventResponse', eventResponse);
+        if (eventResult.status !== 'confirmed') {
+          console.log(eventResult);
           throw Error('Editing the Google Calendar event failed');
         }
       }
