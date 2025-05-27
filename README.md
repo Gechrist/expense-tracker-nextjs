@@ -1,3 +1,5 @@
+[EXPENSE TRACKER NEXT.JS App](https://expensetracker-nextjs.vercel.app/)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -21,3 +23,12 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Features
 
 This is an expense tracker that will keep track of bills and expenses and present them in quick and comprehensive manner. You can input expenses and bills, set a payment event on Google Calendar for notifications, get different kind of charts for any desired period and get a concise view of the current month's expenses.
+
+## LICENSE
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+## AUTHOR
+
+- [Profile](https://github.com/Gechrist/)
+- [Email](mailto:gchris@hotmail.co.uk)

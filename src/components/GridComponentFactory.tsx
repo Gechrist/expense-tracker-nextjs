@@ -77,6 +77,7 @@ const GridComponentFactory = forwardRef(
 
     //toast notifications
     const toastInstance = useRef<ToastComponent>(null);
+    const gridInstance = useRef<GridComponent>(null);
     let toasts = [
       {
         title: t('toastSuccess'),
@@ -259,16 +260,16 @@ const GridComponentFactory = forwardRef(
 
     // custom filters for grid
     let initialFlag = true;
-    let gridInstance: GridComponent;
     const dataBound = (args: any) => {
       if (initialFlag && allowFiltering) {
         initialFlag = false;
-        gridInstance.filterModule.customOperators.numberOperator =
+        gridInstance.current!.filterModule.customOperators.numberOperator =
           numberOperator;
-        gridInstance.filterModule!.customOperators.dateOperator = dateOperator;
-        gridInstance.filterModule!.customOperators.datetimeOperator =
+        gridInstance.current!.filterModule!.customOperators.dateOperator =
           dateOperator;
-        gridInstance.filterModule!.customOperators.stringOperator =
+        gridInstance.current!.filterModule!.customOperators.datetimeOperator =
+          dateOperator;
+        gridInstance.current!.filterModule!.customOperators.stringOperator =
           stringOperator;
       }
     };
@@ -332,7 +333,7 @@ const GridComponentFactory = forwardRef(
           if (updatedData) {
             data = [...data, updatedData];
           }
-          gridInstance.dataSource = data;
+          gridInstance.current!.dataSource = data;
         }
       } catch (err: any) {
         console.error(err);
@@ -377,7 +378,7 @@ const GridComponentFactory = forwardRef(
           } else {
             toastInstance.current?.show(toasts[state.action ? 0 : 1]);
           }
-          gridInstance.dataSource = [updatedData];
+          gridInstance.current!.dataSource = [updatedData];
           updateRecords ? updateRecords() : null;
         }
       } catch (err: any) {
@@ -394,9 +395,7 @@ const GridComponentFactory = forwardRef(
         />
         <GridComponent
           dataSource={{ result: data?.result, count: data?.count }}
-          ref={(g: GridComponent) => {
-            gridInstance = g;
-          }}
+          ref={gridInstance}
           dataBound={dataBound}
           allowTextWrap={true}
           allowSorting={allowSorting}

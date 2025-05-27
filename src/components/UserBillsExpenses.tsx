@@ -230,6 +230,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
     e.preventDefault();
     showSpinner(formRef.current as HTMLFormElement);
     if (!formObject.validate()) {
+      hideSpinner(formRef.current as HTMLFormElement);
       return;
     }
     let formData: FormData = new FormData(e.target as HTMLFormElement);
