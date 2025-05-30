@@ -8,6 +8,16 @@
   color: white !important;
 }
 
+.e-chart {
+  width: inherit !important;
+  height: inherit !important;
+}
+
+.e-accumulationchart {
+  width: inherit !important;
+  height: inherit !important;
+}
+
 /* badge */
 .e-badge {
   color: #fff !important;

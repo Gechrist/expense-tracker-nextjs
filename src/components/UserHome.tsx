@@ -202,7 +202,7 @@ const UserHome = () => {
           </div>
         </div>
         {records?.monthExpenses?.length > 0 ? (
-          <div className="w-full h-[200px] md:h-[500px] min-[2000px]:h-[900px] m-auto">
+          <div className="w-full m-auto">
             <AccumulationChartComponent
               id="charts"
               legendSettings={legendSettings}

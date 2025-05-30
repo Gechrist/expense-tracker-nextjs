@@ -108,6 +108,7 @@ export async function GET(req: any, res: any) {
             where: {
               type: type == 'Bills' ? 'Expenses' : 'Δαπάνες',
               paymentDate: { gte: firstOfMonth },
+              createdBy: { equals: user },
             },
           }),
           prisma.record.findMany({
