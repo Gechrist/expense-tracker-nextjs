@@ -27,7 +27,7 @@ import {
   showSpinner,
   hideSpinner,
 } from '@syncfusion/ej2-popups';
-import { expenseFields, getRecords, minDate, sortOrder } from '@/utils/utils';
+import { expenseFields, getRecords, sortOrder } from '@/utils/utils';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
@@ -424,7 +424,6 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
                   value={state.dueDate}
                   change={update('dueDate')}
                   placeholder={t('billDueDate')}
-                  min={minDate}
                   floatLabelType="Auto"
                   data-msg-containerid="errorForDueDate"
                 />
@@ -434,7 +433,6 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
                 <DatePickerComponent
                   id="datepicker"
                   placeholder={t('billPaymentDate')}
-                  min={minDate}
                   name="paymentDate"
                   value={state.paymentDate}
                   change={update('paymentDate')}
@@ -450,7 +448,6 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
                   name="googleCalendarDate"
                   value={state.googleCalendarDate}
                   change={update('googleCalendarDate')}
-                  min={minDate}
                   step={60}
                   floatLabelType="Auto"
                   data-msg-containerid="errorForGoogleCalenderDate"
@@ -522,7 +519,6 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
                 <DatePickerComponent
                   id="datepicker"
                   placeholder={th('expensesTableHeaderDate')}
-                  min={minDate}
                   name="paymentDate"
                   value={state.paymentDate}
                   change={update('paymentDate')}

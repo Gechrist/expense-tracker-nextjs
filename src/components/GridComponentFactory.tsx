@@ -19,9 +19,10 @@ import { ToastComponent } from '@syncfusion/ej2-react-notifications';
 import { useTranslations } from 'next-intl';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DataManager, Query } from '@syncfusion/ej2/data';
-import { expenseFields, minDate, sortOrder } from '@/utils/utils';
+import { expenseFields, sortOrder } from '@/utils/utils';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import Image from 'next/image';
+import { sortColumn } from '@syncfusion/ej2/filemanager';
 
 const GridComponentFactory = forwardRef(
   (
@@ -210,7 +211,6 @@ const GridComponentFactory = forwardRef(
           <DateTimePickerComponent
             id="datetimepicker"
             value={props.googleCalendarDate}
-            min={minDate}
             step={60}
           />
         </div>
@@ -407,6 +407,15 @@ const GridComponentFactory = forwardRef(
           enableImmutableMode={true}
           editSettings={editOptions}
           selectionSettings={{ type: 'Single' }}
+          sortSettings={{
+            columns: [
+              {
+                ...(data.result[0]?.dueDate
+                  ? { field: 'dueDate', direction: 'Ascending' }
+                  : { field: 'paymentDate', direction: 'Descending' }),
+              },
+            ],
+          }}
           statelessTemplates={['directiveTemplates']}
           filterSettings={filterSettings}
           toolbar={
