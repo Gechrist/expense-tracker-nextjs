@@ -335,7 +335,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date('2025-06-03T00:00:00.000Z')
+                            ? new Date('2025-06-03 00:00:00')
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -462,7 +462,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date('2025-06-03T00:00:00.000Z')
+                            ? new Date('2025-06-03 00:00:00')
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
