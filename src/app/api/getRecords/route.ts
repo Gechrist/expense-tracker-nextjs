@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import { filterField } from '@syncfusion/ej2-react-pivotview';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
@@ -302,6 +303,8 @@ export async function GET(req: any, res: any) {
       }
     }
     if (filter) {
+      filterField[0] = 'paymentDate';
+      filterField[1] = '2025-06-03T00:00:00.000Z';
       let [recordsNumber, records] = await prisma.$transaction([
         prisma.record.count({
           where: {
