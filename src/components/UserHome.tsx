@@ -42,14 +42,14 @@ const UserHome = () => {
   const { data: session } = useSession<boolean>();
   const [records, setRecords] = useState<
     Records & {
-      monthExpenses: any;
+      accumulatedMonthExpensesPerCategory: any;
       recentBills: any;
       recentExpenses: any;
       monthExpenseAmount: any;
     }
   >(
     {} as Records & {
-      monthExpenses: any;
+      accumulatedMonthExpensesPerCategory: any;
       recentBills: any;
       recentExpenses: any;
       monthExpenseAmount: any;
@@ -201,7 +201,7 @@ const UserHome = () => {
             )}
           </div>
         </div>
-        {records?.monthExpenses?.length > 0 ? (
+        {records?.accumulatedMonthExpensesPerCategory?.length > 0 ? (
           <div className="w-full m-auto">
             <AccumulationChartComponent
               id="charts"
@@ -234,7 +234,7 @@ const UserHome = () => {
               <Inject services={[AccumulationDataLabel, AccumulationLegend]} />
               <AccumulationSeriesCollectionDirective>
                 <AccumulationSeriesDirective
-                  dataSource={records.monthExpenses}
+                  dataSource={records.accumulatedMonthExpensesPerCategory}
                   pointColorMapping="fill"
                   xName="billIssuerOrExpenseType"
                   yName="amount"

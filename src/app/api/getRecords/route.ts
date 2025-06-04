@@ -43,8 +43,8 @@ export async function GET(req: any, res: any) {
   let month = currentDate.getMonth() + 1;
   let year = currentDate.getFullYear();
   let firstOfMonth = new Date(`${year}-${month}-01`);
-  sort = sort && sort.split(',');
-  filter = filter && JSON.parse(filter);
+  sort = sort && sort.split(',').toString();
+  filter = filter && JSON.parse(filter).toString();
 
   try {
     if (charts && !startingDate && !endingDate) {
@@ -156,6 +156,7 @@ export async function GET(req: any, res: any) {
 
       monthExpenseAmount = monthExpenseAmount._sum
         .amount as unknown as Prisma.GetRecordAggregateType<any>;
+
       monthExpenses.map(
         (
           record: {
@@ -166,9 +167,6 @@ export async function GET(req: any, res: any) {
           },
           index: number
         ) => {
-          record.text = `${record?.billIssuerOrExpenseType}:\u00A0 ${
-            type == 'Bills' ? '$' + record.amount : record.amount + ' €'
-          }`;
           record.fill =
             index === 0
               ? '#7C00FE'
@@ -191,12 +189,46 @@ export async function GET(req: any, res: any) {
               : '#6CBEC7';
         }
       );
+      // accumulate expense amounts for each category
+      let accumulatedMonthExpensesPerCategory: any[] = [];
+      let monthExpensesPerCategory: any[] = [];
+      let amountPerCategory: number;
+
+      monthExpenses.map((record: any) => {
+        monthExpensesPerCategory = monthExpenses.filter(
+          (x: any) =>
+            x.billIssuerOrExpenseType === record.billIssuerOrExpenseType
+        );
+        if (
+          accumulatedMonthExpensesPerCategory.some(
+            (x) =>
+              x.billIssuerOrExpenseType ===
+              monthExpensesPerCategory[0].billIssuerOrExpenseType
+          )
+        ) {
+          return;
+        }
+        amountPerCategory = monthExpensesPerCategory.reduce(
+          (accumulator: any, entry: any) => {
+            return accumulator + entry.amount;
+          },
+          0
+        );
+
+        accumulatedMonthExpensesPerCategory.push({
+          ...monthExpensesPerCategory[0],
+          amount: amountPerCategory,
+          text: `${record?.billIssuerOrExpenseType}:\u00A0 ${
+            type == 'Bills' ? '$' + amountPerCategory : amountPerCategory + ' €'
+          }`,
+        });
+      });
 
       return NextResponse.json({
         monthExpenseAmount,
         recentBills,
         recentExpenses,
-        monthExpenses,
+        accumulatedMonthExpensesPerCategory,
       });
     }
     if (billsOrExpenses && !filter) {
