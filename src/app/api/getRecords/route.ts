@@ -43,8 +43,8 @@ export async function GET(req: any, res: any) {
   let month = currentDate.getMonth() + 1;
   let year = currentDate.getFullYear();
   let firstOfMonth = new Date(`${year}-${month}-01`);
-  sort = sort && sort.split(',').toString();
-  filter = filter && JSON.parse(filter).toString();
+  sort = sort && sort.split(',');
+  filter = filter && JSON.parse(filter);
 
   try {
     if (charts && !startingDate && !endingDate) {
@@ -314,7 +314,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         dueDate: {
                           ...(filterField[2] === 'equal'
-                            ? { equals: new Date(filterField[1]) }
+                            ? new Date(filterField[1])
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -334,7 +334,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? { equals: new Date(filterField[1]) }
+                            ? new Date(filterField[1])
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -354,7 +354,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         googleCalendarDate: {
                           ...(filterField[2] === 'equal'
-                            ? { equals: new Date(filterField[1]) }
+                            ? new Date(filterField[1])
                             : filterField[2] === 'greaterThan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -441,7 +441,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         dueDate: {
                           ...(filterField[2] === 'equal'
-                            ? { equals: new Date(filterField[1]) }
+                            ? new Date(filterField[1])
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -461,7 +461,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? { equals: new Date(filterField[1]) }
+                            ? new Date(filterField[1])
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -481,7 +481,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         googleCalendarDate: {
                           ...(filterField[2] === 'equal'
-                            ? { equals: new Date(filterField[1]) }
+                            ? new Date(filterField[1])
                             : filterField[2] === 'greaterThan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
