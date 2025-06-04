@@ -303,8 +303,6 @@ export async function GET(req: any, res: any) {
       }
     }
     if (filter) {
-      filterField[0] = 'paymentDate';
-      filterField[1] = '2025-06-03T00:00:00.000Z';
       let [recordsNumber, records] = await prisma.$transaction([
         prisma.record.count({
           where: {
@@ -337,7 +335,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date(filterField[1])
+                            ? new Date('2025-06-03T00:00:00.000Z')
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -464,7 +462,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date(filterField[1])
+                            ? new Date('2025-06-03T00:00:00.000Z')
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
