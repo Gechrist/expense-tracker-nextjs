@@ -229,32 +229,32 @@ const GridComponentFactory = forwardRef(
     // filter operators
     const numberOperator = [
       { value: 'equal', text: t('equal') },
-      { value: 'notEqual', text: t('notEqual') },
-      { value: 'greaterThan', text: t('greaterThan') },
-      { value: 'lessThan', text: t('lessThan') },
-      { value: 'greaterThanOrEqual', text: t('greaterThanOrEqual') },
-      { value: 'lessThanOrEqual ', text: t('lessThanOrEqual') },
+      { value: 'notequal', text: t('notEqual') },
+      { value: 'greaterthan', text: t('greaterThan') },
+      { value: 'lessthan', text: t('lessThan') },
+      { value: 'greaterthanorequal', text: t('greaterThanOrEqual') },
+      { value: 'lessthanorequal ', text: t('lessThanOrEqual') },
     ];
 
     const dateOperator = [
       { value: 'equal', text: t('equal') },
-      { value: 'notEqual', text: t('notEqual') },
-      { value: 'greaterThan', text: t('laterThan') },
-      { value: 'lessThan', text: t('earlierThan') },
-      { value: 'greaterThanOrEqual', text: t('laterThanOrEqual') },
-      { value: 'lessThanOrEqual', text: t('earlierThanOrEqual') },
-      { value: 'isNull', text: t('null') },
-      { value: 'isNotNull', text: t('notNull') },
+      { value: 'notequal', text: t('notEqual') },
+      { value: 'greaterthan', text: t('laterThan') },
+      { value: 'lessthan', text: t('earlierThan') },
+      { value: 'greaterthanorequal', text: t('laterThanOrEqual') },
+      { value: 'lessthanorequal', text: t('earlierThanOrEqual') },
+      { value: 'isnull', text: t('null') },
+      { value: 'isnotnull', text: t('notNull') },
     ];
 
     const stringOperator = [
       { value: 'equal', text: t('equal') },
-      { value: 'notEqual', text: t('notEqual') },
+      { value: 'notequal', text: t('notEqual') },
       { value: 'startsWith', text: t('startsWith') },
       { value: 'endsWith', text: t('endsWith') },
       { value: 'contains', text: t('contains') },
-      { value: 'isEmpty', text: t('null') },
-      { value: 'isNotEmpty', text: t('notNull') },
+      { value: 'isempty', text: t('null') },
+      { value: 'isnotempty', text: t('notNull') },
     ];
 
     // custom filters for grid

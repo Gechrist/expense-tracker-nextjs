@@ -316,17 +316,17 @@ export async function GET(req: any, res: any) {
                         dueDate: {
                           ...(filterField[2] === 'equal'
                             ? new Date(filterField[1])
-                            : filterField[2] === 'greaterThan'
+                            : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
-                            : filterField[2] === 'greaterThanOrEqual'
+                            : filterField[2] === 'greaterthanorequal'
                             ? { gte: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThan'
+                            : filterField[2] === 'lessthan'
                             ? { lt: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThanOrEqual'
+                            : filterField[2] === 'lessthanorequal'
                             ? { lte: new Date(filterField[1]) }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: new Date(filterField[1]) }
-                            : filterField[2] === 'isNull'
+                            : filterField[2] === 'isnull'
                             ? { equals: null }
                             : { not: null }),
                         },
@@ -335,18 +335,18 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date('2025-06-03 00:00:00')
-                            : filterField[2] === 'greaterThan'
+                            ? new Date('2025-06-0300:00:00')
+                            : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
-                            : filterField[2] === 'greaterThanOrEqual'
+                            : filterField[2] === 'greaterthanorequal'
                             ? { gte: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThan'
+                            : filterField[2] === 'lessthan'
                             ? { lt: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThanOrEqual'
+                            : filterField[2] === 'lessthanorequal'
                             ? { lte: new Date(filterField[1]) }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: new Date(filterField[1]) }
-                            : filterField[2] === 'isNull'
+                            : filterField[2] === 'isnull'
                             ? { equals: null }
                             : { not: null }),
                         },
@@ -358,15 +358,15 @@ export async function GET(req: any, res: any) {
                             ? new Date(filterField[1])
                             : filterField[2] === 'greaterThan'
                             ? { gt: new Date(filterField[1]) }
-                            : filterField[2] === 'greaterThanOrEqual'
+                            : filterField[2] === 'greaterthanorequal'
                             ? { gte: new Date(filterField[1]) }
                             : filterField[2] === 'lessThan'
                             ? { lt: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThanOrEqual'
+                            : filterField[2] === 'lessthanorequal'
                             ? { lte: new Date(filterField[1]) }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: new Date(filterField[1]) }
-                            : filterField[2] === 'isNull'
+                            : filterField[2] === 'isnull'
                             ? { equals: null }
                             : { not: null }),
                         },
@@ -382,9 +382,9 @@ export async function GET(req: any, res: any) {
                             ? { startsWith: filterField[1] }
                             : filterField[2] === 'endsWith'
                             ? { endsWith: filterField[1] }
-                            : filterField[2] === 'isEmpty'
+                            : filterField[2] === 'isempty'
                             ? { equals: '' }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: filterField[1] }
                             : { not: '' }),
                         },
@@ -400,9 +400,9 @@ export async function GET(req: any, res: any) {
                             ? { startsWith: filterField[1] }
                             : filterField[2] === 'endsWith'
                             ? { endsWith: filterField[1] }
-                            : filterField[2] === 'isEmpty'
+                            : filterField[2] === 'isempty'
                             ? { equals: '' }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: filterField[1] }
                             : { not: '' }),
                         },
@@ -414,13 +414,13 @@ export async function GET(req: any, res: any) {
                             ? { equals: parseFloat(filterField[1]) }
                             : filterField[2] === 'greaterThan'
                             ? { gt: parseFloat(filterField[1]) }
-                            : filterField[2] === 'greaterThanOrEqual'
+                            : filterField[2] === 'greaterthanorequal'
                             ? { gte: parseFloat(filterField[1]) }
                             : filterField[2] === 'lessThan'
                             ? { lt: parseFloat(filterField[1]) }
-                            : filterField[2] === 'lessThanOrEqual'
+                            : filterField[2] === 'lessthanorequal'
                             ? { lte: parseFloat(filterField[1]) }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: parseFloat(filterField[1]) }
                             : {}),
                         },
@@ -443,17 +443,17 @@ export async function GET(req: any, res: any) {
                         dueDate: {
                           ...(filterField[2] === 'equal'
                             ? new Date(filterField[1])
-                            : filterField[2] === 'greaterThan'
+                            : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
-                            : filterField[2] === 'greaterThanOrEqual'
+                            : filterField[2] === 'greaterthanorequal'
                             ? { gte: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThan'
+                            : filterField[2] === 'lessthan'
                             ? { lt: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThanOrEqual'
+                            : filterField[2] === 'lessthanorequal'
                             ? { lte: new Date(filterField[1]) }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: new Date(filterField[1]) }
-                            : filterField[2] === 'isNull'
+                            : filterField[2] === 'isnull'
                             ? { equals: null }
                             : { not: null }),
                         },
@@ -463,17 +463,17 @@ export async function GET(req: any, res: any) {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
                             ? new Date('2025-06-03 00:00:00')
-                            : filterField[2] === 'greaterThan'
+                            : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
-                            : filterField[2] === 'greaterThanOrEqual'
+                            : filterField[2] === 'greaterthanorequal'
                             ? { gte: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThan'
+                            : filterField[2] === 'lessthan'
                             ? { lt: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThanOrEqual'
+                            : filterField[2] === 'lessthanorequal'
                             ? { lte: new Date(filterField[1]) }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: new Date(filterField[1]) }
-                            : filterField[2] === 'isNull'
+                            : filterField[2] === 'isnull'
                             ? { equals: null }
                             : { not: null }),
                         },
@@ -485,15 +485,15 @@ export async function GET(req: any, res: any) {
                             ? new Date(filterField[1])
                             : filterField[2] === 'greaterThan'
                             ? { gt: new Date(filterField[1]) }
-                            : filterField[2] === 'greaterThanOrEqual'
+                            : filterField[2] === 'greaterthanorequal'
                             ? { gte: new Date(filterField[1]) }
                             : filterField[2] === 'lessThan'
                             ? { lt: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThanOrEqual'
+                            : filterField[2] === 'lessthanorequal'
                             ? { lte: new Date(filterField[1]) }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: new Date(filterField[1]) }
-                            : filterField[2] === 'isNull'
+                            : filterField[2] === 'isnull'
                             ? { equals: null }
                             : { not: null }),
                         },
@@ -509,9 +509,9 @@ export async function GET(req: any, res: any) {
                             ? { startsWith: filterField[1] }
                             : filterField[2] === 'endsWith'
                             ? { endsWith: filterField[1] }
-                            : filterField[2] === 'isEmpty'
+                            : filterField[2] === 'isempty'
                             ? { equals: '' }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: filterField[1] }
                             : { not: '' }),
                         },
@@ -527,9 +527,9 @@ export async function GET(req: any, res: any) {
                             ? { startsWith: filterField[1] }
                             : filterField[2] === 'endsWith'
                             ? { endsWith: filterField[1] }
-                            : filterField[2] === 'isEmpty'
+                            : filterField[2] === 'isempty'
                             ? { equals: '' }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: filterField[1] }
                             : { not: '' }),
                         },
@@ -541,13 +541,13 @@ export async function GET(req: any, res: any) {
                             ? { equals: parseFloat(filterField[1]) }
                             : filterField[2] === 'greaterThan'
                             ? { gt: parseFloat(filterField[1]) }
-                            : filterField[2] === 'greaterThanOrEqual'
+                            : filterField[2] === 'greaterthanorequal'
                             ? { gte: parseFloat(filterField[1]) }
                             : filterField[2] === 'lessThan'
                             ? { lt: parseFloat(filterField[1]) }
-                            : filterField[2] === 'lessThanOrEqual'
+                            : filterField[2] === 'lessthanorequal'
                             ? { lte: parseFloat(filterField[1]) }
-                            : filterField[2] === 'notEqual'
+                            : filterField[2] === 'notequal'
                             ? { not: parseFloat(filterField[1]) }
                             : {}),
                         },
