@@ -243,8 +243,8 @@ const GridComponentFactory = forwardRef(
       { value: 'lessThan', text: t('earlierThan') },
       { value: 'greaterThanOrEqual', text: t('laterThanOrEqual') },
       { value: 'lessThanOrEqual', text: t('earlierThanOrEqual') },
-      { value: 'isnull', text: t('null') },
-      { value: 'isnotnull', text: t('notNull') },
+      { value: 'isNull', text: t('null') },
+      { value: 'isNotNull', text: t('notNull') },
     ];
 
     const stringOperator = [
@@ -253,8 +253,8 @@ const GridComponentFactory = forwardRef(
       { value: 'startsWith', text: t('startsWith') },
       { value: 'endsWith', text: t('endsWith') },
       { value: 'contains', text: t('contains') },
-      { value: 'isempty', text: t('null') },
-      { value: 'isnotempty', text: t('notNull') },
+      { value: 'isEmpty', text: t('null') },
+      { value: 'isNotEmpty', text: t('notNull') },
     ];
 
     // custom filters for grid

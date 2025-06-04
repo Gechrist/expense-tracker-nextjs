@@ -30,9 +30,9 @@
     "expensesText": "Τελευταίες Δαπάνες",
     "billsTableHeaderIssuer": "Εκδότης",
     "tableHeaderAmount": "Ποσό",
-    "billsTableHeaderDate": "Ημ/νία Λήξης",
+    "billsTableHeaderDate": "Ημ/νία λήξης",
     "expensesTableHeaderCategory": "Κατηγορία",
-    "expensesTableHeaderDate": "Ημ/νία Πληρωμής",
+    "expensesTableHeaderDate": "Ημ/νία πληρωμής",
     "expensesSoFarPill": "Δαπάνες\u00A0μήνα: {amount,number,currency}"
   },
   "UserBillsExpenses": {
@@ -41,8 +41,8 @@
     "expenseTypePlaceholder": "Κατηγορία δαπάνης",
     "billIssuer": "Εκδότης",
     "billAmount": "Ποσό",
-    "billPaymentDate": "Ημ/νία Εξόφλησης",
-    "billDueDate": "Ημ/νία Λήξης",
+    "billPaymentDate": "Ημ/νία εξόφλησης",
+    "billDueDate": "Ημ/νία λήξης",
     "errorRequiredMessage": "Αυτό το πεδίο είναι υποχρεωτικό",
     "errorDateMessage": "Εισαγάγετε μια έγκυρη ημερομηνία και ώρα",
     "setTimeAndDateForAlertPlaceholder": "Ειδοποίηση Google Calendar",
