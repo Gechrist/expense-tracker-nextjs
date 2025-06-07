@@ -1,5 +1,4 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { filterField } from '@syncfusion/ej2-react-pivotview';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
@@ -209,12 +208,11 @@ export async function GET(req: any, res: any) {
         ) {
           return;
         }
-        amountPerCategory = monthExpensesPerCategory.reduce(
-          (accumulator: any, entry: any) => {
+        amountPerCategory = monthExpensesPerCategory
+          .reduce((accumulator: any, entry: any) => {
             return accumulator + entry.amount;
-          },
-          0
-        );
+          }, 0)
+          .toFixed(2);
 
         accumulatedMonthExpensesPerCategory.push({
           ...monthExpensesPerCategory[0],
@@ -315,7 +313,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         dueDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date(filterField[1])
+                            ? { equals: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -335,7 +333,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date('2025-06-0300:00:00')
+                            ? { equals: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -355,7 +353,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         googleCalendarDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date(filterField[1])
+                            ? { equals: new Date(filterField[1]) }
                             : filterField[2] === 'greaterThan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -442,7 +440,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         dueDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date(filterField[1])
+                            ? { equals: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -462,7 +460,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date('2025-06-03 00:00:00')
+                            ? { equals: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -482,7 +480,7 @@ export async function GET(req: any, res: any) {
                     ? {
                         googleCalendarDate: {
                           ...(filterField[2] === 'equal'
-                            ? new Date(filterField[1])
+                            ? { equals: new Date(filterField[1]) }
                             : filterField[2] === 'greaterThan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'

@@ -40,7 +40,7 @@
     "newExpense": "Νέα δαπάνη",
     "expenseTypePlaceholder": "Κατηγορία δαπάνης",
     "billIssuer": "Εκδότης",
-    "billAmount": "Ποσό",
+    "amount": "Ποσό",
     "billPaymentDate": "Ημ/νία εξόφλησης",
     "billDueDate": "Ημ/νία λήξης",
     "errorRequiredMessage": "Αυτό το πεδίο είναι υποχρεωτικό",

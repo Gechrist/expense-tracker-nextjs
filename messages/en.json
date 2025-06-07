@@ -40,7 +40,7 @@
     "newExpense": "New Expense",
     "expenseTypePlaceholder": "Expense Category",
     "billIssuer": "Issuer",
-    "billAmount": "Amount",
+    "amount": "Amount",
     "billDueDate": "Due Date",
     "billPaymentDate": "Payment Date",
     "errorRequiredMessage": "This field is required.",

@@ -411,6 +411,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
                   value={state.amount}
                   change={update('amount')}
                   validateDecimalOnType={true}
+                  placeholder={t('amount')}
                   decimals={2}
                   floatLabelType="Auto"
                   data-msg-containerid="errorForAmount"
@@ -507,6 +508,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
                   name="amount"
                   value={state.amount}
                   change={update('amount')}
+                  placeholder={t('amount')}
                   format="c2"
                   validateDecimalOnType={true}
                   decimals={2}
