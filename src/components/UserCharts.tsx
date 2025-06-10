@@ -192,7 +192,7 @@ const UserCharts = (): React.ReactNode => {
   }
 
   async function setDateRange(args: any) {
-    showSpinner(pivotObj.current as unknown as HTMLFormElement);
+    showSpinner(sectionRef!.current as unknown as HTMLFormElement);
     const data = await getRecords(
       session?.user?.email as string,
       locale === 'en' ? 'Bills' : 'Λογαριασμοί',
@@ -210,9 +210,9 @@ const UserCharts = (): React.ReactNode => {
         return { ...prevState, ...data };
       });
       dataSourceSettings.dataSource = records.result;
-      hideSpinner(pivotObj.current as unknown as HTMLFormElement);
+      hideSpinner(sectionRef.current as unknown as HTMLFormElement);
     } else if (typeof data === 'string' || data.error) {
-      hideSpinner(pivotObj.current as unknown as HTMLFormElement);
+      hideSpinner(sectionRef.current as unknown as HTMLFormElement);
       toastInstance?.current?.show({
         title: te('toastError'),
         content: te('errorRetrieving'),

@@ -42,20 +42,16 @@ const modifyDateString = (type: string, date: string): string => {
   }
   let year: string = dateParts[2];
 
-  let time: string;
+  let time: string = '';
   if (year.includes('.μ.') || year.includes('M')) {
     year = year.replace('π.μ.', 'AM');
     year = year.replace('μ.μ.', 'PM');
     time = year.substring(5);
     time = to24HrTime(time) as string;
-    time = 'T' + time;
     year = year.substring(0, 4);
-  } else {
-    time = 'T00:00:00';
   }
-  return year + '-' + month + '-' + day + time;
+  return year + '-' + month + '-' + day + ' ' + time;
 };
-
 export async function POST(req: any) {
   let {
     amount,
@@ -69,17 +65,20 @@ export async function POST(req: any) {
   } = await req.json();
 
   amount = parseFloat(amount);
-  dueDate = dueDate ? new Date(modifyDateString(type, dueDate)) : null;
-  paymentDate = paymentDate
-    ? new Date(modifyDateString(type, paymentDate))
-    : null;
-  let rawGoogleCalendarDate = googleCalendarDate
-    ? modifyDateString(type, googleCalendarDate)
-    : null;
+
   googleCalendarDate = googleCalendarDate
     ? new Date(modifyDateString(type, googleCalendarDate))
     : null;
+  paymentDate = paymentDate
+    ? new Date(modifyDateString(type, paymentDate))
+    : null;
+  dueDate = dueDate ? new Date(modifyDateString(type, dueDate)) : null;
+  // Used to get timezone from Google Calendar
+  let rawGoogleCalendarDate = googleCalendarDate
+    ? modifyDateString(type, googleCalendarDate)
+    : null;
   let googleCalendarDateEventId: string = '';
+  dueDate = dueDate ? new Date(modifyDateString(type, dueDate)) : null;
 
   let months = [
     type == 'Bills' || type == 'Expenses' ? 'January' : 'Ιανουάριος',

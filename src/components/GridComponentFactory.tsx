@@ -22,6 +22,7 @@ import { DataManager, Query } from '@syncfusion/ej2/data';
 import { expenseFields, sortOrder } from '@/utils/utils';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import Image from 'next/image';
+import { stat } from 'fs';
 
 const GridComponentFactory = forwardRef(
   (
@@ -129,7 +130,7 @@ const GridComponentFactory = forwardRef(
                 ? '/transportation-icon.svg'
                 : props.Id === 'Medical' || props.Id === 'Ιατρικά'
                 ? '/medical-icon.svg'
-                : props.Id === 'Utilities' || props.Id === 'Κοινής Ωφέλειας'
+                : props.Id === 'Utilities' || props.Id === 'Κοινής ωφέλειας'
                 ? '/utilities-icon.svg'
                 : props.Id === 'Leisure' || props.Id === 'Αναψυχή/Διασκέδαση'
                 ? '/leisure-icon.svg'
@@ -308,7 +309,9 @@ const GridComponentFactory = forwardRef(
             }),
           ];
         }
-        sortField = `${state.action.columnName},${state.action.direction}`;
+        sortField = `${
+          state.action.columnName
+        },${state.action.direction.toLowerCase()}`;
       } else {
         sortField = 'false';
       }
@@ -320,6 +323,11 @@ const GridComponentFactory = forwardRef(
               return [filter.field, filter.value, filter.operator];
             }),
           ];
+        }
+        if (state.sorted.length > 0) {
+          sortField = `${state.sorted[0].name},${state.sorted[0].direction}`;
+        } else {
+          sortField = 'false';
         }
       }
       try {
@@ -378,7 +386,6 @@ const GridComponentFactory = forwardRef(
             toastInstance.current?.show(toasts[state.action ? 0 : 1]);
           }
           gridInstance.current!.dataSource = [updatedData];
-          updateRecords ? updateRecords() : null;
         }
       } catch (err: any) {
         console.error('Error:', err.message);
@@ -406,15 +413,6 @@ const GridComponentFactory = forwardRef(
           enableImmutableMode={true}
           editSettings={editOptions}
           selectionSettings={{ type: 'Single' }}
-          sortSettings={{
-            columns: [
-              {
-                ...(data.result[0]?.dueDate
-                  ? { field: 'dueDate', direction: 'Ascending' }
-                  : { field: 'paymentDate', direction: 'Descending' }),
-              },
-            ],
-          }}
           statelessTemplates={['directiveTemplates']}
           filterSettings={filterSettings}
           toolbar={

@@ -261,34 +261,36 @@ export async function GET(req: any, res: any) {
             ...(sort
               ? sort[0] === 'dueDate'
                 ? {
-                    dueDate: sort[1].includes('Asc') ? 'asc' : 'desc',
+                    dueDate: sort[1].includes('asc') ? 'asc' : 'desc',
                   }
                 : sort[0] === 'paymentDate'
                 ? {
-                    paymentDate: sort[1].includes('Asc') ? 'asc' : 'desc',
+                    paymentDate: sort[1].includes('asc') ? 'asc' : 'desc',
                   }
                 : sort[0] === 'googleCalendarDate'
                 ? {
-                    googleCalendarDate: sort[1].includes('Asc')
+                    googleCalendarDate: sort[1].includes('asc')
                       ? 'asc'
                       : 'desc',
                   }
                 : sort[0] === 'billIssuerOrExpenseType'
                 ? {
-                    billIssuerOrExpenseType: sort[1].includes('Asc')
+                    billIssuerOrExpenseType: sort[1].includes('asc')
                       ? 'asc'
                       : 'desc',
                   }
                 : sort[0] === 'comments'
                 ? {
-                    comments: sort[1].includes('Asc') ? 'asc' : 'desc',
+                    comments: sort[1].includes('asc') ? 'asc' : 'desc',
                   }
                 : sort[0] === 'amount'
                 ? {
-                    amount: sort[1].includes('Asc') ? 'asc' : 'desc',
+                    amount: sort[1].includes('asc') ? 'asc' : 'desc',
                   }
                 : null
-              : null),
+              : type === 'Expenses' || type === 'Δαπάνες'
+              ? { paymentDate: 'desc' }
+              : { dueDate: 'asc' }),
           },
         }),
       ]);
@@ -573,34 +575,36 @@ export async function GET(req: any, res: any) {
             ...(sort
               ? sort[0] === 'dueDate'
                 ? {
-                    dueDate: sort[1].includes('Asc') ? 'asc' : 'desc',
+                    dueDate: sort[1].includes('asc') ? 'asc' : 'desc',
                   }
                 : sort[0] === 'paymentDate'
                 ? {
-                    paymentDate: sort[1].includes('Asc') ? 'asc' : 'desc',
+                    paymentDate: sort[1].includes('asc') ? 'asc' : 'desc',
                   }
                 : sort[0] === 'googleCalendarDate'
                 ? {
-                    googleCalendarDate: sort[1].includes('Asc')
+                    googleCalendarDate: sort[1].includes('asc')
                       ? 'asc'
                       : 'desc',
                   }
                 : sort[0] === 'billIssuerOrExpenseType'
                 ? {
-                    billIssuerOrExpenseType: sort[1].includes('Asc')
+                    billIssuerOrExpenseType: sort[1].includes('asc')
                       ? 'asc'
                       : 'desc',
                   }
                 : sort[0] === 'comments'
                 ? {
-                    comments: sort[1].includes('Asc') ? 'asc' : 'desc',
+                    comments: sort[1].includes('asc') ? 'asc' : 'desc',
                   }
                 : sort[0] === 'amount'
                 ? {
-                    amount: sort[1].includes('Asc') ? 'asc' : 'desc',
+                    amount: sort[1].includes('asc') ? 'asc' : 'desc',
                   }
                 : null
-              : null),
+              : type === 'Expenses' || type === 'Δαπάνες'
+              ? { paymentDate: 'desc' }
+              : { dueDate: 'asc' }),
           },
         }),
       ]);

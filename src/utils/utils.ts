@@ -29,7 +29,7 @@ export const getRecords = async (
           'Content-Type': 'application/json',
         },
         cache: 'no-cache',
-        signal: AbortSignal.timeout(7000),
+        signal: AbortSignal.timeout(10000),
       }
     );
     if (response) {

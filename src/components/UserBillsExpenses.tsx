@@ -253,7 +253,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        signal: AbortSignal.timeout(7000),
+        signal: AbortSignal.timeout(10000),
         body: JSON.stringify(Object.fromEntries(formData.entries())),
       });
       const json = await response.json();
@@ -286,7 +286,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
               ? '/transportation-icon.svg'
               : props.Id === 'Medical' || props.Id === 'Ιατρικά'
               ? '/medical-icon.svg'
-              : props.Id === 'Utilities' || props.Id === 'Κοινής Ωφέλειας'
+              : props.Id === 'Utilities' || props.Id === 'Κοινής ωφέλειας'
               ? '/utilities-icon.svg'
               : props.Id === 'Leisure' || props.Id === 'Αναψυχή/Διασκέδαση'
               ? '/leisure-icon.svg'
