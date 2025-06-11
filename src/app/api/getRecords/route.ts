@@ -157,38 +157,6 @@ export async function GET(req: any, res: any) {
       monthExpenseAmount = monthExpenseAmount._sum
         .amount as unknown as Prisma.GetRecordAggregateType<any>;
 
-      monthExpenses.map(
-        (
-          record: {
-            billIssuerOrExpenseType: string;
-            amount: number;
-            text?: string;
-            fill?: string;
-          },
-          index: number
-        ) => {
-          record.fill =
-            index === 0
-              ? '#7C00FE'
-              : index === 1
-              ? '#F9E400'
-              : index === 2
-              ? '#FFAF00'
-              : index === 3
-              ? '#F5004F'
-              : index === 4
-              ? '#36BA98'
-              : index === 5
-              ? '#CEDF9F'
-              : index === 6
-              ? '#AAB396'
-              : index === 7
-              ? '#0A6847'
-              : index === 8
-              ? '#C6A969'
-              : '#6CBEC7';
-        }
-      );
       // accumulate expense amounts for each category
       let accumulatedMonthExpensesPerCategory: any[] = [];
       let monthExpensesPerCategory: any[] = [];

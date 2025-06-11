@@ -104,6 +104,27 @@ const UserHome = () => {
     },
   };
 
+  const colorPalette = [
+    '#7C00FE',
+
+    '#F9E400',
+
+    '#FFAF00',
+
+    '#F5004F',
+
+    '#36BA98',
+
+    '#CEDF9F',
+
+    '#AAB396',
+
+    '#0A6847',
+
+    '#C6A969',
+    '#6CBEC7',
+  ];
+
   const getData = async () => {
     let data = await getRecords(
       session?.user?.email as string,
@@ -236,9 +257,10 @@ const UserHome = () => {
                 <AccumulationSeriesDirective
                   dataSource={records.accumulatedMonthExpensesPerCategory}
                   pointColorMapping="fill"
+                  palettes={colorPalette}
                   xName="billIssuerOrExpenseType"
                   yName="amount"
-                  innerRadius="50%"
+                  innerRadius="58%"
                   dataLabel={dataLabel}
                   height="100%"
                   width="100%"

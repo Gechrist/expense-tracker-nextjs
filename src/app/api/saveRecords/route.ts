@@ -67,18 +67,19 @@ export async function POST(req: any) {
   amount = parseFloat(amount);
 
   googleCalendarDate = googleCalendarDate
-    ? new Date(modifyDateString(type, googleCalendarDate))
+    ? new Date(modifyDateString(type, googleCalendarDate)).toISOString()
     : null;
   paymentDate = paymentDate
     ? new Date(modifyDateString(type, paymentDate))
     : null;
-  dueDate = dueDate ? new Date(modifyDateString(type, dueDate)) : null;
+  dueDate = dueDate
+    ? new Date(modifyDateString(type, dueDate)).toISOString()
+    : null;
   // Used to get timezone from Google Calendar
   let rawGoogleCalendarDate = googleCalendarDate
     ? modifyDateString(type, googleCalendarDate)
     : null;
   let googleCalendarDateEventId: string = '';
-  dueDate = dueDate ? new Date(modifyDateString(type, dueDate)) : null;
 
   let months = [
     type == 'Bills' || type == 'Expenses' ? 'January' : 'Ιανουάριος',
