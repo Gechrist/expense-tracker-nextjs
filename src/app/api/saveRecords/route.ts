@@ -4,54 +4,6 @@ import { getToken } from 'next-auth/jwt';
 
 const prisma = new PrismaClient();
 
-const to24HrTime = (time: string) => {
-  let [hr, min] =
-    String(time)
-      .toLowerCase()
-      .match(/\d+|[a-z]+/g) || [];
-  // If time is valid, return reformatted time
-  // Otherwise return undefined
-  let ap: string = time.substring(time.length - 2);
-  return `${ap == 'AM' && (hr?.length === 1 || hr === '12') ? '0' : ''}${
-    ((hr as unknown as number) % 12) + (ap == 'AM' ? 0 : 12)
-  }:${min}:00`;
-};
-
-const modifyDateString = (type: string, date: string): string => {
-  // if type is in English, the date format will be US
-
-  let dateParts = date.toString().split('/');
-  let day: string;
-  let month: string;
-
-  if (
-    type.toString().includes('Bills') ||
-    type.toString().includes('Expenses')
-  ) {
-    day = dateParts[1];
-    month = dateParts[0];
-  } else {
-    day = dateParts[0];
-    month = dateParts[1];
-  }
-  if (day.length === 1) {
-    day = '0' + day;
-  }
-  if (month.length === 1) {
-    month = '0' + month;
-  }
-  let year: string = dateParts[2];
-
-  let time: string = '';
-  if (year.includes('.μ.') || year.includes('M')) {
-    year = year.replace('π.μ.', 'AM');
-    year = year.replace('μ.μ.', 'PM');
-    time = year.substring(5);
-    time = to24HrTime(time) as string;
-    year = year.substring(0, 4);
-  }
-  return year + '-' + month + '-' + day + ' ' + time;
-};
 export async function POST(req: any) {
   let {
     amount,
@@ -66,19 +18,11 @@ export async function POST(req: any) {
 
   amount = parseFloat(amount);
 
-  googleCalendarDate = googleCalendarDate
-    ? new Date(modifyDateString(type, googleCalendarDate)).toISOString()
-    : null;
-  paymentDate = paymentDate
-    ? new Date(modifyDateString(type, paymentDate))
-    : null;
-  dueDate = dueDate
-    ? new Date(modifyDateString(type, dueDate)).toISOString()
-    : null;
+  googleCalendarDate = googleCalendarDate ? new Date(googleCalendarDate) : null;
+  paymentDate = paymentDate ? new Date(paymentDate) : null;
+  dueDate = dueDate ? new Date(dueDate) : null;
   // Used to get timezone from Google Calendar
-  let rawGoogleCalendarDate = googleCalendarDate
-    ? modifyDateString(type, googleCalendarDate)
-    : null;
+  let rawGoogleCalendarDate = googleCalendarDate ? googleCalendarDate : null;
   let googleCalendarDateEventId: string = '';
 
   let months = [
@@ -125,11 +69,11 @@ export async function POST(req: any) {
           ? `Pay $${amount} ${billIssuerOrExpenseType} Bill`
           : `Πληρωμή λογαριασμού ${billIssuerOrExpenseType} ${amount} €`,
       start: {
-        dateTime: rawGoogleCalendarDate,
+        dateTime: googleCalendarDate,
         timeZone: '',
       },
       end: {
-        dateTime: rawGoogleCalendarDate,
+        dateTime: googleCalendarDate,
         timeZone: '',
       },
       conferenceData: null,

@@ -19,7 +19,11 @@ import { ToastComponent } from '@syncfusion/ej2-react-notifications';
 import { useTranslations } from 'next-intl';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DataManager, Query } from '@syncfusion/ej2/data';
-import { expenseFields, sortOrder } from '@/utils/utils';
+import {
+  convertDateStringToUTC,
+  expenseFields,
+  sortOrder,
+} from '@/utils/utils';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import Image from 'next/image';
 import { stat } from 'fs';
@@ -367,11 +371,24 @@ const GridComponentFactory = forwardRef(
       ) {
         googleCalendarDateAction = 'editevent';
       }
+      Object.keys(state.data).map((entryKey: any) => {
+        if (
+          (entryKey === 'dueDate' && state.data[entryKey]) ||
+          (entryKey === 'paymentDate' && state.data[entryKey]) ||
+          (entryKey === 'googleCalendarDate' && state.data[entryKey])
+        ) {
+          let convertedDate = new Date(
+            state.data[entryKey] as string
+          ).toISOString();
+          state.data[entryKey] = convertedDate;
+        }
+      });
       try {
         const result = await fetch(
           `/api/${state.action ? state.action : 'delete'}Records`,
           {
             method: state.action ? 'PUT' : 'DELETE',
+            signal: AbortSignal.timeout(10000),
             headers: {
               'Content-Type': 'application/json',
             },

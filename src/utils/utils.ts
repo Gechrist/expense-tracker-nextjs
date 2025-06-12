@@ -7,6 +7,59 @@ export const expenseFields: { text: string; value: string } = {
 //dropdown list items order
 export const sortOrder = 'Ascending';
 
+//convert to UTC Dates
+
+const to24HrTime = (time: string) => {
+  let [hr, min] =
+    String(time)
+      .toLowerCase()
+      .match(/\d+|[a-z]+/g) || [];
+  // If time is valid, return reformatted time
+  // Otherwise return undefined
+  let ap: string = time.substring(time.length - 2);
+  return `${ap == 'AM' && (hr?.length === 1 || hr === '12') ? '0' : ''}${
+    ((hr as unknown as number) % 12) + (ap == 'AM' ? 0 : 12)
+  }:${min}:00`;
+};
+
+export const convertDateStringToUTC = (type: string, date: string): string => {
+  // if type is in English, the date format will be US
+  let dateParts = date.toString().split('/');
+  let day: string;
+  let month: string;
+
+  if (
+    type.toString().includes('Bills') ||
+    type.toString().includes('Expenses')
+  ) {
+    day = dateParts[1];
+    month = dateParts[0];
+  } else {
+    day = dateParts[0];
+    month = dateParts[1];
+  }
+  if (day.length === 1) {
+    day = '0' + day;
+  }
+  if (month.length === 1) {
+    month = '0' + month;
+  }
+  let year: string = dateParts[2];
+
+  let time: string = '';
+  if (year.includes('.μ.') || year.includes('M')) {
+    year = year.replace('π.μ.', 'AM');
+    year = year.replace('μ.μ.', 'PM');
+    time = year.substring(5);
+    time = to24HrTime(time) as string;
+    year = year.substring(0, 4);
+  }
+  let UTCDate = new Date(
+    year + '-' + month + '-' + day + ' ' + time
+  ).toISOString();
+  return UTCDate;
+};
+
 //get records function
 export const getRecords = async (
   user: string,

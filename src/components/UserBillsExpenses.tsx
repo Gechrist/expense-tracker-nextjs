@@ -27,7 +27,12 @@ import {
   showSpinner,
   hideSpinner,
 } from '@syncfusion/ej2-popups';
-import { expenseFields, getRecords, sortOrder } from '@/utils/utils';
+import {
+  convertDateStringToUTC,
+  expenseFields,
+  getRecords,
+  sortOrder,
+} from '@/utils/utils';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
@@ -233,6 +238,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       hideSpinner(formRef.current as HTMLFormElement);
       return;
     }
+
     let formData: FormData = new FormData(e.target as HTMLFormElement);
     formData.append('createdBy', `${session!.user!.email}`);
     formData.append(
@@ -247,6 +253,20 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
           : 'Δαπάνες'
       }`
     );
+    let formDataObject = Object.fromEntries(formData.entries());
+    Object.keys(formDataObject).map((entryKey: any) => {
+      if (
+        (entryKey === 'dueDate' && formDataObject[entryKey]) ||
+        (entryKey === 'paymentDate' && formDataObject[entryKey]) ||
+        (entryKey === 'googleCalendarDate' && formDataObject[entryKey])
+      ) {
+        let convertedDate = convertDateStringToUTC(
+          formDataObject.type as string,
+          formDataObject[entryKey] as string
+        );
+        formDataObject[entryKey] = convertedDate;
+      }
+    });
     try {
       const response = await fetch('/api/saveRecords', {
         method: 'POST',
@@ -254,7 +274,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
           'Content-Type': 'application/json',
         },
         signal: AbortSignal.timeout(10000),
-        body: JSON.stringify(Object.fromEntries(formData.entries())),
+        body: JSON.stringify(formDataObject),
       });
       const json = await response.json();
       hideSpinner(formRef.current as HTMLFormElement);
