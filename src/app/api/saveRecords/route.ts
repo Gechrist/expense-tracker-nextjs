@@ -22,7 +22,6 @@ export async function POST(req: any) {
   paymentDate = paymentDate ? new Date(paymentDate) : null;
   dueDate = dueDate ? new Date(dueDate) : null;
   // Used to get timezone from Google Calendar
-  let rawGoogleCalendarDate = googleCalendarDate ? googleCalendarDate : null;
   let googleCalendarDateEventId: string = '';
 
   let months = [

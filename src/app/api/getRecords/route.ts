@@ -1,10 +1,11 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
 export async function GET(req: any, res: any) {
-  const user: string = new URLSearchParams(req.url)
+  let user: string = new URLSearchParams(req.url)
     .get('user')
     ?.toString() as string;
   const type: string | null = new URLSearchParams(req.url)
@@ -45,12 +46,17 @@ export async function GET(req: any, res: any) {
   let firstOfMonth = new Date(`${year}-${month}-01`);
   sort = sort && sort.split(',');
   filter = filter && JSON.parse(filter);
+  let secret = process.env.NEXTAUTH_SECRET as string;
+  let token = await getToken({ req, secret });
+  console.log('ses', token);
+
+  user = token?.email as string;
 
   try {
     if (charts && !startingDate && !endingDate) {
       const records = await prisma.record.findMany({
         where: {
-          createdBy: { equals: user },
+          createdBy: user,
           NOT: [
             {
               type: type == 'Bills' ? 'Λογαριασμοί' : '',
@@ -76,7 +82,7 @@ export async function GET(req: any, res: any) {
     if (startingDate && endingDate) {
       const records = await prisma.record.findMany({
         where: {
-          createdBy: { equals: user },
+          createdBy: user,
           paymentDate: { gte: startingDate, lte: endingDate },
           NOT: [
             {
@@ -108,12 +114,12 @@ export async function GET(req: any, res: any) {
             where: {
               type: type == 'Bills' ? 'Expenses' : 'Δαπάνες',
               paymentDate: { gte: firstOfMonth },
-              createdBy: { equals: user },
+              createdBy: user,
             },
           }),
           prisma.record.findMany({
             where: {
-              createdBy: { equals: user },
+              createdBy: user,
               type: type,
             },
             select: {
@@ -128,7 +134,7 @@ export async function GET(req: any, res: any) {
           }),
           prisma.record.findMany({
             where: {
-              createdBy: { equals: user },
+              createdBy: user,
               type: type == 'Bills' ? 'Expenses' : 'Δαπάνες',
             },
             orderBy: {
@@ -143,7 +149,7 @@ export async function GET(req: any, res: any) {
           }),
           prisma.record.findMany({
             where: {
-              createdBy: { equals: user },
+              createdBy: user,
               type: type == 'Bills' ? 'Expenses' : 'Δαπάνες',
               paymentDate: { gte: firstOfMonth },
             },
@@ -202,13 +208,13 @@ export async function GET(req: any, res: any) {
       let [recordsNumber, records] = await prisma.$transaction([
         prisma.record.count({
           where: {
-            createdBy: { equals: user },
+            createdBy: user,
             type: type,
           },
         }),
         prisma.record.findMany({
           where: {
-            createdBy: { equals: user },
+            createdBy: user,
             type: type,
           },
           select: {
@@ -277,7 +283,7 @@ export async function GET(req: any, res: any) {
             AND: [
               ...(filter as string[]).map((filterField: any) => {
                 return {
-                  createdBy: { equals: user },
+                  createdBy: user,
                   type: type,
                   ...(filterField[0] === 'dueDate'
                     ? {
@@ -404,7 +410,7 @@ export async function GET(req: any, res: any) {
             AND: [
               ...(filter as string[]).map((filterField: any) => {
                 return {
-                  createdBy: { equals: user },
+                  createdBy: user,
                   type: type,
                   ...(filterField[0] === 'dueDate'
                     ? {
