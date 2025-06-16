@@ -1,13 +1,18 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { getToken } from 'next-auth/jwt';
+import { getToken, JWT } from 'next-auth/jwt';
+import { redirect } from 'next/navigation';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
 export async function GET(req: any, res: any) {
-  let user: string = new URLSearchParams(req.url)
-    .get('user')
-    ?.toString() as string;
+  let secret: string = process.env.NEXTAUTH_SECRET as string;
+  let token: JWT | null = (await getToken({ req, secret })) as JWT | null;
+
+  if (!token?.access_token) {
+    redirect('/');
+  }
+
   const type: string | null = new URLSearchParams(req.url)
     .get('type')
     ?.toString() as string;
@@ -46,17 +51,12 @@ export async function GET(req: any, res: any) {
   let firstOfMonth = new Date(`${year}-${month}-01`);
   sort = sort && sort.split(',');
   filter = filter && JSON.parse(filter);
-  let secret = process.env.NEXTAUTH_SECRET as string;
-  let token = await getToken({ req, secret });
-  console.log('ses', token);
-
-  user = token?.email as string;
 
   try {
     if (charts && !startingDate && !endingDate) {
       const records = await prisma.record.findMany({
         where: {
-          createdBy: user,
+          createdBy: token?.email as string,
           NOT: [
             {
               type: type == 'Bills' ? 'Λογαριασμοί' : '',
@@ -82,7 +82,7 @@ export async function GET(req: any, res: any) {
     if (startingDate && endingDate) {
       const records = await prisma.record.findMany({
         where: {
-          createdBy: user,
+          createdBy: token?.email as string,
           paymentDate: { gte: startingDate, lte: endingDate },
           NOT: [
             {
@@ -114,12 +114,12 @@ export async function GET(req: any, res: any) {
             where: {
               type: type == 'Bills' ? 'Expenses' : 'Δαπάνες',
               paymentDate: { gte: firstOfMonth },
-              createdBy: user,
+              createdBy: token?.email as string,
             },
           }),
           prisma.record.findMany({
             where: {
-              createdBy: user,
+              createdBy: token?.email as string,
               type: type,
             },
             select: {
@@ -134,7 +134,7 @@ export async function GET(req: any, res: any) {
           }),
           prisma.record.findMany({
             where: {
-              createdBy: user,
+              createdBy: token?.email as string,
               type: type == 'Bills' ? 'Expenses' : 'Δαπάνες',
             },
             orderBy: {
@@ -149,7 +149,7 @@ export async function GET(req: any, res: any) {
           }),
           prisma.record.findMany({
             where: {
-              createdBy: user,
+              createdBy: token?.email as string,
               type: type == 'Bills' ? 'Expenses' : 'Δαπάνες',
               paymentDate: { gte: firstOfMonth },
             },
@@ -208,13 +208,13 @@ export async function GET(req: any, res: any) {
       let [recordsNumber, records] = await prisma.$transaction([
         prisma.record.count({
           where: {
-            createdBy: user,
+            createdBy: token?.email as string,
             type: type,
           },
         }),
         prisma.record.findMany({
           where: {
-            createdBy: user,
+            createdBy: token?.email as string,
             type: type,
           },
           select: {
@@ -283,7 +283,7 @@ export async function GET(req: any, res: any) {
             AND: [
               ...(filter as string[]).map((filterField: any) => {
                 return {
-                  createdBy: user,
+                  createdBy: token?.email as string,
                   type: type,
                   ...(filterField[0] === 'dueDate'
                     ? {
@@ -410,7 +410,7 @@ export async function GET(req: any, res: any) {
             AND: [
               ...(filter as string[]).map((filterField: any) => {
                 return {
-                  createdBy: user,
+                  createdBy: token?.email as string,
                   type: type,
                   ...(filterField[0] === 'dueDate'
                     ? {

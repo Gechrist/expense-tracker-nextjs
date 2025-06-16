@@ -36,11 +36,6 @@
 
 /* dark theme */
 @media (prefers-color-scheme: dark) {
-  text[id^='charts_datalabel'],
-  text[id^='PivotView_chart'] {
-    fill: #d3d3d3 !important;
-  }
-
   .e-dropdownbase .e-list-item.e-item-focus,
   .e-dropdownbase .e-list-item.e-active,
   .e-dropdownbase .e-list-item.e-active.e-hover,

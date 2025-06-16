@@ -62,7 +62,6 @@ export const convertDateStringToUTC = (type: string, date: string): string => {
 
 //get records function
 export const getRecords = async (
-  user: string,
   type: string,
   home: string,
   billsOrExpenses: string,
@@ -75,7 +74,7 @@ export const getRecords = async (
 ): Promise<any> => {
   try {
     const response = await fetch(
-      `/api/getRecords?&user=${user}&type=${type}&home=${home}&billsorexpenses=${billsOrExpenses}&charts=${charts}&startingdate=${startingDate}&endingdate=${endingDate}&skip=${skip}&sort=${sort}&filter=${filter}`,
+      `/api/getRecords?&type=${type}&home=${home}&billsorexpenses=${billsOrExpenses}&charts=${charts}&startingdate=${startingDate}&endingdate=${endingDate}&skip=${skip}&sort=${sort}&filter=${filter}`,
       {
         method: 'GET',
         headers: {

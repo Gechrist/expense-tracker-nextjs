@@ -26,7 +26,6 @@ import {
   SkeletonComponent,
   ToastComponent,
 } from '@syncfusion/ej2-react-notifications';
-import { useSession } from 'next-auth/react';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
 import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
@@ -44,7 +43,6 @@ const UserCharts = (): React.ReactNode => {
   const locale = useLocale();
   const t = useTranslations('UserCharts');
   const te = useTranslations('UserBillsExpenses');
-  const { data: session } = useSession<boolean>();
   const [records, setRecords] = useState<any>({});
   const sectionRef = useRef<HTMLElement>(null);
   const pivotObj = useRef<PivotViewComponent>(null);
@@ -78,7 +76,13 @@ const UserCharts = (): React.ReactNode => {
   let chartSettings: ChartSettings = {
     chartSeries: {
       type: 'Bar',
-      dataLabel: { position: 'Inside', font: { fontFamily: 'comfortaa' } },
+      dataLabel: {
+        position: 'Inside',
+        font: {
+          fontFamily: 'comfortaa',
+          color: darkMode.value ? '#d3d3d3' : 'black',
+        },
+      },
     },
     primaryXAxis: {
       title: t('billsAndExpenses'),
@@ -86,26 +90,46 @@ const UserCharts = (): React.ReactNode => {
         fontWeight: 'Bold',
         textOverflow: 'None',
         fontFamily: 'comfortaa',
+        color: darkMode.value ? '#d3d3d3' : 'black',
       },
-      labelStyle: { fontWeight: 'Bold', fontFamily: 'comfortaa' },
+      labelStyle: {
+        fontWeight: 'Bold',
+        fontFamily: 'comfortaa',
+        color: darkMode.value ? '#d3d3d3' : 'black',
+      },
     },
     primaryYAxis: {
       title: t('amount'),
-      titleStyle: { fontWeight: 'Bold', fontFamily: 'comfortaa' },
-      labelStyle: { fontWeight: 'Bold', fontFamily: 'comfortaa' },
+      titleStyle: {
+        fontWeight: 'Bold',
+        fontFamily: 'comfortaa',
+        color: darkMode.value ? '#d3d3d3' : 'black',
+      },
+      labelStyle: {
+        fontWeight: 'Bold',
+        fontFamily: 'comfortaa',
+        color: darkMode.value ? '#d3d3d3' : 'black',
+      },
     },
     legendSettings: {
-      textStyle: { fontFamily: 'comfortaa' },
+      textStyle: {
+        fontFamily: 'comfortaa',
+        color: darkMode.value ? '#d3d3d3' : 'black',
+      },
     },
     zoomSettings: {
       enableMouseWheelZooming: true,
       enablePinchZooming: true,
     },
     tooltip: {
-      textStyle: { fontFamily: 'comfortaa' },
+      textStyle: {
+        fontFamily: 'comfortaa',
+        color: darkMode.value ? '#d3d3d3' : 'black',
+      },
     },
     multiLevelLabelRender: function (args: any) {
       args.textStyle.fontFamily = 'comfortaa';
+      args.textStyle.color = darkMode.value ? '#d3d3d3' : 'black';
     },
     palettes: [
       '#7C00FE',
@@ -194,7 +218,6 @@ const UserCharts = (): React.ReactNode => {
   async function setDateRange(args: any) {
     showSpinner(sectionRef!.current as unknown as HTMLFormElement);
     const data = await getRecords(
-      session?.user?.email as string,
       locale === 'en' ? 'Bills' : 'Λογαριασμοί',
       'false',
       'false',
@@ -227,7 +250,6 @@ const UserCharts = (): React.ReactNode => {
 
   const getData = async () => {
     let data = await getRecords(
-      session?.user?.email as string,
       locale === 'en' ? 'Bills' : 'Λογαριασμοί',
       'false',
       'false',

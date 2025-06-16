@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { getToken } from 'next-auth/jwt';
+import { getToken, JWT } from 'next-auth/jwt';
+import { redirect } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
 export async function POST(req: any) {
+  let secret: string = process.env.NEXTAUTH_SECRET as string;
+  let token: JWT | null = (await getToken({ req, secret })) as JWT | null;
+
+  if (!token?.access_token) {
+    redirect('/');
+  }
+
   let {
     amount,
     type,
@@ -13,7 +21,6 @@ export async function POST(req: any) {
     paymentDate,
     googleCalendarDate,
     billIssuerOrExpenseType,
-    createdBy,
   } = await req.json();
 
   amount = parseFloat(amount);
@@ -57,11 +64,7 @@ export async function POST(req: any) {
         });
 
   let calendarEvent;
-  let token;
-  let secret: string;
   if (googleCalendarDate) {
-    secret = process.env.NEXTAUTH_SECRET as string;
-    token = await getToken({ req, secret });
     calendarEvent = {
       summary:
         type == 'Bills'
@@ -130,7 +133,7 @@ export async function POST(req: any) {
         month,
         day,
         billIssuerOrExpenseType,
-        createdBy,
+        createdBy: token?.email as string,
       },
     });
     if (result) {

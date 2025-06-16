@@ -1,10 +1,16 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { getToken } from 'next-auth/jwt';
+import { getToken, JWT } from 'next-auth/jwt';
+import { redirect } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
 export async function PUT(req: any) {
+  let secret: string = process.env.NEXTAUTH_SECRET as string;
+  let token: JWT | null = (await getToken({ req, secret })) as JWT | null;
+  if (!token?.access_token) {
+    redirect('/');
+  }
   let {
     id,
     amount,
@@ -22,8 +28,6 @@ export async function PUT(req: any) {
   dueDate = dueDate ? new Date(dueDate) : null;
   paymentDate = paymentDate ? new Date(paymentDate) : null;
   googleCalendarDate = googleCalendarDate ? new Date(googleCalendarDate) : null;
-  let secret: string;
-  let token;
   let calendarEvent;
 
   let months = [
@@ -59,8 +63,6 @@ export async function PUT(req: any) {
         });
 
   if (googleCalendarDateAction) {
-    secret = process.env.NEXTAUTH_SECRET as string;
-    token = await getToken({ req, secret });
     if (googleCalendarDateAction !== 'deleteevent') {
       calendarEvent = {
         summary:

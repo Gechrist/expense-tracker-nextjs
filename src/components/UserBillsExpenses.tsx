@@ -34,7 +34,6 @@ import {
   sortOrder,
 } from '@/utils/utils';
 import { useEffect, useReducer, useRef, useState } from 'react';
-import { useSession } from 'next-auth/react';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
 import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
@@ -61,7 +60,6 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
   const te = useTranslations('UserBillsExpenses.Expenses');
   const th = useTranslations('UserHome');
   const locale = useLocale();
-  const { data: session } = useSession<boolean>();
 
   if (locale.includes('el')) {
     loadCldr(
@@ -201,7 +199,6 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
   const [records, setRecords] = useState<Records>({} as Records);
   const getData = async (skip?: string, sort?: string, filter?: string) => {
     let data = await getRecords(
-      session?.user?.email as string,
       pathName.includes('bills') && locale.includes('en')
         ? 'Bills'
         : !pathName.includes('bills') && locale.includes('en')
@@ -240,7 +237,6 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
     }
 
     let formData: FormData = new FormData(e.target as HTMLFormElement);
-    formData.append('createdBy', `${session!.user!.email}`);
     formData.append(
       'type',
       `${

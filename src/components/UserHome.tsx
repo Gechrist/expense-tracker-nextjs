@@ -1,7 +1,6 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
-import { useSession } from 'next-auth/react';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   AccumulationChartComponent,
@@ -39,7 +38,6 @@ const UserHome = () => {
   const t = useTranslations('UserHome');
   const te = useTranslations('UserBillsExpenses');
   const locale = useLocale();
-  const { data: session } = useSession<boolean>();
   const [records, setRecords] = useState<
     Records & {
       accumulatedMonthExpensesPerCategory: any;
@@ -92,7 +90,10 @@ const UserHome = () => {
     name: 'text',
     position: 'Outside',
     textWrap: 'Wrap',
-    font: { fontFamily: 'comfortaa' },
+    font: {
+      fontFamily: 'comfortaa',
+      color: darkMode.value ? '#d3d3d3' : 'black',
+    },
   };
 
   const legendSettings: LegendSettingsModel = {
@@ -100,7 +101,7 @@ const UserHome = () => {
     position: 'Bottom',
     textStyle: {
       fontFamily: 'comfortaa',
-      color: darkMode.value ? 'white' : 'black',
+      color: darkMode.value ? '#d3d3d3' : 'black',
     },
   };
 
@@ -127,7 +128,6 @@ const UserHome = () => {
 
   const getData = async () => {
     let data = await getRecords(
-      session?.user?.email as string,
       locale.includes('en') ? 'Bills' : 'Λογαριασμοί',
       'true',
       'false',
