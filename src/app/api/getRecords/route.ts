@@ -44,6 +44,7 @@ export async function GET(req: any, res: any) {
     new URLSearchParams(req.url).get('sort') == 'false'
       ? false
       : (new URLSearchParams(req.url).get('sort')?.toString() as string);
+  console.log('ty', type);
 
   let currentDate = new Date();
   let month = currentDate.getMonth() + 1;

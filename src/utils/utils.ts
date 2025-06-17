@@ -74,7 +74,7 @@ export const getRecords = async (
 ): Promise<any> => {
   try {
     const response = await fetch(
-      `/api/getRecords?type=${type}&home=${home}&billsorexpenses=${billsOrExpenses}&charts=${charts}&startingdate=${startingDate}&endingdate=${endingDate}&skip=${skip}&sort=${sort}&filter=${filter}`,
+      `/api/getRecords?&type=${type}&home=${home}&billsorexpenses=${billsOrExpenses}&charts=${charts}&startingdate=${startingDate}&endingdate=${endingDate}&skip=${skip}&sort=${sort}&filter=${filter}`,
       {
         method: 'GET',
         headers: {
