@@ -1,11 +1,15 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import { StrokeSettings } from '@syncfusion/ej2/image-editor';
 import { getToken, JWT } from 'next-auth/jwt';
 import { redirect } from 'next/navigation';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(req: any, res: any) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ type: string }> }
+) {
   let secret: string = process.env.NEXTAUTH_SECRET as string;
   let token: JWT | null = (await getToken({ req, secret })) as JWT | null;
 
@@ -13,9 +17,12 @@ export async function GET(req: any, res: any) {
     redirect('/');
   }
 
-  const type: string | null = new URLSearchParams(req.url)
-    .get('type')
-    ?.toString() as string;
+  const searchParams = req.nextUrl.searchParams;
+  const type = searchParams.get('type')?.toString();
+
+  // const type: string | null = new URLSearchParams(req.url)
+  //   .get('type')
+  //   ?.toString() as string;
   const startingDate: Date | boolean =
     new URLSearchParams(req.url).get('startingdate') !== 'false'
       ? new Date(new URLSearchParams(req.url).get('startingdate') as string)
@@ -44,7 +51,6 @@ export async function GET(req: any, res: any) {
     new URLSearchParams(req.url).get('sort') == 'false'
       ? false
       : (new URLSearchParams(req.url).get('sort')?.toString() as string);
-  console.log('ty', type);
 
   let currentDate = new Date();
   let month = currentDate.getMonth() + 1;
