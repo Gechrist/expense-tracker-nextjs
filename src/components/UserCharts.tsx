@@ -13,6 +13,7 @@ import {
   hideSpinner,
 } from '@syncfusion/ej2-popups';
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2/base';
+import { redirect } from 'next/navigation';
 import {
   DropDownListComponent,
   VirtualScroll,
@@ -228,6 +229,9 @@ const UserCharts = (): React.ReactNode => {
       'false',
       'false'
     );
+    if (data.status) {
+      redirect('/');
+    }
     if ((data && typeof data !== 'string') || !data.error) {
       setRecords((prevState: any) => {
         return { ...prevState, ...data };

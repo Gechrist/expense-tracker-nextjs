@@ -27,6 +27,7 @@ import {
   showSpinner,
   hideSpinner,
 } from '@syncfusion/ej2-popups';
+import { redirect } from 'next/navigation';
 import {
   convertDateStringToUTC,
   expenseFields,
@@ -215,6 +216,9 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       sort ? sort : 'false',
       filter ? filter : 'false'
     );
+    if (data.status) {
+      redirect('/');
+    }
     if (data && typeof data !== 'string' && !data.error) {
       setRecords((prevState: any) => {
         return { ...prevState, ...data };

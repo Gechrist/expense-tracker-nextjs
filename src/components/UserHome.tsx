@@ -2,6 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import React, { useState, useEffect, useRef } from 'react';
+import { redirect } from 'next/navigation';
 import {
   AccumulationChartComponent,
   AccumulationDataLabel,
@@ -138,6 +139,9 @@ const UserHome = () => {
       'false',
       'false'
     );
+    if (data.status) {
+      redirect('/');
+    }
     if (data && typeof data !== 'string' && !data.error) {
       setRecords((prevState: any) => {
         return { ...prevState, ...data };
@@ -247,7 +251,7 @@ const UserHome = () => {
                 textStyle: {
                   fontWeight: '900',
                   size: '100%',
-                  color: darkMode.value ? 'white' : 'black',
+                  color: darkMode.value ? '#d3d3d3' : 'black',
                   fontFamily: 'comfortaa',
                 },
               }}

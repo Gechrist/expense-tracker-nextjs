@@ -1,17 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getToken, JWT } from 'next-auth/jwt';
-import { redirect } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
-export async function DELETE(req: any) {
+export async function DELETE(req: NextRequest) {
   let id = await req.json();
   let secret: string = process.env.NEXTAUTH_SECRET as string;
   let token: JWT | null = (await getToken({ req, secret })) as JWT | null;
 
   if (!token?.access_token) {
-    redirect('/');
+    return NextResponse.json({ status: 'unauthorized' });
   }
 
   try {

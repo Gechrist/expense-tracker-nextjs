@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import {
   ColumnDirective,
@@ -323,7 +324,7 @@ const GridComponentFactory = forwardRef(
             }),
           ];
         }
-        if (state.sorted.length > 0) {
+        if (state?.sorted?.length > 0) {
           sortField = `${state.sorted[0].name},${state.sorted[0].direction}`;
         } else {
           sortField = 'false';
@@ -336,6 +337,9 @@ const GridComponentFactory = forwardRef(
             sortField,
             filterFields.length > 0 ? JSON.stringify(filterFields) : 'false'
           );
+          if (updatedData.status) {
+            redirect('/');
+          }
           if (updatedData) {
             data = [...data, updatedData];
           }
@@ -392,6 +396,9 @@ const GridComponentFactory = forwardRef(
         );
         if (result) {
           const updatedData = await result.json();
+          if (updatedData.status) {
+            redirect('/');
+          }
           if (updatedData.error) {
             toastInstance.current?.show(toasts[state.action ? 2 : 3]);
           } else {

@@ -1,56 +1,45 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { StrokeSettings } from '@syncfusion/ej2/image-editor';
 import { getToken, JWT } from 'next-auth/jwt';
-import { redirect } from 'next/navigation';
 import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ type: string }> }
-) {
+export async function GET(req: NextRequest) {
   let secret: string = process.env.NEXTAUTH_SECRET as string;
   let token: JWT | null = (await getToken({ req, secret })) as JWT | null;
 
   if (!token?.access_token) {
-    redirect('/');
+    return NextResponse.json({ status: 'unauthorized' });
   }
 
   const searchParams = req.nextUrl.searchParams;
   const type = searchParams.get('type')?.toString();
 
-  // const type: string | null = new URLSearchParams(req.url)
-  //   .get('type')
-  //   ?.toString() as string;
   const startingDate: Date | boolean =
-    new URLSearchParams(req.url).get('startingdate') !== 'false'
-      ? new Date(new URLSearchParams(req.url).get('startingdate') as string)
+    searchParams.get('startingdate') !== 'false'
+      ? new Date(searchParams.get('startingdate') as string)
       : false;
   const endingDate: Date | boolean =
-    new URLSearchParams(req.url).get('endingdate') !== 'false'
-      ? new Date(new URLSearchParams(req.url).get('endingdate') as string)
+    searchParams.get('endingdate') !== 'false'
+      ? new Date(searchParams.get('endingdate') as string)
       : false;
   const home: boolean | null =
-    new URLSearchParams(req.url).get('home') === 'false' ? false : true;
-  const charts: boolean | null =
-    new URLSearchParams(req.url).get('charts') === 'false' ? false : true;
-  const billsOrExpenses: boolean | null =
-    new URLSearchParams(req.url).get('billsorexpenses') === 'false'
-      ? false
-      : true;
+    searchParams.get('home') === 'false' ? false : true;
+  const charts = searchParams.get('charts') === 'false' ? false : true;
+  const billsOrExpenses =
+    searchParams.get('billsorexpenses') === 'false' ? false : true;
   const skip: number | boolean =
-    new URLSearchParams(req.url).get('skip') === 'false'
+    searchParams.get('skip') === 'false'
       ? false
-      : parseInt(new URLSearchParams(req.url).get('skip') as string);
+      : parseInt(searchParams.get('skip') as string);
   let filter: string | boolean | string[] =
-    new URLSearchParams(req.url).get('filter') == 'false'
+    searchParams.get('filter') == 'false'
       ? false
-      : (new URLSearchParams(req.url).get('filter') as string);
+      : (searchParams.get('filter') as string);
   let sort: string | boolean | string[] =
-    new URLSearchParams(req.url).get('sort') == 'false'
+    searchParams.get('sort') == 'false'
       ? false
-      : (new URLSearchParams(req.url).get('sort')?.toString() as string);
+      : (searchParams.get('sort')?.toString() as string);
 
   let currentDate = new Date();
   let month = currentDate.getMonth() + 1;
@@ -189,6 +178,7 @@ export async function GET(
         ) {
           return;
         }
+
         amountPerCategory = monthExpensesPerCategory
           .reduce((accumulator: any, entry: any) => {
             return accumulator + entry.amount;
@@ -197,7 +187,7 @@ export async function GET(
 
         accumulatedMonthExpensesPerCategory.push({
           ...monthExpensesPerCategory[0],
-          amount: amountPerCategory,
+          y: amountPerCategory,
           text: `${record?.billIssuerOrExpenseType}:\u00A0 ${
             type == 'Bills' ? '$' + amountPerCategory : amountPerCategory + ' €'
           }`,
