@@ -287,8 +287,6 @@ export async function GET(req: NextRequest) {
                         dueDate: {
                           ...(filterField[2] === 'equal'
                             ? { equals: new Date(filterField[1]) }
-                            : filterField[2] === 'contains'
-                            ? { contains: filterField[1] as string | Date }
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -309,8 +307,6 @@ export async function GET(req: NextRequest) {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
                             ? { equals: new Date(filterField[1]) }
-                            : filterField[2] === 'contains'
-                            ? { contains: filterField[1] as string | Date }
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -331,8 +327,6 @@ export async function GET(req: NextRequest) {
                         googleCalendarDate: {
                           ...(filterField[2] === 'equal'
                             ? { equals: new Date(filterField[1]) }
-                            : filterField[2] === 'contains'
-                            ? { contains: filterField[1] as string | Date }
                             : filterField[2] === 'greaterThan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -420,8 +414,6 @@ export async function GET(req: NextRequest) {
                         dueDate: {
                           ...(filterField[2] === 'equal'
                             ? { equals: new Date(filterField[1]) }
-                            : filterField[2] === 'contains'
-                            ? { contains: filterField[1] }
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -442,8 +434,6 @@ export async function GET(req: NextRequest) {
                         paymentDate: {
                           ...(filterField[2] === 'equal'
                             ? { equals: new Date(filterField[1]) }
-                            : filterField[2] === 'contains'
-                            ? { contains: filterField[1] }
                             : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
@@ -464,8 +454,6 @@ export async function GET(req: NextRequest) {
                         googleCalendarDate: {
                           ...(filterField[2] === 'equal'
                             ? { equals: new Date(filterField[1]) }
-                            : filterField[2] === 'contains'
-                            ? { contains: filterField[1] }
                             : filterField[2] === 'greaterThan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
