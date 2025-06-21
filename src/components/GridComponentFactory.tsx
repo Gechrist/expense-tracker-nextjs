@@ -337,7 +337,7 @@ const GridComponentFactory = forwardRef(
             sortField,
             filterFields.length > 0 ? JSON.stringify(filterFields) : 'false'
           );
-          if (updatedData.status) {
+          if (updatedData?.status) {
             redirect('/');
           }
           if (updatedData) {
@@ -376,9 +376,9 @@ const GridComponentFactory = forwardRef(
           (entryKey === 'paymentDate' && state.data[entryKey]) ||
           (entryKey === 'googleCalendarDate' && state.data[entryKey])
         ) {
-          let convertedDate = new Date(
-            state.data[entryKey] as string
-          ).toISOString();
+          let convertedDate = state.data[entryKey]
+            .toISOString()
+            .substring(0, 21);
           state.data[entryKey] = convertedDate;
         }
       });
@@ -396,7 +396,7 @@ const GridComponentFactory = forwardRef(
         );
         if (result) {
           const updatedData = await result.json();
-          if (updatedData.status) {
+          if (updatedData?.status) {
             redirect('/');
           }
           if (updatedData.error) {
