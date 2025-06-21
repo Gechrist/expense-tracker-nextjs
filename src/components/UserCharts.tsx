@@ -27,13 +27,13 @@ import {
   SkeletonComponent,
   ToastComponent,
 } from '@syncfusion/ej2-react-notifications';
+import { useDarkMode } from 'usehooks-ts';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
 import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
 import currencies from '../../node_modules/cldr-data/main/el/currencies.json';
 import numberingSystems from '../../node_modules/cldr-data/supplemental/numberingSystems.json';
 import weekData from '../../node_modules/cldr-data/supplemental/weekData.json';
-import useDarkMode from 'use-dark-mode';
 import el from '../../messages/elLocalization.json';
 import * as React from 'react';
 import Link from 'next/link';
@@ -65,7 +65,7 @@ const UserCharts = (): React.ReactNode => {
   const toastInstance = useRef<ToastComponent>(null);
 
   // check for dark mode
-  const darkMode = useDarkMode(false);
+  const { isDarkMode } = useDarkMode();
 
   // table & charts settings
 
@@ -81,7 +81,7 @@ const UserCharts = (): React.ReactNode => {
         position: 'Inside',
         font: {
           fontFamily: 'comfortaa',
-          color: darkMode.value ? '#d3d3d3' : 'black',
+          color: isDarkMode ? '#d3d3d3' : 'black',
         },
       },
     },
@@ -91,12 +91,12 @@ const UserCharts = (): React.ReactNode => {
         fontWeight: 'Bold',
         textOverflow: 'None',
         fontFamily: 'comfortaa',
-        color: darkMode.value ? '#d3d3d3' : 'black',
+        color: isDarkMode ? '#d3d3d3' : 'black',
       },
       labelStyle: {
         fontWeight: 'Bold',
         fontFamily: 'comfortaa',
-        color: darkMode.value ? '#d3d3d3' : 'black',
+        color: isDarkMode ? '#d3d3d3' : 'black',
       },
     },
     primaryYAxis: {
@@ -104,18 +104,18 @@ const UserCharts = (): React.ReactNode => {
       titleStyle: {
         fontWeight: 'Bold',
         fontFamily: 'comfortaa',
-        color: darkMode.value ? '#d3d3d3' : 'black',
+        color: isDarkMode ? '#d3d3d3' : 'black',
       },
       labelStyle: {
         fontWeight: 'Bold',
         fontFamily: 'comfortaa',
-        color: darkMode.value ? '#d3d3d3' : 'black',
+        color: isDarkMode ? '#d3d3d3' : 'black',
       },
     },
     legendSettings: {
       textStyle: {
         fontFamily: 'comfortaa',
-        color: darkMode.value ? '#d3d3d3' : 'black',
+        color: isDarkMode ? '#d3d3d3' : 'black',
       },
     },
     zoomSettings: {
@@ -125,12 +125,12 @@ const UserCharts = (): React.ReactNode => {
     tooltip: {
       textStyle: {
         fontFamily: 'comfortaa',
-        color: darkMode.value ? '#d3d3d3' : 'black',
+        color: isDarkMode ? '#d3d3d3' : 'black',
       },
     },
     multiLevelLabelRender: function (args: any) {
       args.textStyle.fontFamily = 'comfortaa';
-      args.textStyle.color = darkMode.value ? '#d3d3d3' : 'black';
+      args.textStyle.color = isDarkMode ? '#d3d3d3' : 'black';
     },
     palettes: [
       '#7C00FE',
@@ -229,7 +229,7 @@ const UserCharts = (): React.ReactNode => {
       'false',
       'false'
     );
-    if (data.status) {
+    if (data?.status) {
       redirect('/');
     }
     if ((data && typeof data !== 'string') || !data.error) {
@@ -291,7 +291,7 @@ const UserCharts = (): React.ReactNode => {
     <section
       ref={sectionRef}
       className={`dark:bg-neutral-700 bg-white rounded w-11/12 px-2 pt-4 pb-6 flex justify-around gap-4 items-center flex-col ${
-        darkMode.value ? 'e-dark-mode' : ''
+        isDarkMode ? 'e-dark-mode' : ''
       }`}
     >
       <ToastComponent

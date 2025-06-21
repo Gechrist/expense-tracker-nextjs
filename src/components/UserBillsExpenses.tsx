@@ -35,13 +35,13 @@ import {
   sortOrder,
 } from '@/utils/utils';
 import { useEffect, useReducer, useRef, useState } from 'react';
+import { useDarkMode } from 'usehooks-ts';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
 import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
 import currencies from '../../node_modules/cldr-data/main/el/currencies.json';
 import numberingSystems from '../../node_modules/cldr-data/supplemental/numberingSystems.json';
 import weekData from '../../node_modules/cldr-data/supplemental/weekData.json';
-import useDarkMode from 'use-dark-mode';
 import el from '../../messages/elLocalization.json';
 import React from 'react';
 import GridComponentFactory from './GridComponentFactory';
@@ -85,7 +85,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
   }
 
   // check for dark mode
-  const darkMode = useDarkMode(false);
+  const { isDarkMode } = useDarkMode();
 
   //useRef to pass to child grid component
   const childRef = useRef(null);
@@ -216,7 +216,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       sort ? sort : 'false',
       filter ? filter : 'false'
     );
-    if (data.status) {
+    if (data?.status) {
       redirect('/');
     }
     if (data && typeof data !== 'string' && !data.error) {
@@ -377,7 +377,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
   return (
     <section
       className={`dark:bg-neutral-700 bg-white rounded w-11/12 px-2 pt-4 pb-6 flex justify-around gap-4 items-center flex-col ${
-        darkMode.value ? 'e-dark-mode' : ''
+        isDarkMode ? 'e-dark-mode' : ''
       }`}
     >
       <ToastComponent

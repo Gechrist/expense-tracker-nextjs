@@ -25,13 +25,13 @@ import {
 } from '@syncfusion/ej2-react-notifications';
 import { getRecords } from '@/utils/utils';
 import { Records } from './UserBillsExpenses';
+import { useDarkMode } from 'usehooks-ts';
 import numbers from '../../node_modules/cldr-data/main/el/numbers.json';
 import timeZoneNames from '../../node_modules/cldr-data/main/el/timeZoneNames.json';
 import caGregorian from '../../node_modules/cldr-data/main/el/ca-gregorian.json';
 import currencies from '../../node_modules/cldr-data/main/el/currencies.json';
 import numberingSystems from '../../node_modules/cldr-data/supplemental/numberingSystems.json';
 import el from '../../messages/elLocalization.json';
-import useDarkMode from 'use-dark-mode';
 import GridComponentFactory from './GridComponentFactory';
 import '@/styles/SyncFusion.css';
 
@@ -62,7 +62,7 @@ const UserHome = () => {
     setCurrencyCode('EUR');
   }
 
-  const darkMode = useDarkMode(false);
+  const { isDarkMode } = useDarkMode();
 
   // toast notification
   const toastInstance = useRef<ToastComponent>(null);
@@ -93,7 +93,7 @@ const UserHome = () => {
     textWrap: 'Wrap',
     font: {
       fontFamily: 'comfortaa',
-      color: darkMode.value ? '#d3d3d3' : 'black',
+      color: isDarkMode ? '#d3d3d3' : 'black',
     },
   };
 
@@ -102,7 +102,7 @@ const UserHome = () => {
     position: 'Bottom',
     textStyle: {
       fontFamily: 'comfortaa',
-      color: darkMode.value ? '#d3d3d3' : 'black',
+      color: isDarkMode ? '#d3d3d3' : 'black',
     },
   };
 
@@ -139,7 +139,7 @@ const UserHome = () => {
       'false',
       'false'
     );
-    if (data.status) {
+    if (data?.status) {
       redirect('/');
     }
     if (data && typeof data !== 'string' && !data.error) {
@@ -171,7 +171,7 @@ const UserHome = () => {
       <h1>{t('title')}</h1>
       <div
         className={`w-full flex justify-around items-start gap-4 flex-wrap ${
-          darkMode.value ? 'e-dark-mode' : ''
+          isDarkMode ? 'e-dark-mode' : ''
         }`}
       >
         <div className="w-full lg:w-[47%] flex flex-col justify-center items-center space-y-4">
@@ -251,7 +251,7 @@ const UserHome = () => {
                 textStyle: {
                   fontWeight: '900',
                   size: '100%',
-                  color: darkMode.value ? '#d3d3d3' : 'black',
+                  color: isDarkMode ? '#d3d3d3' : 'black',
                   fontFamily: 'comfortaa',
                 },
               }}
