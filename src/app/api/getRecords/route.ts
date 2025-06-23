@@ -1,3 +1,4 @@
+import UserBillsExpenses from '@/components/UserBillsExpenses';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { getToken, JWT } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
@@ -179,15 +180,16 @@ export async function GET(req: NextRequest) {
           return;
         }
 
-        amountPerCategory = monthExpensesPerCategory
-          .reduce((accumulator: any, entry: any) => {
-            return accumulator + entry.amount;
-          }, 0)
-          .toFixed(2);
+        amountPerCategory = monthExpensesPerCategory.reduce(
+          (accumulator: any, entry: any) => {
+            return Number((accumulator + entry.amount).toFixed(2));
+          },
+          0
+        );
 
         accumulatedMonthExpensesPerCategory.push({
           ...monthExpensesPerCategory[0],
-          y: amountPerCategory,
+          amount: amountPerCategory,
           text: `${record?.billIssuerOrExpenseType}:\u00A0 ${
             type == 'Bills' ? '$' + amountPerCategory : amountPerCategory + ' €'
           }`,

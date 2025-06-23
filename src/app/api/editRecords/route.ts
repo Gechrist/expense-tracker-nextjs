@@ -19,6 +19,7 @@ export async function PUT(req: NextRequest) {
     paymentDate,
     googleCalendarDate,
     googleCalendarDateAction,
+    rawGoogleCalendarDate,
     googleCalendarDateEventId,
     billIssuerOrExpenseType,
   } = await req.json();
@@ -27,6 +28,9 @@ export async function PUT(req: NextRequest) {
   dueDate = dueDate ? new Date(dueDate) : null;
   paymentDate = paymentDate ? new Date(paymentDate) : null;
   googleCalendarDate = googleCalendarDate ? new Date(googleCalendarDate) : null;
+  rawGoogleCalendarDate = rawGoogleCalendarDate
+    ? new Date(rawGoogleCalendarDate)
+    : null;
   let calendarEvent;
 
   let months = [
@@ -69,11 +73,11 @@ export async function PUT(req: NextRequest) {
             ? `Pay $${amount} ${billIssuerOrExpenseType} Bill`
             : `Πληρωμή λογαριασμού ${billIssuerOrExpenseType} ${amount} €`,
         start: {
-          dateTime: googleCalendarDate,
+          dateTime: rawGoogleCalendarDate,
           timeZone: '',
         },
         end: {
-          dateTime: googleCalendarDate,
+          dateTime: rawGoogleCalendarDate,
           timeZone: '',
         },
         colorId: 11,

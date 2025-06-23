@@ -370,14 +370,23 @@ const GridComponentFactory = forwardRef(
       ) {
         googleCalendarDateAction = 'editevent';
       }
+      let convertedDate: string;
+      let rawGoogleCalendarDate: string = '';
       Object.keys(state.data).map((entryKey: any) => {
         if (
           (entryKey === 'dueDate' && state.data[entryKey]) ||
-          (entryKey === 'paymentDate' && state.data[entryKey]) ||
-          (entryKey === 'googleCalendarDate' && state.data[entryKey])
+          (entryKey === 'paymentDate' && state.data[entryKey])
         ) {
-          let convertedDate = state.data[entryKey]
-            .toISOString()
+          convertedDate = new Date(
+            state.data[entryKey].toString().substring(0, 11)
+          ).toISOString();
+          state.data[entryKey] = convertedDate;
+        } else if (entryKey === 'googleCalendarDate' && state.data[entryKey]) {
+          convertedDate = new Date(
+            state.data[entryKey].toString().substring(0, 21)
+          ).toISOString();
+          rawGoogleCalendarDate = state.data[entryKey]
+            .toString()
             .substring(0, 21);
           state.data[entryKey] = convertedDate;
         }
@@ -391,7 +400,11 @@ const GridComponentFactory = forwardRef(
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ ...state.data, googleCalendarDateAction }),
+            body: JSON.stringify({
+              ...state.data,
+              googleCalendarDateAction,
+              rawGoogleCalendarDate,
+            }),
           }
         );
         if (result) {
