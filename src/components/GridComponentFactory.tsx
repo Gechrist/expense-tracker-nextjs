@@ -124,6 +124,8 @@ const GridComponentFactory = forwardRef(
             src={
               props.Id === 'Miscellaneous' || props.Id === 'Διάφορα'
                 ? '/miscellaneous-icon.svg'
+                : props.Id === 'Clothing' || props.Id === 'Ένδυση/Υπόδυση'
+                ? '/clothing-icon.svg'
                 : props.Id === 'Taxes' || props.Id === 'Φόροι'
                 ? '/tax-icon.svg'
                 : props.Id === 'Transportation' || props.Id === 'Μεταφορικά'
@@ -170,6 +172,7 @@ const GridComponentFactory = forwardRef(
       { Type: te('utilities'), Id: te('utilities') },
       { Type: te('leisure'), Id: te('leisure') },
       { Type: te('foodstuff'), Id: te('foodstuff') },
+      { Type: te('clothing'), Id: te('clothing') },
       { Type: te('electronics'), Id: te('electronics') },
       { Type: te('telecoms'), Id: te('telecoms') },
       { Type: te('rent'), Id: te('rent') },
@@ -378,8 +381,9 @@ const GridComponentFactory = forwardRef(
           (entryKey === 'paymentDate' && state.data[entryKey])
         ) {
           convertedDate = new Date(
-            state.data[entryKey].toString().substring(0, 11)
+            state.data[entryKey].toString().substring(0, 15)
           ).toISOString();
+          console.log('ds', state.data[entryKey].toString(), convertedDate);
           state.data[entryKey] = convertedDate;
         } else if (entryKey === 'googleCalendarDate' && state.data[entryKey]) {
           convertedDate = new Date(

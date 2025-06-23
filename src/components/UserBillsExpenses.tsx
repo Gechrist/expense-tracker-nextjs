@@ -300,6 +300,8 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
           src={
             props.Id === 'Miscellaneous' || props.Id === 'Διάφορα'
               ? '/miscellaneous-icon.svg'
+              : props.Id === 'Clothing' || props.Id === 'Ένδυση/Υπόδυση'
+              ? '/clothing-icon.svg'
               : props.Id === 'Taxes' || props.Id === 'Φόροι'
               ? '/tax-icon.svg'
               : props.Id === 'Transportation' || props.Id === 'Μεταφορικά'
@@ -341,6 +343,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       Id: te('transportation'),
     },
     { Type: te('misc'), Id: te('misc') },
+    { Type: te('clothing'), Id: te('clothing') },
     { Type: te('medical'), Id: te('medical') },
     { Type: te('utilities'), Id: te('utilities') },
     { Type: te('leisure'), Id: te('leisure') },

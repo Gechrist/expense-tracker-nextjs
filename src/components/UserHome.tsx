@@ -125,6 +125,7 @@ const UserHome = () => {
 
     '#C6A969',
     '#6CBEC7',
+    '#2DF00F',
   ];
 
   const getData = async () => {
