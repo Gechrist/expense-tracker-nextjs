@@ -56,7 +56,6 @@
   --color-sf-secondary-bg-color: var(--color-sf-surface);
 }
 
-
 .e-dark-mode {
   --color-sf-black: 0, 0, 0;
   --color-sf-white: 255, 255, 255;
@@ -69,7 +68,7 @@
   --color-sf-surface: 28, 27, 31;
   --color-sf-surface-variant: 28, 27, 31;
   --color-sf-background: var(--color-sf-surface);
-  --color-sf-on-primary: 55, 30, 115;
+  --color-sf-on-primary: 255, 255, 255;
   --color-sf-on-primary-container: 234, 221, 255;
   --color-sf-on-secondary: 51, 45, 65;
   --color-sf-on-secondary-container: 232, 222, 248;

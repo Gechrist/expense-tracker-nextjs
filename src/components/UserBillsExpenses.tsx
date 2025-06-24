@@ -162,7 +162,7 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
               : new RegExp(
                   '^([1-9]|1[0-2])\\/([1-9]|1[0-9]|2[0-9]|3[0-1])\\/(19|20)\\d{2}(\\s([0-9]|1[0-2]):[0-5]\\d\\s[AP]M)?$'
                 ),
-            t('errorDateMessage'),
+            t('errorDateandHourMessage'),
           ],
         },
       }),
