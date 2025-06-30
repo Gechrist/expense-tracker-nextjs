@@ -125,7 +125,7 @@ export async function GET(req: NextRequest) {
               dueDate: true,
             },
             orderBy: {
-              dueDate: 'desc',
+              dueDate: 'asc',
             },
             take: 3,
           }),
