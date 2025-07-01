@@ -46,7 +46,6 @@ export async function GET(req: NextRequest) {
   ) as string;
 
   let firstOfMonth = new Date(firstOfMonthString);
-  console.log(firstOfMonthString);
 
   sort = sort && sort.split(',');
   filter = filter && JSON.parse(filter);
