@@ -283,11 +283,13 @@ const UserBillsExpenses = ({ pathName }: { pathName: string }) => {
       } else {
         toastInstance.current?.show(toasts[0]);
       }
+      formRef.current?.reset();
       getData();
     } catch (err: any) {
       hideSpinner(formRef.current as HTMLFormElement);
       console.error('Error:', err.message);
       toastInstance.current?.show(toasts[1]);
+      formRef.current?.reset();
     }
   };
 
