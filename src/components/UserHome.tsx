@@ -129,6 +129,10 @@ const UserHome = () => {
   ];
 
   const getData = async () => {
+    let currentDate = new Date();
+    let month = currentDate.getMonth() + 1;
+    let year = currentDate.getFullYear();
+    let firstOfMonthString = new Date(`${year}-${month}-01`).toISOString();
     let data = await getRecords(
       locale.includes('en') ? 'Bills' : 'Λογαριασμοί',
       'true',
@@ -138,7 +142,8 @@ const UserHome = () => {
       'false',
       'false',
       'false',
-      'false'
+      'false',
+      firstOfMonthString
     );
     if (data?.status) {
       redirect('/');

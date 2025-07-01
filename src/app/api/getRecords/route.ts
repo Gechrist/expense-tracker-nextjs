@@ -41,11 +41,13 @@ export async function GET(req: NextRequest) {
     searchParams.get('sort') == 'false'
       ? false
       : (searchParams.get('sort')?.toString() as string);
+  let firstOfMonthString: string | null = searchParams.get(
+    'firstofmonthstring'
+  ) as string;
 
-  let currentDate = new Date();
-  let month = currentDate.getMonth() + 1;
-  let year = currentDate.getFullYear();
-  let firstOfMonth = new Date(`${year}-${month}-01`);
+  let firstOfMonth = new Date(firstOfMonthString);
+  console.log(firstOfMonthString);
+
   sort = sort && sort.split(',');
   filter = filter && JSON.parse(filter);
 

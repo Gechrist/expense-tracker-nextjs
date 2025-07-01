@@ -70,11 +70,12 @@ export const getRecords = async (
   endingDate: string,
   skip: string,
   sort: string,
-  filter: string
+  filter: string,
+  firstOfMonthString?: string
 ): Promise<any> => {
   try {
     const response = await fetch(
-      `/api/getRecords?&type=${type}&home=${home}&billsorexpenses=${billsOrExpenses}&charts=${charts}&startingdate=${startingDate}&endingdate=${endingDate}&skip=${skip}&sort=${sort}&filter=${filter}`,
+      `/api/getRecords?&type=${type}&home=${home}&billsorexpenses=${billsOrExpenses}&charts=${charts}&startingdate=${startingDate}&endingdate=${endingDate}&skip=${skip}&sort=${sort}&filter=${filter}&firstofmonthstring=${firstOfMonthString}`,
       {
         method: 'GET',
         headers: {
