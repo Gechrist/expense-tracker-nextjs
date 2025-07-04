@@ -119,6 +119,7 @@ export async function GET(req: NextRequest) {
             where: {
               createdBy: token?.email as string,
               type: type,
+              paymentDate: null,
             },
             select: {
               amount: true,
