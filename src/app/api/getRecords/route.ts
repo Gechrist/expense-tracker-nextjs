@@ -265,7 +265,7 @@ export async function GET(req: NextRequest) {
                 : null
               : type === 'Expenses' || type === 'Δαπάνες'
               ? { paymentDate: 'desc' }
-              : { dueDate: 'asc' }),
+              : { dueDate: 'desc' }),
           },
         }),
       ]);
