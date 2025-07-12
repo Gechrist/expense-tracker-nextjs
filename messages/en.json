@@ -1,5 +1,5 @@
 {
-  "SignInButton": { "text": "Connect" },
+  "SignInButton": { "text": "Sign in with Google" },
   "SignOutButton": { "text": "Sign Out" },
   "Home": {
     "Bills": {

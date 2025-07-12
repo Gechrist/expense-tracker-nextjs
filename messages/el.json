@@ -1,5 +1,5 @@
 {
-  "SignInButton": { "text": "Είσοδος" },
+  "SignInButton": { "text": "Σύνδεση με Google" },
   "SignOutButton": { "text": "Αποσύνδεση" },
   "Home": {
     "Bills": {
