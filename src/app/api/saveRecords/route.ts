@@ -67,8 +67,8 @@ export async function POST(req: NextRequest) {
     calendarEvent = {
       summary:
         type == 'Bills'
-          ? `Pay $${amount} ${billIssuerOrExpenseType} Bill`
-          : `Πληρωμή λογαριασμού ${billIssuerOrExpenseType} ${amount} €`,
+          ? `Pay $${amount} ${billIssuerOrExpenseType} Bill Reminder`
+          : `Υπενθύμιση πληρωμής λογαριασμού ${billIssuerOrExpenseType} ${amount} €`,
       start: {
         dateTime: googleCalendarDate,
         timeZone: '',
