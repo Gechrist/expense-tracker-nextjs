@@ -92,7 +92,6 @@ export async function PUT(req: NextRequest) {
       };
     }
   }
-
   try {
     if (
       googleCalendarDateAction === 'createevent' ||
@@ -110,6 +109,7 @@ export async function PUT(req: NextRequest) {
       const timeZoneResult = await timeZoneResponse.json();
       calendarEvent!.start.timeZone = timeZoneResult.timeZone;
       calendarEvent!.end.timeZone = timeZoneResult.timeZone;
+
       if (googleCalendarDateAction === 'createevent') {
         const eventResponse = await fetch(
           'https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1',

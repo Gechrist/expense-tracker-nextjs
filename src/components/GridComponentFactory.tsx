@@ -356,7 +356,27 @@ const GridComponentFactory = forwardRef(
     //CRUD functions
     const dataSourceChanged = async (state: any) => {
       let googleCalendarDateAction: string = '';
-
+      let convertedDate: string;
+      let rawGoogleCalendarDate: string = '';
+      Object.keys(state.data).map((entryKey: any) => {
+        if (
+          (entryKey === 'dueDate' && state.data[entryKey]) ||
+          (entryKey === 'paymentDate' && state.data[entryKey])
+        ) {
+          convertedDate = new Date(
+            state.data[entryKey].toString().substring(0, 15)
+          ).toISOString();
+          state.data[entryKey] = convertedDate;
+        } else if (entryKey === 'googleCalendarDate' && state.data[entryKey]) {
+          convertedDate = new Date(
+            state.data[entryKey].toString().substring(0, 21)
+          ).toISOString();
+          rawGoogleCalendarDate = state.data[entryKey]
+            .toString()
+            .substring(0, 21);
+          state.data[entryKey] = convertedDate;
+        }
+      });
       if (
         state.data.googleCalendarDate &&
         !state.previousData.googleCalendarDate
@@ -373,28 +393,7 @@ const GridComponentFactory = forwardRef(
       ) {
         googleCalendarDateAction = 'editevent';
       }
-      let convertedDate: string;
-      let rawGoogleCalendarDate: string = '';
-      Object.keys(state.data).map((entryKey: any) => {
-        if (
-          (entryKey === 'dueDate' && state.data[entryKey]) ||
-          (entryKey === 'paymentDate' && state.data[entryKey])
-        ) {
-          convertedDate = new Date(
-            state.data[entryKey].toString().substring(0, 15)
-          ).toISOString();
-          console.log('ds', state.data[entryKey].toString(), convertedDate);
-          state.data[entryKey] = convertedDate;
-        } else if (entryKey === 'googleCalendarDate' && state.data[entryKey]) {
-          convertedDate = new Date(
-            state.data[entryKey].toString().substring(0, 21)
-          ).toISOString();
-          rawGoogleCalendarDate = state.data[entryKey]
-            .toString()
-            .substring(0, 21);
-          state.data[entryKey] = convertedDate;
-        }
-      });
+
       try {
         const result = await fetch(
           `/api/${state.action ? state.action : 'delete'}Records`,
