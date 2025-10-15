@@ -388,8 +388,12 @@ const GridComponentFactory = forwardRef(
       ) {
         googleCalendarDateAction = 'deleteevent';
       } else if (
-        state.data.googleCalendarDate !==
-        state?.previousData?.googleCalendarDate
+        state?.previousData?.googleCalendarDate &&
+        (state.data.googleCalendarDate !==
+          state?.previousData?.googleCalendarDate ||
+          state.data.amount !== state?.previousData?.amount ||
+          state.data.billIssuerOrExpenseType !==
+            state?.previousData?.billIssuerOrExpenseType)
       ) {
         googleCalendarDateAction = 'editevent';
       }
