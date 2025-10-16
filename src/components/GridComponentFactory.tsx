@@ -357,7 +357,6 @@ const GridComponentFactory = forwardRef(
     const dataSourceChanged = async (state: any) => {
       let googleCalendarDateAction: string = '';
       let convertedDate: string;
-      let rawGoogleCalendarDate: string = '';
       Object.keys(state.data).map((entryKey: any) => {
         if (
           (entryKey === 'dueDate' && state.data[entryKey]) ||
@@ -371,9 +370,6 @@ const GridComponentFactory = forwardRef(
           convertedDate = new Date(
             state.data[entryKey].toString().substring(0, 21)
           ).toISOString();
-          rawGoogleCalendarDate = state.data[entryKey]
-            .toString()
-            .substring(0, 21);
           state.data[entryKey] = convertedDate;
         }
       });
@@ -410,7 +406,6 @@ const GridComponentFactory = forwardRef(
             body: JSON.stringify({
               ...state.data,
               googleCalendarDateAction,
-              rawGoogleCalendarDate,
             }),
           }
         );
