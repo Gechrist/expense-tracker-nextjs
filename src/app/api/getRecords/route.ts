@@ -283,6 +283,12 @@ export async function GET(req: NextRequest) {
           where: {
             AND: [
               ...(filter as string[]).map((filterField: any) => {
+                console.log(
+                  'filterField:',
+                  filterField[0],
+                  filterField[1],
+                  filterField[2]
+                );
                 return {
                   createdBy: token?.email as string,
                   type: type,
@@ -331,11 +337,11 @@ export async function GET(req: NextRequest) {
                         googleCalendarDate: {
                           ...(filterField[2] === 'equal'
                             ? { equals: new Date(filterField[1]) }
-                            : filterField[2] === 'greaterThan'
+                            : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
                             ? { gte: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThan'
+                            : filterField[2] === 'lessthan'
                             ? { lt: new Date(filterField[1]) }
                             : filterField[2] === 'lessthanorequal'
                             ? { lte: new Date(filterField[1]) }
@@ -387,11 +393,11 @@ export async function GET(req: NextRequest) {
                         amount: {
                           ...(filterField[2] === 'equal'
                             ? { equals: parseFloat(filterField[1]) }
-                            : filterField[2] === 'greaterThan'
+                            : filterField[2] === 'greaterthan'
                             ? { gt: parseFloat(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
                             ? { gte: parseFloat(filterField[1]) }
-                            : filterField[2] === 'lessThan'
+                            : filterField[2] === 'lessthan'
                             ? { lt: parseFloat(filterField[1]) }
                             : filterField[2] === 'lessthanorequal'
                             ? { lte: parseFloat(filterField[1]) }
@@ -458,11 +464,11 @@ export async function GET(req: NextRequest) {
                         googleCalendarDate: {
                           ...(filterField[2] === 'equal'
                             ? { equals: new Date(filterField[1]) }
-                            : filterField[2] === 'greaterThan'
+                            : filterField[2] === 'greaterthan'
                             ? { gt: new Date(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
                             ? { gte: new Date(filterField[1]) }
-                            : filterField[2] === 'lessThan'
+                            : filterField[2] === 'lessthan'
                             ? { lt: new Date(filterField[1]) }
                             : filterField[2] === 'lessthanorequal'
                             ? { lte: new Date(filterField[1]) }
@@ -514,11 +520,11 @@ export async function GET(req: NextRequest) {
                         amount: {
                           ...(filterField[2] === 'equal'
                             ? { equals: parseFloat(filterField[1]) }
-                            : filterField[2] === 'greaterThan'
+                            : filterField[2] === 'greaterthan'
                             ? { gt: parseFloat(filterField[1]) }
                             : filterField[2] === 'greaterthanorequal'
                             ? { gte: parseFloat(filterField[1]) }
-                            : filterField[2] === 'lessThan'
+                            : filterField[2] === 'lessthan'
                             ? { lt: parseFloat(filterField[1]) }
                             : filterField[2] === 'lessthanorequal'
                             ? { lte: parseFloat(filterField[1]) }
